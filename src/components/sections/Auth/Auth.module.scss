@@ -1,0 +1,19 @@
+@import '../../../styles/av';
+
+.authForm {
+   @apply flex flex-col gap-4;
+
+   input,
+   select {
+      @include adaptiveValue('padding', 10, 5);
+      max-width: 300px;
+      border: 1px solid black;
+      outline: none
+   }
+}
+.title {
+   @include adaptiveValue('font-size', 40, 20);
+
+   text-align: center;
+   max-width: 300px;
+}

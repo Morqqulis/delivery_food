@@ -5,3 +5,8 @@ export interface IChildren {
 export interface IDefaultProvider extends IChildren {
    full: boolean
 }
+
+export interface IAuthLogin {
+   email: string
+   password: string
+}
