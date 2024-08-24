@@ -6,15 +6,13 @@ import '#styles/index.scss'
 export const metadata = homeMetadata
 
 export default function RootLayout({
-   children
+   children,
 }: Readonly<{
    children: React.ReactNode
 }>) {
    return (
       <html className={`h-full`} lang="en">
-         <body className={`h-full ${primaryFont.className}`}>
-            <DefaultLayout full>{children}</DefaultLayout>
-         </body>
+         <body className={`h-full ${primaryFont.className}`}>{children}</body>
       </html>
    )
 }

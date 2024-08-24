@@ -1,6 +1,38 @@
+@use 'sass:math';
 
+//----------------------------------------------
+// REM
+@function rem($px) {
+   $result: math.div($px, 16) + rem;
+   @return $result;
+}
 
-@mixin adaptiveValue($property, $startSize, $minSize, $widthFrom: 1150, $widthTo: 280, $keepSize: 0) {
+@function em($px, $current: 16) {
+   $result: math.div($px, $current) + em;
+   @return $result;
+}
+
+//----------------------------------------------
+// REM
+@function rem($px) {
+   $result: math.div($px, 16) + rem;
+   @return $result;
+}
+
+$minWidth: 280; // 280px Минимальная ширина страницы
+
+$maxWidth: 1920; // Ширина полотна (макета)
+
+$maxWidthContainer: 1150; // Ширина ограничивающего контейнера (0 = нет ограничения)
+
+$containerPadding: 30; // Общий отступ у контейнера. (30 = по 15px слева и справа, 0 = нет отступа)
+//----------------------------------------------
+
+$containerWidth: $maxWidthContainer + $containerPadding;
+
+$responsiveType: 1; // Тип адаптива: 1 = отзывчивость (у контейнера нет брейкпоинтов), 2 = по брейк-поинтам (контейнер меняет свою ширину по брейк-поинтам)
+
+@mixin adaptiveValue($property, $startSize, $minSize, $widthFrom: $containerWidth, $widthTo: $minWidth, $keepSize: 0) {
    @if ($startSize==0) {
       $startSize: 0.000001;
    }

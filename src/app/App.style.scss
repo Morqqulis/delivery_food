@@ -1,0 +1,3 @@
+.title {
+   @include adaptiveValue('font-size', 120, 14);
+}
