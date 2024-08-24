@@ -1,4 +1,3 @@
-import DefaultLayout from '#layouts/DefaultLayout'
 import { primaryFont } from '#settings/fonts'
 import { homeMetadata } from '#settings/metadata'
 import '#styles/index.scss'
