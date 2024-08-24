@@ -10,3 +10,10 @@ export interface IAuthLogin {
    email: string
    password: string
 }
+
+export interface IAuthRegister {
+   email: string
+   password: string
+   name: string
+   gender: string
+}

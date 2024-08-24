@@ -33,7 +33,9 @@
          "#pages/*": ["./src/components/pages/*"],
          "#sections/*": ["./src/components/sections/*"],
          "#providers/*": ["./src/components/providers/*"],
-         "#av/*": ["./src/styles/av.scss"]
+         "#av/*": ["./src/styles/av.scss"],
+         "#schemes/*": ["./src/schemes/*"],
+
       },
       "target": "ES2017"
    },
