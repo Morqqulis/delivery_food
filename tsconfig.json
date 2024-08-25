@@ -33,10 +33,11 @@
          "#pages/*": ["./src/components/pages/*"],
          "#sections/*": ["./src/components/sections/*"],
          "#providers/*": ["./src/components/providers/*"],
-         "#av/*": ["./src/styles/av.scss"]
+         "#av/*": ["./src/styles/av.scss"],
+         "#backend/*": ["./src/backend/*"]
       },
       "target": "ES2017"
    },
-   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/server/index.js"],
    "exclude": ["node_modules"]
 }
