@@ -12,7 +12,7 @@ const Header = () => {
             <nav className={`flex items-center gap-8 justify-between`}>
                <Logo className={styles.logo} />
                <HeaderSearch />
-               <Btn className={`px-11 py-2`} text={'Orders (0)'} type={'button'} ariaLabel={'Orders Btn'} />
+               <Btn className={`px-11 py-2`} text={'Orders (0)'} type={'button'} ariaLabel={'Orders Btn'}  href='/basket' />
                <Link className={`group p-0`} href={'/auth'}>
                   <LogIn className={`group-hover:text-mini-100 duration-300`} />
                </Link>

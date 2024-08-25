@@ -5,6 +5,7 @@ import { Button } from '#ui/button'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styles from './Auth.module.scss'
+import Btn from '#ui/Btn/Btn'
 
 const AuthSection: React.FC = (): JSX.Element => {
    const [title, setTitle] = useState(true)
@@ -40,14 +41,12 @@ const AuthSection: React.FC = (): JSX.Element => {
                </>
             )}
 
-            <Button type="submit" className="max-w-[300px]">
-               {title ? 'Login' : 'Register'}
-            </Button>
+            <Btn type="submit" className="max-w-[300px]" text={title ? 'Login' : 'Register'} ariaLabel="Auth Btn" />
          </form>
 
          <span>
             {title ? 'Don`t have an account?' : 'Already have an account?'}
-            <button onClick={() => setTitle(!title)} className="font-bold text-blue-800">
+            <button onClick={() => setTitle(!title)} className="font-bold text-blue-800"> 
                click here
             </button>
          </span>
