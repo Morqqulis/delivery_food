@@ -1,27 +1,23 @@
 'use client'
 
+import { LoginSchema, RegisterSchema } from '#schemes/scheme'
 import { Button } from '#ui/button'
 import { useState } from 'react'
-import styles from './Auth.module.scss'
 import { useForm } from 'react-hook-form'
-import { IAuthLogin, IAuthRegister } from '#types/index'
-import { LoginSchema, RegisterSchema } from '#schemes/scheme'
+import styles from './Auth.module.scss'
 
 const AuthSection: React.FC = (): JSX.Element => {
    const [title, setTitle] = useState(true)
 
    const getSheme = () => (title ? LoginSchema : RegisterSchema)
    // const getValues = () => (title ? IAuthLogin : IAuthRegister)
-   
+
    const { register, handleSubmit } = useForm()
-
-
 
    const submitHandler = (event: any) => {
       // event.preventDefault()
       console.log(event)
    }
-
 
    return (
       <div className="container flex flex-col gap-4">
@@ -50,7 +46,7 @@ const AuthSection: React.FC = (): JSX.Element => {
          </form>
 
          <span>
-            {title ? 'Don`t have an account?' : 'Already have an account?'}{' '}
+            {title ? 'Don`t have an account?' : 'Already have an account?'}
             <button onClick={() => setTitle(!title)} className="font-bold text-blue-800">
                click here
             </button>

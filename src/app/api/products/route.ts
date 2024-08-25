@@ -11,7 +11,8 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest, res: NextResponse) {
    try {
-      const result = await productGetAll()
+      const result: IProduct[] = await productGetAll()
+
       return NextResponse.json(
          {
             message: 'Products fetched successfully',
@@ -32,7 +33,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 export async function POST(req: NextRequest, res: NextResponse) {
    try {
       const data: IProduct = await req.json()
-
+      
       const newProduct = await productCreate(data)
       return NextResponse.json(
          {

@@ -1,5 +1,5 @@
-import { Montserrat } from 'next/font/google'
+import { Poppins, Roboto } from 'next/font/google'
 
-const primaryFont = Montserrat({ subsets: ['latin'] })
-
-export { primaryFont }
+const primaryFont = Poppins({ subsets: ['latin'], weight: ['300', '400', '700'] })
+const secondaryFont = Roboto({ subsets: ['latin'], weight: ['300', '400', '500', '700'] })
+export { primaryFont, secondaryFont }

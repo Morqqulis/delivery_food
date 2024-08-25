@@ -11,7 +11,9 @@ export default function RootLayout({
 }>) {
    return (
       <html className={`h-full`} lang="en">
-         <body className={`h-full ${primaryFont.className}`}>{children}</body>
+         <body className={`bg-dark-400 text-light-300 h-full overflow-x-clip ${primaryFont.className}`}>
+            {children}
+         </body>
       </html>
    )
 }

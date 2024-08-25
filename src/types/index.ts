@@ -17,6 +17,19 @@ export interface IAuthLogin {
    password: string
 }
 
+export interface IClassName {
+   className?: string
+}
+
+export interface IBtn extends IClassName {
+   type?: HTMLButtonElement['type']
+   onClick?: () => void
+   ariaLabel: string
+   text: string
+   children?: React.ReactNode
+   href?: string
+}
+
 export interface IUser {
    _id: string
    name: string
@@ -38,7 +51,6 @@ export interface IProduct {
    image?: string
    createdAt?: Date
 }
-
 
 export interface IAuthRegister {
    email: string
