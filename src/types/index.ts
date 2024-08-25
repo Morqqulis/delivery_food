@@ -7,7 +7,10 @@ export interface IParamsID {
       id: string
    }
 }
-
+export interface IProductsSection {
+   products: IProduct[]
+   title: string
+}
 export interface IDefaultProvider extends IChildren {
    full: boolean
 }

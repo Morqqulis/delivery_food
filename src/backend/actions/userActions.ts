@@ -2,7 +2,6 @@
 
 import { connectDB } from '#backend/DB'
 import userModel from '#backend/models/userModel'
-
 export const userGetAll = async () => {
    try {
       await connectDB()

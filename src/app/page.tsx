@@ -1,8 +1,11 @@
 import DefaultLayout from '#layouts/DefaultLayout'
+import HomeSection from '#sections/Home/HomeSection'
 const Home = async () => {
    return (
       <DefaultLayout full>
-         <main></main>
+         <main>
+            <HomeSection />
+         </main>
       </DefaultLayout>
    )
 }

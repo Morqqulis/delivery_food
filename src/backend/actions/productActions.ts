@@ -4,6 +4,21 @@ import { connectDB } from '#backend/DB'
 import productModel from '#backend/models/productModel'
 import { IProduct } from '#types/index'
 
+const handledata = (data: any) => {
+   return {
+      _id: data._id,
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      category: data.category,
+      ingredients: data.ingredients,
+      image: data.image,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      __v: data.__v,
+   }
+}
+
 export const productGetAll = async () => {
    try {
       await connectDB()
@@ -20,6 +35,16 @@ export const productGetById = async (id: string) => {
       await connectDB()
 
       return await productModel.findOne({ _id: id })
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+export const productData = async (id: string) => {
+   if (!id) return
+   try {
+      await connectDB()
+
+      return handledata(await productModel.findOne({ _id: id }))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -46,7 +71,7 @@ export const productDeleteAll = async () => {
    }
 }
 
-export const productUpdateById = async (id: string, data: IProduct) => {
+export const productUpdateById = async (id: string, data: any) => {
    if (!id || !data) return
 
    try {
@@ -81,4 +106,13 @@ export const productGetByCategory = async (category: string) => {
    }
 }
 
+export const productsGetByParams = async (params: any) => {
+   if (!params) return
+   try {
+      await connectDB()
 
+      return await productModel.find(params)
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
