@@ -1,11 +1,11 @@
 import { IClassName } from '#types/index'
 import Link from 'next/link'
 
-const Logo: React.FC<IClassName> = ({ className = '' }): JSX.Element => {
+const Logo: React.FC<IClassName & { iconClassName?: string }> = ({ className = '', iconClassName }): JSX.Element => {
    return (
       <Link className={`${className} group/logo`} href={'/'}>
          <svg
-            className={`group-hover/logo:fill-mini-100 fill-[#065E7C] duration-300 ease-in`}
+            className={`group-hover/logo:fill-mini-100 ${iconClassName ? iconClassName : 'fill-cake-100'} duration-300 ease-in`}
             width="25.980469"
             height="30.000000"
             viewBox="0 0 25.9805 30"
