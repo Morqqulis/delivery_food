@@ -13,6 +13,14 @@ const config = {
          },
       },
       extend: {
+         screens: {
+            xs: { max: '489.99px' },
+            sm: { max: '566.99px' },
+            md: { max: '767.99px' },
+            lg: { max: '991.99px' },
+            pc: { max: '1149.99px' },
+         },
+
          colors: {
             'light-100': '#FFFFFF',
             'light-200': '#FFFAF1',
