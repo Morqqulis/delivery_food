@@ -1,4 +1,4 @@
-import { secondaryFont } from '#settings/fonts'
+import { primaryFont } from '#settings/fonts'
 import { IBtn } from '#types/index'
 import Link from 'next/link'
 import { Button } from '../button'
@@ -8,7 +8,7 @@ const Btn: React.FC<IBtn> = ({ type, className, ariaLabel, children, onClick, te
    if (href) {
       return (
          <Link
-            className={`${styles.btn} ${className} ${secondaryFont.className}`}
+            className={`${styles.btn} ${className} ${primaryFont.className}`}
             href={href}
             onClick={onClick}
             aria-label={ariaLabel}
@@ -20,7 +20,7 @@ const Btn: React.FC<IBtn> = ({ type, className, ariaLabel, children, onClick, te
    } else
       return (
          <Button
-            className={`${styles.btn} ${className} ${secondaryFont.className}`}
+            className={`${styles.btn} ${className} ${primaryFont.className}`}
             type={type}
             onClick={onClick}
             aria-label={ariaLabel}

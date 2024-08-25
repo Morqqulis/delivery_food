@@ -9,7 +9,7 @@ const Header = () => {
    return (
       <header className={`${styles.header}`}>
          <div className="container">
-            <nav className={`flex items-center gap-4`}>
+            <nav className={`flex items-center gap-8 justify-between`}>
                <Logo className={styles.logo} />
                <HeaderSearch />
                <Btn className={`px-11 py-2`} text={'Orders (0)'} type={'button'} ariaLabel={'Orders Btn'} />
