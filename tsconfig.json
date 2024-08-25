@@ -34,7 +34,9 @@
          "#sections/*": ["./src/components/sections/*"],
          "#providers/*": ["./src/components/providers/*"],
          "#av/*": ["./src/styles/av.scss"],
-         "#backend/*": ["./src/backend/*"]
+         "#backend/*": ["./src/backend/*"],
+         "#schemes/*": ["./src/schemes/*"],
+
       },
       "target": "ES2017"
    },

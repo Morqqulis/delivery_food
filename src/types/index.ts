@@ -38,3 +38,11 @@ export interface IProduct {
    image?: string
    createdAt?: Date
 }
+
+
+export interface IAuthRegister {
+   email: string
+   password: string
+   name: string
+   gender: string
+}
