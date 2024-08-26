@@ -1,4 +1,5 @@
 'use client'
+import { basketCreateOrUpdate } from '#backend/actions/basketActions'
 import Counter from '#sections/Counter'
 import { IProduct } from '#types/index'
 import Btn from '#ui/Btn/Btn'
@@ -12,7 +13,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
-   const [count, setCount] = useState(0)
+   const [count, setCount] = useState(1)
    const [like, setLike] = useState(false)
 
    return (
@@ -23,10 +24,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
             <p className="text-center">{product.description}</p>
             <p className="text-3xl font-bold text-[#82F3FF]">$ {product.price}</p>
          </Link>
-         <div className="flex w-[80%] items-center justify-between gap-2">
-            <Counter count={count} setCount={setCount} />
-            <Btn text="ADD" ariaLabel="Add Btn" className="px-5 py-3" />
-         </div>
+         <Counter count={count} setCount={setCount} text="ADD" id={product._id} className="w-[80%]" />
          <Heart
             className={`cursor-pointer ${like ? 'text-red-500' : 'text-white'} absolute right-2 top-2`}
             onClick={() => setLike(!like)}

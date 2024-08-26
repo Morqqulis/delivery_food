@@ -1,5 +1,12 @@
 'use client'
 import {
+   basketGetAll,
+   basketGetOne,
+   basketGetUserId,
+   basketCreateOrUpdate,
+   basketDeleteProduct,
+} from '#backend/actions/basketActions'
+import {
    productCreate,
    productData,
    productDeleteById,
@@ -22,7 +29,7 @@ interface IProductPage {
 }
 
 const ProductPage: React.FC<IProductPage> = ({ id }): JSX.Element => {
-   const [product, setProduct] = useState<IProduct>()
+   const [product, setProduct] = useState<any>()
    const [count, setCount] = useState(1)
 
    useEffect(() => {
@@ -31,34 +38,34 @@ const ProductPage: React.FC<IProductPage> = ({ id }): JSX.Element => {
          const prod = await productData(id)
          setProduct(prod)
 
-        //  const data = {
-        //     name: 'yeni product',
-        //     description: 'yeni product 6666',
-        //     price: 55.55,
-        //     category: 'yeni',
-        //     ingredients: [],
-        //  }
+         // const mongoose = require('mongoose')
+
+         // console.log(await basketGetUserId('66cc1dd356e909720e7b292d'))
+
+         // const data = {
+         //    _id: new mongoose.Types.ObjectId().toString(),
+         //    name: 'yeni mehsul 5',
+         //    description: 'yeni 5',
+         //    price: 55.55,
+         //    category: 'yeni',
+         //    ingredients: [],
+         // }
+         // const user = { _id: new mongoose.Types.ObjectId().toString(), name: 'yeni user 1', email: 'sil@yeni.com', password: 'salam' }
+
          //  console.log(await productUpdateById(id, { price: 55.44 }))
-         //   console.log(await productCreate(data));
+         // console.log(await productCreate(data))
          //  console.log(await productGetByCategory('yeniler'));
          //  console.log(await productDeleteById(id));
          //  console.log(await productGetAll())
-        //  console.log(await productsGetByParams({ name: 'yeni product', category: 'yeni' }))
+         //  console.log(await productsGetByParams({ name: 'yeni product', category: 'yeni' }))
 
-         //  console.log(await userCreate({ _id: '3535', name: 'qazan', email: 'qazan@qazan.com', password: 'salam' }))
+         // console.log(await userCreate(user))
          // console.log(await userUpdateById('3535', {  name: 'bayram'}))
          // console.log(await userDeleteById('3535'));
          //  console.log(await userGetById('3535'))
          //  console.log(await userGetAll())
       })()
    }, [id])
-
-   //   useEffect(() => {
-   //      ;(async () => {
-   //         const response = await axios.get(`/api/products/${id}`, { params: { id } })
-   //         console.log(response.data)
-   //      })()
-   //   }, [id])
 
    return (
       <div className="container flex w-full items-center gap-10">
@@ -68,14 +75,13 @@ const ProductPage: React.FC<IProductPage> = ({ id }): JSX.Element => {
          <div className="flex flex-col gap-6">
             <p>{product?.name}</p>
             <p>{product?.description}</p>
-            <div className="mt-6 flex items-center justify-between gap-2">
-               <Counter count={count} setCount={setCount} />
-               <Btn
-                  text={`ADD - $ ${product?.price ? count * product?.price : 0}`}
-                  ariaLabel="Add Btn"
-                  className="px-5 py-3"
-               />
-            </div>
+            <Counter
+               count={count}
+               setCount={setCount}
+               text={`ADD - $ ${product?.price ? (count * product?.price).toFixed(2) : 0}`}
+               id={id}
+               className="mt-6"
+            />
          </div>
       </div>
    )

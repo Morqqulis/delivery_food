@@ -1,6 +1,32 @@
+'use client'
+import { basketDeleteProduct, basketGetUserId } from '#backend/actions/basketActions'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '#ui/table'
+import { useEffect, useState } from 'react'
 
 const BasketSection: React.FC = (): JSX.Element => {
+   const [basket, setBasket] = useState<any>(null)
+
+   useEffect(() => {
+      ;(async () => {
+         const basketData = await basketGetUserId('66cc1dd356e909720e7b292d')
+         setBasket(basketData)
+      })()
+   }, [])
+
+   const calculateTotal = () => {
+      return basket
+         ? basket.products
+              .reduce((total: number, product: any) => total + product.productId.price * product.quantity, 0)
+              .toFixed(2)
+         : 0
+   }
+   const deleteBasket = async (id: string) => {
+      await basketDeleteProduct({
+         userId: '66cc1dd356e909720e7b292d',
+         productId: id,
+      })
+   }
+
    return (
       <Table className="container">
          <TableCaption>A list of your recent invoices.</TableCaption>
@@ -12,18 +38,28 @@ const BasketSection: React.FC = (): JSX.Element => {
                <TableHead>Count</TableHead>
                <TableHead>Price</TableHead>
                <TableHead className="text-right">Total</TableHead>
+               <TableHead></TableHead>
             </TableRow>
          </TableHeader>
-         <TableBody>
-            <TableRow>
-               <TableCell className="font-medium">INV001</TableCell>
-               <TableCell>Paid</TableCell>
-               <TableCell>Credit Card</TableCell>
-               <TableCell>4</TableCell>
-               <TableCell>10</TableCell>
-               <TableCell className="text-right">$250.00</TableCell>
-            </TableRow>
-         </TableBody>
+         {basket && (
+            <TableBody>
+               {basket.products.map((product: any) => (
+                  <TableRow key={product.productId._id}>
+                     <TableCell className="font-medium">{`${product.productId._id.slice(0, 2)}***${product.productId._id.slice(-4)}`}</TableCell>
+                     <TableCell>{product.productId.name}</TableCell>
+                     <TableCell>{product.productId.description}</TableCell>
+                     <TableCell>{product.quantity}</TableCell>
+                     <TableCell>{product.productId.price}</TableCell>
+                     <TableCell className="text-right">
+                        ${(product.quantity * product.productId.price).toFixed(2)}
+                     </TableCell>
+                     <TableCell>
+                        <p className='cursor-pointer' onClick={() => deleteBasket(product.productId._id)}>Delete</p>
+                     </TableCell>
+                  </TableRow>
+               ))}
+            </TableBody>
+         )}
          <TableFooter>
             <TableRow>
                <TableCell />
@@ -31,7 +67,8 @@ const BasketSection: React.FC = (): JSX.Element => {
                <TableCell />
                <TableCell />
                <TableCell />
-               <TableCell className="text-right">$250.00</TableCell>
+               <TableCell className="text-right">${calculateTotal()}</TableCell>
+               <TableCell />
             </TableRow>
          </TableFooter>
       </Table>

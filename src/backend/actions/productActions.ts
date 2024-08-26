@@ -4,21 +4,6 @@ import { connectDB } from '#backend/DB'
 import productModel from '#backend/models/productModel'
 import { IProduct } from '#types/index'
 
-const handledata = (data: any) => {
-   return {
-      _id: data._id,
-      name: data.name,
-      description: data.description,
-      price: data.price,
-      category: data.category,
-      ingredients: data.ingredients,
-      image: data.image,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
-      __v: data.__v,
-   }
-}
-
 export const productGetAll = async () => {
    try {
       await connectDB()
@@ -44,7 +29,7 @@ export const productData = async (id: string) => {
    try {
       await connectDB()
 
-      return handledata(await productModel.findOne({ _id: id }))
+      return await productModel.findOne({ _id: id }).lean()
    } catch (err: Error | any) {
       throw new Error(err)
    }
