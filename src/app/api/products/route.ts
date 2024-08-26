@@ -16,7 +16,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       return NextResponse.json(
          {
             message: 'Products fetched successfully',
-            'All Products': result,
+            products: result,
          },
          { status: 201 },
       )
