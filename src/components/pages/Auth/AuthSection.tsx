@@ -1,27 +1,64 @@
 'use client'
 
 import { LoginSchema, RegisterSchema } from '#schemes/scheme'
-import { Button } from '#ui/button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styles from './Auth.module.scss'
 import Btn from '#ui/Btn/Btn'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormValues } from '#types/index'
 
 const AuthSection: React.FC = (): JSX.Element => {
    const [title, setTitle] = useState(true)
 
-   const getSheme = () => (title ? LoginSchema : RegisterSchema)
-   // const getValues = () => (title ? IAuthLogin : IAuthRegister)
+   const getScheme = () => (title ? LoginSchema : RegisterSchema)
 
-   const { register, handleSubmit } = useForm()
 
-   const submitHandler = (event: any) => {
-      // event.preventDefault()
-      console.log(event)
+   const getDefaultValues = () => {
+      if (title) {
+         return {
+            email: '',
+            password: '',
+         }
+      } else {
+         return {
+            email: '',
+            password: '',
+            name: '',
+            gender: 'male',
+         }
+      }
+   }
+
+   const { register, handleSubmit, reset } = useForm<FormValues>({
+      resolver: zodResolver(getScheme()),
+      defaultValues: getDefaultValues(),
+   })
+
+   const submitHandler = async (data: FormValues) => {      
+      if (title) {
+         const response = await fetch('/api/auth/signin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+         })
+         const result = await response.json()
+         console.log(result)
+      } else {
+         const response = await fetch('/api/auth/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+         })
+         const result = await response.json()
+         console.log(result)
+      }
+
+      reset()
    }
 
    return (
-      <div className="container flex flex-col gap-4">
+      <div className="container flex min-h-screen flex-col items-center justify-center gap-4">
          <h1 className={styles.title}>{title ? 'Login' : 'Register'}</h1>
          <form className={styles.authForm} onSubmit={handleSubmit(submitHandler)}>
             <input type="email" placeholder="Enter your email" {...register('email')} />
@@ -46,7 +83,7 @@ const AuthSection: React.FC = (): JSX.Element => {
 
          <span>
             {title ? 'Don`t have an account?' : 'Already have an account?'}
-            <button onClick={() => setTitle(!title)} className="font-bold text-blue-800"> 
+            <button onClick={() => setTitle(!title)} className="font-bold text-blue-800">
                click here
             </button>
          </span>

@@ -15,10 +15,6 @@ export interface IDefaultProvider extends IChildren {
    full: boolean
 }
 
-export interface IAuthLogin {
-   email: string
-   password: string
-}
 
 export interface IClassName {
    className?: string
@@ -55,9 +51,9 @@ export interface IProduct {
    createdAt?: Date
 }
 
-export interface IAuthRegister {
+export interface FormValues {
    email: string
    password: string
-   name: string
-   gender: string
+   name?: string
+   gender?: string
 }
