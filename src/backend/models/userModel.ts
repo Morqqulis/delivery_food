@@ -1,12 +1,11 @@
 import { IUser } from '#types/index'
 import { Schema, model, models } from 'mongoose'
-import { v6 as uuidv6 } from 'uuid'
 const userSchema = new Schema<IUser>(
    {
       _id: {
          type: String,
          required: true,
-         default: () => uuidv6(),
+         default: () => crypto.randomUUID(),
       },
       name: {
          type: String,

@@ -13,13 +13,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
    try {
       const result: IProduct[] = await productGetAll()
 
-      return NextResponse.json(
-         {
-            message: 'Products fetched successfully',
-            products: result,
-         },
-         { status: 201 },
-      )
+      return NextResponse.json(result, {
+         statusText: 'Products fetched successfully',
+         status: 201,
+      })
    } catch (error) {
       return NextResponse.json(
          {
@@ -33,15 +30,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
 export async function POST(req: NextRequest, res: NextResponse) {
    try {
       const data: IProduct = await req.json()
-      
       const newProduct = await productCreate(data)
-      return NextResponse.json(
-         {
-            message: 'Product fetched successfully',
-            'New Product': newProduct,
-         },
-         { status: 201 },
-      )
+
+      return NextResponse.json(newProduct, { status: 201, statusText: 'Product created successfully' })
    } catch (error) {
       return NextResponse.json(
          {
@@ -88,24 +79,12 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
                { status: 500 },
             )
          } else {
-            return NextResponse.json(
-               {
-                  message: 'Product deleted successfully',
-                  'Deleted Product': result,
-               },
-               { status: 201 },
-            )
+            return NextResponse.json(result, { status: 201, statusText: 'Product deleted successfully' })
          }
       }
       const deletedProducts = await productDeleteAll()
 
-      return NextResponse.json(
-         {
-            message: 'All products deleted successfully',
-            'Deleted Products': deletedProducts,
-         },
-         { status: 201 },
-      )
+      return NextResponse.json(deletedProducts, { status: 201, statusText: 'All products deleted successfully' })
    } catch (error) {
       return NextResponse.json(
          {

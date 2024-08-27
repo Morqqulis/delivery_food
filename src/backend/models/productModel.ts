@@ -1,13 +1,13 @@
 import { IProduct } from '#types/index'
 import { model, models, Schema } from 'mongoose'
-import { v6 as uuidv6 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 
 const productSchema: Schema = new Schema<IProduct>(
    {
       _id: {
          type: String,
          required: true,
-         default: () => uuidv6(),
+         default: () => crypto.randomUUID(),
       },
       name: {
          type: String,
