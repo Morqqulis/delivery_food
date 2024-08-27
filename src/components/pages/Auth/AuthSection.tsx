@@ -7,6 +7,7 @@ import styles from './Auth.module.scss'
 import Btn from '#ui/Btn/Btn'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormValues } from '#types/index'
+import axios from 'axios'
 
 const AuthSection: React.FC = (): JSX.Element => {
    const [title, setTitle] = useState(true)
@@ -30,27 +31,19 @@ const AuthSection: React.FC = (): JSX.Element => {
    }
 
    const { register, handleSubmit, reset } = useForm<FormValues>({
-      resolver: zodResolver(getScheme()),
+      resolver: zodResolver(title ? LoginSchema : RegisterSchema),
       defaultValues: getDefaultValues(),
    })
 
    const submitHandler = async (data: FormValues) => {
       if (title) {
-         const response = await fetch('/api/auth/signin', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-         })
-         const result = await response.json()
-         console.log(result)
+         const response = await axios.post('/api/auth/signin', data)
+
+         console.log(response?.data)
       } else {
-         const response = await fetch('/api/auth/signup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-         })
-         const result = await response.json()
-         console.log(result)
+         const response = await axios.post('/api/auth/signup', data)
+
+         console.log(response?.data)
       }
 
       reset()
@@ -81,8 +74,9 @@ const AuthSection: React.FC = (): JSX.Element => {
          </form>
 
          <span>
-            {title ? 'Don`t have an account?' : 'Already have an account?'}
+            {title ? 'Don`t have an account ? ' : 'Already have an account ? '}
             <button onClick={() => setTitle(!title)} className="font-bold text-blue-800">
+               {' '}
                click here
             </button>
          </span>

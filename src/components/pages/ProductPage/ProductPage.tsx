@@ -25,6 +25,8 @@ interface IProductPage {
    id: string
 }
 
+
+
 const ProductPage: React.FC<IProductPage> = ({ id }): JSX.Element => {
    const [product, setProduct] = useState<any>()
    const [count, setCount] = useState(1)

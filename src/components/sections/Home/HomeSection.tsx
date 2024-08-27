@@ -1,21 +1,16 @@
-'use client'
-import { productGetAll } from '#backend/actions/productActions'
-import { useEffect, useState } from 'react'
+import axios from 'axios'
 import ProductsSection from './ProductsSection'
 
-const HomeSection: React.FC = (): JSX.Element => {
-   const [data, setData] = useState<any>([])
+export const revalidate = 0
 
-   useEffect(() => {
-      ;(async () => {
-         const all = await productGetAll()
-         setData(all)
-      })()
-   }, [])
+const HomeSection: React.FC = async (): Promise<JSX.Element> => {
+   const result = await axios.get('http://localhost:3000/api/products')
+   const serialisedResult = JSON.parse(JSON.stringify(await result.data))
+
    return (
       <div className="container flex flex-col gap-10">
-         <ProductsSection title={'New Products'} products={data} />
-         <ProductsSection title={'All Products'} products={data} />
+         <ProductsSection title={'New Products'} products={serialisedResult} />
+         <ProductsSection title={'All Products'} products={serialisedResult} />
       </div>
    )
 }
