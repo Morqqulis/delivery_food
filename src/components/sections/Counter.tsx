@@ -1,4 +1,5 @@
-import { basketCreateOrUpdate } from '#backend/actions/basketActions'
+'use client'
+import { userAddToBasket } from '#backend/actions/userActions'
 import Btn from '#ui/Btn/Btn'
 
 interface CounterProps {
@@ -11,15 +12,9 @@ interface CounterProps {
 
 const Counter: React.FC<CounterProps> = ({ count, setCount, text, id, className }): JSX.Element => {
    const addToBasket = async () => {
-      await basketCreateOrUpdate({
-         userId: '66cc1dd356e909720e7b292d',
-         productId: id,
-         quantity: count,
-      })
-
+      await userAddToBasket('66cdd4c19990206c58574b69', id, count)
       setCount(1)
    }
-
    return (
       <div className={`${className} flex items-center justify-between gap-2`}>
          <div className="flex gap-2 text-xl">

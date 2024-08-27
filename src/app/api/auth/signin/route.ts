@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from '#backend/DB'
 import userModel from '#backend/models/userModel'
-import { compare } from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
    try {
@@ -12,7 +11,7 @@ export async function POST(request: NextRequest) {
       const existingUser = await userModel.findOne({ email })
 
       if (existingUser) {
-         const isValid = await compare(password, existingUser.password)
+         const isValid = password === existingUser.password
          if (isValid) {
             return NextResponse.json({ message: 'Login successful' }, { status: 200 })
          } else {

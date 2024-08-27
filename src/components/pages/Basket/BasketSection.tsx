@@ -1,5 +1,5 @@
 'use client'
-import { basketDeleteProduct, basketGetUserId } from '#backend/actions/basketActions'
+import { userDeleteBasketItem, userGetBasket } from '#backend/actions/userActions'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '#ui/table'
 import { useEffect, useState } from 'react'
 
@@ -8,23 +8,20 @@ const BasketSection: React.FC = (): JSX.Element => {
 
    useEffect(() => {
       ;(async () => {
-         const basketData = await basketGetUserId('66cc1dd356e909720e7b292d')
-         setBasket(basketData)
+         const user = await userGetBasket('66cdd4c19990206c58574b69')
+         setBasket(user?.basket)
       })()
    }, [])
 
    const calculateTotal = () => {
       return basket
-         ? basket.products
+         ? basket
               .reduce((total: number, product: any) => total + product.productId.price * product.quantity, 0)
               .toFixed(2)
          : 0
    }
    const deleteBasket = async (id: string) => {
-      await basketDeleteProduct({
-         userId: '66cc1dd356e909720e7b292d',
-         productId: id,
-      })
+      await userDeleteBasketItem('66cdd4c19990206c58574b69', id)
    }
 
    return (
@@ -43,7 +40,7 @@ const BasketSection: React.FC = (): JSX.Element => {
          </TableHeader>
          {basket && (
             <TableBody>
-               {basket.products.map((product: any) => (
+               {basket.map((product: any) => (
                   <TableRow key={product.productId._id}>
                      <TableCell className="font-medium">{`${product.productId._id.slice(0, 2)}***${product.productId._id.slice(-4)}`}</TableCell>
                      <TableCell>{product.productId.name}</TableCell>
@@ -54,7 +51,9 @@ const BasketSection: React.FC = (): JSX.Element => {
                         ${(product.quantity * product.productId.price).toFixed(2)}
                      </TableCell>
                      <TableCell>
-                        <p className='cursor-pointer' onClick={() => deleteBasket(product.productId._id)}>Delete</p>
+                        <p className="cursor-pointer" onClick={() => deleteBasket(product.productId._id)}>
+                           Delete
+                        </p>
                      </TableCell>
                   </TableRow>
                ))}

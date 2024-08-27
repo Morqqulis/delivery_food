@@ -6,14 +6,15 @@ import Link from 'next/link'
 import styles from './Header.module.scss'
 import HeaderSearch from './HeaderSearch'
 import { useEffect, useState } from 'react'
-import { basketGetUserId } from '#backend/actions/basketActions'
+import { userGetBasket } from '#backend/actions/userActions'
 
 const Header = () => {
    const [basket, setBasket] = useState([])
+
    useEffect(() => {
       ;(async () => {
-         const basketData: any = await basketGetUserId('66cc1dd356e909720e7b292d')
-         setBasket(basketData?.products)
+         const user: any = await userGetBasket('66cdd4c19990206c58574b69')
+         setBasket(user?.basket)
       })()
    }, [])
 
@@ -25,7 +26,7 @@ const Header = () => {
                <HeaderSearch />
                <Btn
                   className={`px-11 py-2`}
-                  text={`Orders (${basket.length})`}
+                  text={`Orders (${basket?.length || 0})`}
                   type={'button'}
                   ariaLabel={'Orders Btn'}
                   href="/basket"
