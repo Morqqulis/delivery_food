@@ -24,7 +24,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
             <p className="text-center">{product.description}</p>
             <p className="text-3xl font-bold text-[#82F3FF]">$ {product.price}</p>
          </Link>
-         <Counter count={count} setCount={setCount} text="ADD" id={product._id} className="w-[80%]" />
+         <Counter count={count} setCount={setCount} text="ADD" id={product._id.toString()} className="w-[80%]" />
          <Heart
             className={`cursor-pointer ${like ? 'text-red-500' : 'text-white'} absolute right-2 top-2`}
             onClick={() => setLike(!like)}

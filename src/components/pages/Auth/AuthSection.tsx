@@ -13,7 +13,6 @@ const AuthSection: React.FC = (): JSX.Element => {
 
    const getScheme = () => (title ? LoginSchema : RegisterSchema)
 
-
    const getDefaultValues = () => {
       if (title) {
          return {
@@ -35,7 +34,7 @@ const AuthSection: React.FC = (): JSX.Element => {
       defaultValues: getDefaultValues(),
    })
 
-   const submitHandler = async (data: FormValues) => {      
+   const submitHandler = async (data: FormValues) => {
       if (title) {
          const response = await fetch('/api/auth/signin', {
             method: 'POST',

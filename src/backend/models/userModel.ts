@@ -1,12 +1,11 @@
 import { IUser } from '#types/index'
-import { Schema, model, models } from 'mongoose'
-import { v6 as uuidv6 } from 'uuid'
+import { model, models, Schema, Types } from 'mongoose'
 const userSchema = new Schema<IUser>(
    {
       _id: {
          type: String,
          required: true,
-         default: () => uuidv6(),
+         default: () => new Types.ObjectId().toString(),
       },
       name: {
          type: String,
@@ -16,6 +15,18 @@ const userSchema = new Schema<IUser>(
          type: String,
          required: true,
       },
+
+      basket: {
+         type: [
+            {
+               productId: { type: String, required: true },
+               quantity: { type: Number, required: true, default: 1 },
+            },
+         ],
+         default: [],
+         required: true,
+      },
+
       email: {
          type: String,
          required: true,

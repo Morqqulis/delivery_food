@@ -8,7 +8,7 @@ const ProductsSection: React.FC<IProductsSection> = ({ title, products }): JSX.E
          <h3 className="" >{title}</h3>
          <div className="flex w-full gap-7 overflow-x-auto">
             {products.map((product) => (
-               <ProductCard key={product._id} product={product} />
+               <ProductCard key={product._id.toString()} product={product} />
             ))}
          </div>
       </div>

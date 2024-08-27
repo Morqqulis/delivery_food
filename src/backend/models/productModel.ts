@@ -1,5 +1,5 @@
 import { IProduct } from '#types/index'
-import { model, models, Schema } from 'mongoose'
+import { model, models, Schema, Types } from 'mongoose'
 import { v6 as uuidv6 } from 'uuid'
 
 const productSchema: Schema = new Schema<IProduct>(
@@ -7,7 +7,7 @@ const productSchema: Schema = new Schema<IProduct>(
       _id: {
          type: String,
          required: true,
-         default: () => uuidv6(),
+         default: () => new Types.ObjectId(),
       },
       name: {
          type: String,
@@ -15,6 +15,16 @@ const productSchema: Schema = new Schema<IProduct>(
       },
       description: {
          type: String,
+         required: true,
+      },
+      basket: {
+         type: [
+            {
+               productId: { type: String, required: true },
+               quantity: { type: Number, required: true, default: 1 },
+            },
+         ],
+         default: [],
          required: true,
       },
       price: {

@@ -18,9 +18,6 @@ import {
 } from '#backend/actions/productActions'
 import { userCreate, userDeleteById, userGetAll, userGetById, userUpdateById } from '#backend/actions/userActions'
 import Counter from '#sections/Counter'
-import { IProduct } from '#types/index'
-import Btn from '#ui/Btn/Btn'
-import axios from 'axios'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 

@@ -15,7 +15,6 @@ export interface IDefaultProvider extends IChildren {
    full: boolean
 }
 
-
 export interface IClassName {
    className?: string
 }
@@ -30,7 +29,7 @@ export interface IBtn extends IClassName {
 }
 
 export interface IUser {
-   _id: string
+   _id: object
    name: string
    email: string
    password: string
@@ -38,10 +37,11 @@ export interface IUser {
    role?: string
    image?: string
    createdAt?: Date
+   basket: []
 }
 
 export interface IProduct {
-   _id: string
+   _id: object
    name: string
    description: string
    price: number
@@ -49,6 +49,7 @@ export interface IProduct {
    ingredients: string[] | string
    image?: string
    createdAt?: Date
+   basket: []
 }
 
 export interface FormValues {
