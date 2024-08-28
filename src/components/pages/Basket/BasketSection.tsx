@@ -9,6 +9,7 @@ const BasketSection: React.FC = (): JSX.Element => {
    useEffect(() => {
       ;(async () => {
          const user = await userGetBasket('66cdd4c19990206c58574b69')
+         // @ts-ignore
          setBasket(user?.basket)
       })()
    }, [])

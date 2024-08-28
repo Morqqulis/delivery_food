@@ -7,7 +7,7 @@ export const experimental_ppr = true
 const Home = async () => {
    return (
       <DefaultLayout full>
-         <main>
+         <main className={`h-full`}>
             <Suspense
                fallback={
                   <div className={`grid h-full place-items-center text-center text-4xl text-tomato-300`}>
