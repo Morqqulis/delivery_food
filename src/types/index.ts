@@ -49,12 +49,27 @@ export interface IProduct {
    ingredients: string[] | string
    image?: string
    createdAt?: Date
-   basket: []
 }
 
-export interface FormValues {
+export interface IFormValues {
    email: string
    password: string
    name?: string
    gender?: string
+}
+
+export interface IStoreFormValues {
+   name: string
+   secondName: string
+   address: string
+   phone: string
+   email: string
+   image: string
+}
+export interface IAddProduct {
+   name: string
+   description: string
+   price: number
+   category: string
+   image?: any
 }

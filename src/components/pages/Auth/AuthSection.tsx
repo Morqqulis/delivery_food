@@ -1,41 +1,24 @@
 'use client'
 
 import { LoginSchema, RegisterSchema } from '#schemes/scheme'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styles from './Auth.module.scss'
 import Btn from '#ui/Btn/Btn'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormValues } from '#types/index'
+import { IFormValues } from '#types/index'
 import axios from 'axios'
+import { LoginDefault, RegisterDefault } from '#settings/defaultValues'
 
 const AuthSection: React.FC = (): JSX.Element => {
    const [title, setTitle] = useState(true)
 
-   const getScheme = () => (title ? LoginSchema : RegisterSchema)
-
-   const getDefaultValues = () => {
-      if (title) {
-         return {
-            email: '',
-            password: '',
-         }
-      } else {
-         return {
-            email: '',
-            password: '',
-            name: '',
-            gender: 'male',
-         }
-      }
-   }
-
-   const { register, handleSubmit, reset } = useForm<FormValues>({
+   const { register, handleSubmit, reset } = useForm<IFormValues>({
       resolver: zodResolver(title ? LoginSchema : RegisterSchema),
-      defaultValues: getDefaultValues(),
+      defaultValues: title ? LoginDefault : RegisterDefault,
    })
 
-   const submitHandler = async (data: FormValues) => {
+   const submitHandler = async (data: IFormValues) => {
       if (title) {
          const response = await axios.post('/api/auth/signin', data)
 

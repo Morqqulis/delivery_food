@@ -1,5 +1,4 @@
 'use client'
-import { basketCreateOrUpdate } from '#backend/actions/basketActions'
 import Counter from '#sections/Counter'
 import { IProduct } from '#types/index'
 import Btn from '#ui/Btn/Btn'

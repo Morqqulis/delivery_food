@@ -1,6 +1,5 @@
 import { IProduct } from '#types/index'
 import { model, models, Schema, Types } from 'mongoose'
-import { v6 as uuidv6 } from 'uuid'
 
 const productSchema: Schema = new Schema<IProduct>(
    {
