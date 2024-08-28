@@ -1,3 +1,5 @@
+import { Types } from 'mongoose'
+
 export interface IChildren {
    children: React.ReactNode
 }
@@ -29,7 +31,7 @@ export interface IBtn extends IClassName {
 }
 
 export interface IUser {
-   _id: object
+   _id: Types.ObjectId
    name: string
    email: string
    password: string
@@ -39,14 +41,28 @@ export interface IUser {
    createdAt?: Date
    basket: []
 }
+export interface ISeller {
+   _id: Types.ObjectId
+   name: string
+   secondName: string
+   address: string
+   phone: string
+   email: string
+   password: string
+   image?: string
+   createdAt?: Date
+   products?: Types.ObjectId[]
+   order?: Types.ObjectId[]
+   orderHistory?: Types.ObjectId[]
+}
 
 export interface IProduct {
-   _id: object
+   _id: Types.ObjectId
    name: string
    description: string
    price: number
    category: string
-   ingredients: string[] | string
+   sellerId: Types.ObjectId
    image?: string
    createdAt?: Date
 }
@@ -72,4 +88,40 @@ export interface IAddProduct {
    price: number
    category: string
    image?: any
+}
+export interface IOrder {
+   _id?: Types.ObjectId
+   payment: string
+   status: string
+   customer: Types.ObjectId
+   customerNote?: string
+   products: {
+      productId: Types.ObjectId
+      quantity: number
+   }[]
+   createdAt?: Date
+}
+
+export interface IBasket {
+   productId: {
+      category: string
+      _id: string
+      createdAt: Date
+      description: string
+      image: string
+      name: string
+      price: number
+      sellerId: string
+      updatedAt: Date
+      __v: number
+   }
+   _id: string
+   quantity: number
+}
+export interface IGroupedProductsOrders {
+   sellerId: string
+   products: {
+      productId: string
+      quantity: number
+   }[]
 }

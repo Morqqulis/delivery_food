@@ -44,13 +44,13 @@ export const RegisterSchema = z.object({
    }),
 })
 
-export const StoreSchema = z.object({
-   name: z.string().min(2, 'Name must be at least 2 characters'),
-   secondName: z.string().min(2, 'Second name must be at least 2 characters').optional(),
-   address: z.string().min(5, 'Address must be at least 5 characters'),
-   phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number format'),
-   email: z.string().email('Please enter a valid email address'),
-   image: z.any().optional(),
+export const StoreEditSchema = z.object({
+   name: z.string(),
+   secondName: z.string(),
+   address: z.string(),
+   phone: z.string(),
+   email: z.string(),
+   image: z.any(),
 })
 
 export const ProductSchema = z.object({

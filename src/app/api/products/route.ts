@@ -9,23 +9,23 @@ import {
 import { IProduct } from '#types/index'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET(req: NextRequest, res: NextResponse) {
-   try {
-      const result: IProduct[] = await productGetAll()
+// export async function GET(req: NextRequest, res: NextResponse) {
+//    try {
+//       const result: IProduct[] = await productGetAll()
 
-      return NextResponse.json(result, {
-         statusText: 'Products fetched successfully',
-         status: 201,
-      })
-   } catch (error) {
-      return NextResponse.json(
-         {
-            error: 'Something went wrong on the server while fetching all products: \n' + error,
-         },
-         { status: 500 },
-      )
-   }
-}
+//       return NextResponse.json(result, {
+//          statusText: 'Products fetched successfully',
+//          status: 201,
+//       })
+//    } catch (error) {
+//       return NextResponse.json(
+//          {
+//             error: 'Something went wrong on the server while fetching all products: \n' + error,
+//          },
+//          { status: 500 },
+//       )
+//    }
+// }
 
 export async function POST(req: NextRequest, res: NextResponse) {
    try {

@@ -2,23 +2,26 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { StoreSchema } from '#schemes/scheme'
+import { StoreEditSchema } from '#schemes/scheme'
 import Btn from '#ui/Btn/Btn'
 import { StoreValues } from '#settings/defaultValues'
 import { IStoreFormValues } from '#types/index'
+import { sellerUpdate } from '#backend/actions/sellerActions'
 
 const SellerHome: React.FC = () => {
-   const { register, handleSubmit } = useForm<IStoreFormValues>({
-      resolver: zodResolver(StoreSchema),
+   const { register, handleSubmit, reset } = useForm<IStoreFormValues>({
+      resolver: zodResolver(StoreEditSchema),
       defaultValues: StoreValues,
    })
 
-   const addStoreInformation = (data: IStoreFormValues) => {
-      console.log(data)
+   const addStoreInformation = async (data: IStoreFormValues) => {
+      const newData = Object.fromEntries(Object.entries(data).filter(([_, value]) => value !== '' && value !== false))
+      await sellerUpdate('66cf9ed2e996c60736959eda', newData)
+      reset()
    }
 
    return (
-      <div className="flex items-center justify-center p-4 w-full h-screen">
+      <div className="flex h-screen w-full items-center justify-center p-4">
          <div className="mx-auto flex w-[80%] flex-col rounded-lg bg-[#16213e] p-6 shadow-lg">
             <h2 className="mb-6 text-2xl font-bold text-white">Edit Store Information</h2>
             <form onSubmit={handleSubmit(addStoreInformation)} className="flex flex-wrap justify-between">
@@ -75,7 +78,7 @@ const SellerHome: React.FC = () => {
                <div className="mb-4 w-[45%]">
                   <label className="mb-2 block text-sm font-medium text-gray-300">Photo</label>
                   <input
-                     {...register('image')}
+                     // {...register('image')}
                      type="file"
                      className="w-full rounded border border-gray-600 bg-[#0f3460] p-2 text-gray-300 focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400"
                   />
@@ -83,6 +86,7 @@ const SellerHome: React.FC = () => {
 
                <Btn
                   text={'Submit'}
+                  type="submit"
                   className="mt-5 w-full rounded bg-blue-500 px-4 py-2 font-semibold text-white transition duration-300 ease-in-out hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   ariaLabel="submit button"
                />

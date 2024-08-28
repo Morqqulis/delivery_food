@@ -7,6 +7,9 @@ import { ProductSchema } from '#schemes/scheme'
 import { IAddProduct } from '#types/index'
 import { AddProductDefault } from '#settings/defaultValues'
 import Btn from '#ui/Btn/Btn'
+import { Types } from 'mongoose'
+import { productCreate } from '#backend/actions/productActions'
+import { sellerCreate } from '#backend/actions/sellerActions'
 
 const AddProduct: React.FC = () => {
    const {
@@ -14,13 +17,28 @@ const AddProduct: React.FC = () => {
       handleSubmit,
       setValue,
       formState: { errors },
+      reset,
    } = useForm<IAddProduct>({
       resolver: zodResolver(ProductSchema),
       defaultValues: AddProductDefault,
    })
 
    const onSubmit = (data: IAddProduct) => {
-      console.log('Product Data:', data)
+      const { name, description, price, category } = data
+
+      ;(async () => {
+         const product = {
+            _id: new Types.ObjectId(),
+            name: name,
+            description: description,
+            price: price,
+            category: category,
+            image: './qazan.svg',
+            sellerId: new Types.ObjectId('66cf9ed2e996c60736959eda'),
+         }
+         await productCreate(product)
+         reset()
+      })()
    }
 
    return (

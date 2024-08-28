@@ -29,7 +29,7 @@ const Header = () => {
                   text={`Orders (${basket?.length || 0})`}
                   type={'button'}
                   ariaLabel={'Orders Btn'}
-                  href="/basket"
+                  href="/user/basket"
                />
                <Link className={`group p-0`} href={'/auth'}>
                   <LogIn className={`duration-300 group-hover:text-mini-100`} />

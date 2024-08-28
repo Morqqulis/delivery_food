@@ -68,7 +68,7 @@ export const userAddToBasket = async (userId: string, productId: string, quantit
       const user = await userModel.findOne({ _id: userId })
 
       if (user) {
-         const productIndex = user.basket.findIndex((p: { productId: string }) => p.productId === productId)
+         const productIndex = user.basket.findIndex((p: { productId: string }) => p.productId.toString() === productId)
 
          if (productIndex !== -1) {
             user.basket[productIndex].quantity += quantity
@@ -108,6 +108,7 @@ export const userDeleteBasketItem = async (userId: string, productId: string) =>
       if (user) {
          user.basket = user.basket.filter((item: any) => item.productId.toString() !== productId)
          await user.save()
+         
       }
    } catch (err: Error | any) {
       throw new Error(err)
@@ -135,5 +136,3 @@ export const startChangeStreamListener = async (userId: string) => {
       console.log('Change stream bitdi.')
    })
 }
-
-

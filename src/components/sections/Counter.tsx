@@ -12,7 +12,7 @@ interface CounterProps {
 
 const Counter: React.FC<CounterProps> = ({ count, setCount, text, id, className }): JSX.Element => {
    const addToBasket = async () => {
-      await userAddToBasket('66cdd4c19990206c58574b69', id, count)
+      await userAddToBasket('66cf65fb10760b3633230284', id, count)
       setCount(1)
    }
    return (

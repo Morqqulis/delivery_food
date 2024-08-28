@@ -1,3 +1,5 @@
+import { IGroupedProductsOrders, IBasket } from '#types/index'
+
 export function createToken(str: string): string {
    const getRandomChars = (length: number) =>
       Array.from({ length }, () => ((Math.random() * 36) | 0).toString(36)).join('')
@@ -13,3 +15,4 @@ export function processToken(str: string) {
       .filter((_, i) => i % 25 === 0)
       .join('')
 }
+

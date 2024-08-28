@@ -1,12 +1,12 @@
 import { IProduct } from '#types/index'
-import { model, models, Schema, Types } from 'mongoose'
+import { model, models, Schema } from 'mongoose'
+import seller from '#backend/models/sellerModel'
 
 const productSchema: Schema = new Schema<IProduct>(
    {
       _id: {
-         type: String,
+         type: Schema.Types.ObjectId,
          required: true,
-         default: () => new Types.ObjectId(),
       },
       name: {
          type: String,
@@ -14,16 +14,6 @@ const productSchema: Schema = new Schema<IProduct>(
       },
       description: {
          type: String,
-         required: true,
-      },
-      basket: {
-         type: [
-            {
-               productId: { type: String, required: true },
-               quantity: { type: Number, required: true, default: 1 },
-            },
-         ],
-         default: [],
          required: true,
       },
       price: {
@@ -37,6 +27,12 @@ const productSchema: Schema = new Schema<IProduct>(
       image: {
          type: String,
          required: false,
+      },
+
+      sellerId: {
+         type: Schema.Types.ObjectId,
+         ref: 'seller',
+         required: true,
       },
    },
    {

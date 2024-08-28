@@ -1,25 +1,33 @@
-import { IUser } from '#types/index'
+import { IOrder } from '#types/index'
 import { model, models, Schema, Types } from 'mongoose'
-import product from '#backend/models/productModel'
-console.log(models);
+import product from './productModel'
+import user from './userModel'
 
-const userSchema = new Schema<IUser>(
+const orderSchema = new Schema<IOrder>(
    {
       _id: {
          type: Schema.Types.ObjectId,
          required: true,
          default: () => new Types.ObjectId(),
       },
-      name: {
+      payment: {
          type: String,
          required: true,
       },
-      password: {
+      status: {
          type: String,
          required: true,
       },
-
-      basket: [
+      customer: {
+         type: Schema.Types.ObjectId,
+         ref: 'user',
+         required: true,
+      },
+      customerNote: {
+         type: String,
+         required: false,
+      },
+      products: [
          {
             productId: {
                type: Schema.Types.ObjectId,
@@ -33,29 +41,10 @@ const userSchema = new Schema<IUser>(
             },
          },
       ],
-
-      email: {
-         type: String,
-         required: true,
-      },
-      image: {
-         type: String,
-         required: false,
-         default: null,
-      },
-      gender: {
-         type: String,
-         required: false,
-         default: 'male',
-      },
-      role: {
-         type: String,
-         required: false,
-         default: 'user',
-      },
       createdAt: {
          type: Date,
-         default: Date.now,
+         required: true,
+         default: new Date(),
       },
    },
    {
@@ -63,6 +52,4 @@ const userSchema = new Schema<IUser>(
    },
 )
 
-const userModel = models.user || model('user', userSchema)
-
-export default userModel
+export default models.order || model('order', orderSchema)
