@@ -3,6 +3,7 @@ import { NextAuthOptions, User } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import Google from 'next-auth/providers/google'
 import bcryptjs from 'bcryptjs'
+import { IUser } from '#types/index'
 export const authConfig: NextAuthOptions = {
    providers: [
       Google({
@@ -11,6 +12,12 @@ export const authConfig: NextAuthOptions = {
       }),
       Credentials({
          credentials: {
+            name: {
+               label: 'Name',
+               type: 'text',
+               placeholder: 'Enter your name',
+               required: true,
+            },
             email: {
                label: 'Email',
                type: 'email',
@@ -23,6 +30,12 @@ export const authConfig: NextAuthOptions = {
                placeholder: 'Enter your password',
                required: true,
             },
+            gender: {
+               label: 'Gender',
+               type: 'text',
+               placeholder: 'Enter your gender',
+               required: true,
+            },
          },
          authorize: async (credentials) => {
             if (!credentials?.email || !credentials?.password) return null
@@ -31,21 +44,18 @@ export const authConfig: NextAuthOptions = {
 
             const currentUser = users.find((user) => user.email === credentials.email)
 
-            if (!currentUser || currentUser.password !== credentials.password) {
-               return null
-            }
-
-            
+            if (!currentUser || currentUser.password !== credentials.password) return null
 
             return {
                id: currentUser._id,
                name: currentUser.name,
                email: currentUser.email,
-               image: currentUser.image,
                gender: currentUser.gender,
-               
             } as User
          },
       }),
    ],
+   pages: {
+      signIn: '/auth',
+   },
 }

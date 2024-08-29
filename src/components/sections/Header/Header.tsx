@@ -13,7 +13,7 @@ import HeaderUser from './HeaderUser'
 const Header = () => {
    const [basket, setBasket] = useState([])
    const session = useSession()
-   console.log(session)
+
    useEffect(() => {
       ;(async () => {
          const user: any = await userGetBasket('66cdd4c19990206c58574b69')
