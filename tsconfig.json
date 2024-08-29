@@ -36,7 +36,7 @@
          "#av/*": ["./src/styles/av.scss"],
          "#backend/*": ["./src/backend/*"],
          "#schemes/*": ["./src/schemes/*"],
-
+         "#configs/*": ["./src/configs/*"]
       },
       "target": "ES2017"
    },

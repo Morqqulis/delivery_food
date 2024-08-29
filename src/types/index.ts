@@ -125,3 +125,10 @@ export interface IGroupedProductsOrders {
       quantity: number
    }[]
 }
+
+export interface IGoogleResponseUser {
+   email: string
+   image: string
+   name: string
+}
+

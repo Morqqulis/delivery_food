@@ -33,37 +33,44 @@ const AuthSection: React.FC = (): JSX.Element => {
    }
 
    return (
-      <div className="container flex min-h-screen flex-col items-center justify-center gap-4">
-         <h1 className={styles.title}>{title ? 'Login' : 'Register'}</h1>
-         <form className={styles.authForm} onSubmit={handleSubmit(submitHandler)}>
-            <input type="email" placeholder="Enter your email" {...register('email')} />
-            <input type="password" placeholder="Enter your password" {...register('password')} />
+      <section className="py-20">
+         <div className="container">
+            <h1 className={styles.title}>{title ? 'Login' : 'Register'}</h1>
+            <form className={styles.authForm} onSubmit={handleSubmit(submitHandler)}>
+               <input type="email" placeholder="Enter your email" {...register('email')} />
+               <input type="password" placeholder="Enter your password" {...register('password')} />
 
-            {!title && (
-               <>
-                  <input type="text" placeholder="Enter your name" {...register('name')} />
+               {!title && (
+                  <>
+                     <input type="text" placeholder="Enter your name" {...register('name')} />
 
-                  <label htmlFor="gender" className="flex items-center gap-2">
-                     Gender
-                     <select id="gender" {...register('gender')}>
-                        <option value={'male'}>Male</option>
-                        <option value={'female'}>Female</option>
-                     </select>
-                  </label>
-               </>
-            )}
+                     <label className="flex items-center gap-2">
+                        Gender
+                        <select id="gender" {...register('gender')}>
+                           <option value={'male'}>Male</option>
+                           <option value={'female'}>Female</option>
+                        </select>
+                     </label>
+                  </>
+               )}
 
-            <Btn type="submit" className="max-w-[300px]" text={title ? 'Login' : 'Register'} ariaLabel="Auth Btn" />
-         </form>
+               <Btn
+                  type="submit"
+                  className="w-full max-w-[300px]"
+                  text={title ? 'Login' : 'Register'}
+                  ariaLabel="Auth Btn"
+               />
+            </form>
 
-         <span>
-            {title ? 'Don`t have an account ? ' : 'Already have an account ? '}
-            <button onClick={() => setTitle(!title)} className="font-bold text-blue-800">
-               {' '}
-               click here
-            </button>
-         </span>
-      </div>
+            <div className={`${styles.switch}`}>
+               {title ? 'Don`t have an account ? ' : 'Already have an account ? '}
+               <button onClick={() => setTitle(!title)} className="font-bold text-blue-800">
+                  {' '}
+                  click here
+               </button>
+            </div>
+         </div>
+      </section>
    )
 }
 

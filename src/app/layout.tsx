@@ -1,3 +1,4 @@
+import Provider from '#providers/Provider'
 import { primaryFont } from '#settings/fonts'
 import { homeMetadata } from '#settings/metadata'
 import '#styles/index.scss'
@@ -11,8 +12,8 @@ export default function RootLayout({
 }>) {
    return (
       <html className={`h-full`} lang="en">
-         <body className={`bg-dark-400 text-light-300 h-full overflow-x-clip ${primaryFont.className}`}>
-            {children}
+         <body className={`h-full overflow-x-clip bg-dark-400 text-light-300 ${primaryFont.className}`}>
+            <Provider>{children}</Provider>
          </body>
       </html>
    )
