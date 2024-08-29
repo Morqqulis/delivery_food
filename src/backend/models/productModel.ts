@@ -29,7 +29,7 @@ const productSchema: Schema = new Schema<IProduct>(
          required: false,
       },
 
-      sellerId: {
+      seller: {
          type: Schema.Types.ObjectId,
          ref: 'seller',
          required: true,

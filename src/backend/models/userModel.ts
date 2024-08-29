@@ -1,7 +1,7 @@
 import { IUser } from '#types/index'
 import { model, models, Schema, Types } from 'mongoose'
 import product from '#backend/models/productModel'
-console.log(models);
+// console.log(models);
 
 const userSchema = new Schema<IUser>(
    {
@@ -21,7 +21,7 @@ const userSchema = new Schema<IUser>(
 
       basket: [
          {
-            productId: {
+            product: {
                type: Schema.Types.ObjectId,
                ref: 'product',
                required: true,
@@ -45,7 +45,7 @@ const userSchema = new Schema<IUser>(
       },
       gender: {
          type: String,
-         required: false,
+         required: true,
          default: 'male',
       },
       role: {
