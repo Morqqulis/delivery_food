@@ -12,7 +12,7 @@ export default function RootLayout({
 }>) {
    return (
       <html className={`h-full`} lang="en">
-         <body className={`h-full overflow-x-clip bg-dark-400 text-light-300 ${primaryFont.className}`}>
+         <body className={`h-full overflow-x-clip bg-dark-400 leading-[1.4] text-light-300 ${primaryFont.className}`}>
             <Provider>{children}</Provider>
          </body>
       </html>

@@ -10,9 +10,9 @@ const UserMainSection: React.FC = async (): Promise<JSX.Element> => {
    return (
       <section className={`py-20`}>
          <div className="container">
-            <h1 className={`mb-20 text-balance text-center text-5xl font-bold leading-snug`}>
+            <h1 className={`mb-20 text-balance text-center text-3xl font-bold leading-relaxed`}>
                Profile of <br />
-               <span className={`text-mini-100`}>{session?.user?.name}</span>
+               <span className={`text-5xl text-mini-100`}>{session?.user?.name}</span>
             </h1>
             {session?.user?.image && (
                <Image
