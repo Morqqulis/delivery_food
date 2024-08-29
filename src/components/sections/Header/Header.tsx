@@ -13,7 +13,7 @@ const Header = () => {
 
    useEffect(() => {
       ;(async () => {
-         const user: any = await userGetBasket('66cdd4c19990206c58574b69')
+         const user = await userGetBasket('66cf65fb10760b3633230284')
          setBasket(user?.basket)
       })()
    }, [])

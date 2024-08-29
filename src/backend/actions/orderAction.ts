@@ -2,23 +2,30 @@
 
 import { connectDB } from '#backend/DB'
 import orderModel from '#backend/models/orderModel'
+import productModel from '#backend/models/productModel'
 import sellerModel from '#backend/models/sellerModel'
-import { IOrder } from '#types/index'
+import userModel from '#backend/models/userModel'
 import mongoose, { Types } from 'mongoose'
 
-export const orderCreate = async (data: IOrder, basket: any) => {
-   if (!data) return
+export const orderCreate = async (basket: any, customer: string) => {
+   if (!basket || !customer) return
    try {
       await connectDB()
-      const order = await orderModel.create(data)
-      // basket.forEach(async (item: any) => {
-      //    const { productId, quantity } = item
 
-      //    await sellerModel.updateOne(
-      //       { _id: productId.sellerId },
-      //       { $push: { order: { productId: productId._id, quantity } } },
-      //    )
-      // })
+      const orderData = {
+         payment: 'cash',
+         status: 'pending',
+         customer: new Types.ObjectId(customer),
+         customerNote: 'Sifarişləri yaxşı paketləyin',
+         products: basket.map((product: any) => ({
+            product: product.product._id,
+            quantity: product.quantity,
+         })),
+      }
+
+      const order = await orderModel.create(orderData)
+
+      await userModel.updateOne({ _id: new Types.ObjectId(customer) }, { $set: { basket: [] } })
 
       const sellerIds = Array.from(
          new Set(
@@ -39,7 +46,7 @@ export const orderCreate = async (data: IOrder, basket: any) => {
          }),
       )
 
-      return order
+      return JSON.parse(JSON.stringify(order))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -56,67 +63,71 @@ export const orderGet = async (id: string) => {
    }
 }
 
-// Məhsulları satıcıya görə qruplaşdırır
-const groupProductsBySeller = (basket: { product: { seller: string; _id: string }; quantity: number }[]) => {
-   return basket.reduce(
-      (acc, item) => {
-         const sellerId = item.product.seller
+export const orderDelete = async (orderId: string) => {
+   if (!orderId) return
 
-         if (!acc[sellerId]) {
-            acc[sellerId] = []
-         }
-
-         acc[sellerId].push({
-            productId: item.product._id,
-            quantity: item.quantity,
-         })
-
-         return acc
-      },
-      {} as Record<string, { productId: string; quantity: number }[]>,
-   )
-}
-
-export const getProductsBySellerFromOrder = async (orderId: string, sellerId: string) => {
    try {
       await connectDB()
-      const order = await orderModel.aggregate([
-         { $match: { _id: new Types.ObjectId(orderId), status: 'pending' } }, // Order ID ilə uyğun sifarişi tapırıq
-         { $unwind: '$products' }, // Products arrayını ayrılmamış obyektlərə çeviririk
-         {
-            $lookup: {
-               from: 'products', // products kolleksiyasını qoşuruq
-               localField: 'products.product',
-               foreignField: '_id',
-               as: 'productDetails',
-            },
-         },
-         { $unwind: '$productDetails' }, // ProductDetails arrayını ayrılmamış obyektlərə çeviririk
-         {
-            $match: {
-               'productDetails.seller': new Types.ObjectId(sellerId), // Seller ID-ə uyğun məhsulları filter edirik
-            },
-         },
-         {
-            $project: {
-               _id: 1,
-               payment: 1,
-               status: 1,
-               customerNote: 1,
-               createdAt: 1,
-               'productDetails._id': 1,
-               'productDetails.name': 1,
-               'productDetails.price': 1,
-               'productDetails.category': 1,
-               'productDetails.description': 1,
-               'productDetails.image': 1,
-               quantity: '$products.quantity',
-            },
-         },
-      ])
 
-      return JSON.parse(JSON.stringify(order))
+      const session = await mongoose.startSession()
+      session.startTransaction()
+
+      try {
+         const order = await orderModel
+            .findById(orderId)
+            .populate({
+               path: 'products.product',
+               select: 'seller',
+            })
+            .session(session)
+
+         if (!order) throw new Error('Order not found')
+
+         const sellerProductMap: Record<string, Types.ObjectId[]> = {}
+
+         for (const item of order.products) {
+            const product = item.product
+            if (product) {
+               const sellerId = product.seller.toString()
+               if (!sellerProductMap[sellerId]) {
+                  sellerProductMap[sellerId] = []
+               }
+               sellerProductMap[sellerId].push(new Types.ObjectId(orderId))
+            }
+         }
+
+         await Promise.all(
+            Object.entries(sellerProductMap).map(async ([sellerId, orderIds]) => {
+               await sellerModel.updateOne(
+                  { _id: new Types.ObjectId(sellerId) },
+                  { $pullAll: { order: orderIds } },
+                  { session },
+               )
+            }),
+         )
+
+         await orderModel.deleteOne({ _id: new Types.ObjectId(orderId) }).session(session)
+
+         await session.commitTransaction()
+         session.endSession()
+      } catch (error) {
+         await session.abortTransaction()
+         session.endSession()
+         throw new Error('Error deleting order: ' + error)
+      }
    } catch (error: any) {
-      throw new Error('Error retrieving products by seller from order: ' + error.message)
+      throw new Error('Error connecting to database: ' + error.message)
+   }
+}
+
+export const orderUpdateStatus = async (id: string, status: string) => {
+   if (!id) return
+   
+   try {
+      await connectDB()
+      const order = await orderModel.updateOne({ _id: id }, { status: status })
+      return "Updated"
+   } catch (err: Error | any) {
+      throw new Error(err)
    }
 }

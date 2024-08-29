@@ -98,6 +98,15 @@ export interface IOrder {
    createdAt?: Date
 }
 
+export interface IOrderHistory {
+   _id: string
+   products: { product: IProduct; quantity: number }[]
+   createdAt: string
+   customerNote?: string
+   payment: string
+   status: string
+}
+
 export interface IBasket {
    productId: {
       category: string
@@ -113,11 +122,4 @@ export interface IBasket {
    }
    _id: string
    quantity: number
-}
-export interface IGroupedProductsOrders {
-   sellerId: string
-   products: {
-      productId: string
-      quantity: number
-   }[]
 }
