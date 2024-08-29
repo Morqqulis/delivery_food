@@ -2,12 +2,14 @@
 
 import { connectDB } from '#backend/DB'
 import userModel from '#backend/models/userModel'
+import { IUser } from '#types/index'
 import { Types } from 'mongoose'
+
 export const userGetAll = async () => {
    try {
       await connectDB()
-
-      return await userModel.find().lean()
+      const users = await userModel.find().lean()
+      return JSON.parse(JSON.stringify(users))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -17,8 +19,8 @@ export const userGetById = async (id: string) => {
    if (!id) return
    try {
       await connectDB()
-
-      return await userModel.findOne({ _id: id }).lean()
+      const user = await userModel.findOne({ _id: id })
+      return JSON.parse(JSON.stringify(user))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -28,8 +30,8 @@ export const userDeleteById = async (id: string) => {
    if (!id) return
    try {
       await connectDB()
-
-      return await userModel.deleteOne({ _id: id }).lean()
+      await userModel.deleteOne({ _id: id })
+      return 'Deleted successfully'
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -40,27 +42,27 @@ export const userUpdateById = async (id: string, data: any) => {
 
    try {
       await connectDB()
-
-      return await userModel.updateOne({ _id: id }, data).lean()
+      await userModel.updateOne({ _id: id }, data)
+      return 'Updated successfully'
    } catch (err: Error | any) {
       throw new Error(err)
    }
 }
 
-export const userCreate = async (data: any) => {
+export const userCreate = async (data: IUser) => {
    if (!data) return
 
    try {
       await connectDB()
-
-      return await userModel.create(data)
+      await userModel.create(data)
+      return 'User created successfully'
    } catch (err: Error | any) {
       throw new Error(err)
    }
 }
 
-export const userAddToBasket = async (userId: string, productId: string, quantity: number) => {
-   if (!userId || !productId || !quantity) return
+export const userAddToBasket = async (userId: string, product: string, quantity: number) => {
+   if (!userId || !product || !quantity) return
 
    try {
       await connectDB()
@@ -68,15 +70,17 @@ export const userAddToBasket = async (userId: string, productId: string, quantit
       const user = await userModel.findOne({ _id: userId })
 
       if (user) {
-         const productIndex = user.basket.findIndex((p: { productId: string }) => p.productId.toString() === productId)
+         const productIndex = user.basket.findIndex((p: { product: string }) => p.product.toString() === product)
 
          if (productIndex !== -1) {
             user.basket[productIndex].quantity += quantity
          } else {
-            user.basket.push({ productId: productId, quantity: quantity })
+            user.basket.push({ product: product, quantity: quantity })
          }
 
          await user.save()
+
+         return 'Added to basket successfully'
       }
    } catch (err: Error | any) {
       throw new Error(err)
@@ -87,52 +91,50 @@ export const userGetBasket = async (userId: string) => {
    if (!userId) return
    try {
       await connectDB()
+      const user = await userModel.findOne({ _id: userId }).populate({
+         path: 'basket.product',
+         model: 'product',
+      })
 
-      return await userModel
-         .findOne({ _id: userId })
-         .populate({
-            path: 'basket.productId',
-            model: 'product',
-         })
-         .lean()
+      return JSON.parse(JSON.stringify(user))
    } catch (err: Error | any) {
       throw new Error(err)
    }
 }
 
-export const userDeleteBasketItem = async (userId: string, productId: string) => {
-   if (!userId || !productId) return
+export const userDeleteBasketItem = async (userId: string, product: string) => {
+   if (!userId || !product) return
    try {
       await connectDB()
       const user = await userModel.findOne({ _id: userId })
       if (user) {
-         user.basket = user.basket.filter((item: any) => item.productId.toString() !== productId)
+         user.basket = user.basket.filter((item: any) => item.product.toString() !== product)
          await user.save()
-         
+         return 'Deleted successfully'
       }
    } catch (err: Error | any) {
       throw new Error(err)
    }
 }
 
-export const startChangeStreamListener = async (userId: string) => {
-   await connectDB()
-   const changeStream = userModel.watch([
-      {
-         $match: {
-            'documentKey._id': userId,
-         },
-      },
-   ])
-   changeStream.on('change', (change) => {
-      console.log('Dəyişiklik aşkarlandı:', change)
-   })
+// export const startChangeStreamListener = async (userId: string) => {
+//    await connectDB()
+//    const changeStream = userModel.watch([
+//       {
+//          $match: {
+//             'documentKey._id': userId,
+//          },
+//       },
+//    ])
+//    changeStream.on('change', (change) => {
+//       console.log('Dəyişiklik aşkarlandı:', change)
+//    })
 
-   changeStream.on('error', (error) => {
-      console.error('Change stream error:', error)
-   })
+//    changeStream.on('error', (error) => {
+//       console.error('Change stream error:', error)
+//    })
 
-   changeStream.on('end', () => {
-      console.log('Change stream bitdi.')
-   })
-}
+//    changeStream.on('end', () => {
+//       console.log('Change stream bitdi.')
+//    })
+// }

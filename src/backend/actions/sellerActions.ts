@@ -18,17 +18,38 @@ export const sellerCreate = async (data: ISeller) => {
 export const sellerGetAll = async () => {
    try {
       await connectDB()
-      return await sellerModel.find()
+      const sellers = await sellerModel.find()
+      return JSON.parse(JSON.stringify(sellers))
    } catch (err: Error | any) {
       throw new Error(err)
    }
 }
-
-export const sellerGetById = async (id: string, select: string) => {
+export const sellerGetById = async (id: string) => {
    if (!id) return
    try {
       await connectDB()
-      return await sellerModel.findOne({ _id: id }).populate('products', select).lean()
+      const seller = await sellerModel.findOne({ _id: id })
+      return JSON.parse(JSON.stringify(seller))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+export const sellerGetByIdWithPopulate = async (id: string) => {
+   if (!id) return
+   try {
+      await connectDB()
+      const seller = await sellerModel.findOne({ _id: id }).populate('products')
+      return JSON.parse(JSON.stringify(seller))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+export const sellerGetProductsWithSelect = async (id: string, select: string) => {
+   if (!id) return
+   try {
+      await connectDB()
+      const products = await sellerModel.findOne({ _id: id }, 'products').populate('products', select)
+      return JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -38,7 +59,8 @@ export const sellerDelete = async (id: string) => {
    if (!id) return
    try {
       await connectDB()
-      return await sellerModel.deleteOne({ _id: id })
+      await sellerModel.deleteOne({ _id: id })
+      return 'Deleted successfully'
    } catch (err: Error | any) {
       throw new Error(err)
    }

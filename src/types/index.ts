@@ -35,11 +35,11 @@ export interface IUser {
    name: string
    email: string
    password: string
-   gender?: string
+   gender: string
    role?: string
    image?: string
    createdAt?: Date
-   basket: []
+   basket?: []
 }
 export interface ISeller {
    _id: Types.ObjectId
@@ -51,9 +51,8 @@ export interface ISeller {
    password: string
    image?: string
    createdAt?: Date
-   products?: Types.ObjectId[]
-   order?: Types.ObjectId[]
-   orderHistory?: Types.ObjectId[]
+   products?: []
+   order?: []
 }
 
 export interface IProduct {
@@ -62,7 +61,7 @@ export interface IProduct {
    description: string
    price: number
    category: string
-   sellerId: Types.ObjectId
+   seller: Types.ObjectId
    image?: string
    createdAt?: Date
 }
@@ -95,10 +94,7 @@ export interface IOrder {
    status: string
    customer: Types.ObjectId
    customerNote?: string
-   products: {
-      productId: Types.ObjectId
-      quantity: number
-   }[]
+   products: []
    createdAt?: Date
 }
 

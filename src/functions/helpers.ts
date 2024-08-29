@@ -16,3 +16,28 @@ export function processToken(str: string) {
       .join('')
 }
 
+export const groupedBySeller = (
+   basket: [
+      {
+         product: {
+            seller: string
+         }
+         quantity: number
+      },
+   ],
+) => {
+   return basket.reduce(
+      (acc, item) => {
+         const sellerId = item.product.seller
+
+         if (!acc[sellerId]) {
+            acc[sellerId] = []
+         }
+
+         acc[sellerId].push(item)
+
+         return acc
+      },
+      {} as Record<string, { product: (typeof basket)[0]['product']; quantity: number }[]>,
+   )
+}

@@ -46,12 +46,6 @@ const sellerSchema = new Schema<ISeller>(
             ref: 'order',
          },
       ],
-      orderHistory: [
-         {
-            type: Schema.Types.ObjectId,
-            ref: 'order',
-         },
-      ],
       image: {
          type: String,
          required: false,

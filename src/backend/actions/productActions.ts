@@ -9,19 +9,49 @@ import { Types } from 'mongoose'
 export const productGetAll = async () => {
    try {
       await connectDB()
-
-      return await productModel.find({}).lean()
+      const products = await productModel.find()
+      return JSON.parse(JSON.stringify(products))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+export const productGetAllPopulate = async () => {
+   try {
+      await connectDB()
+      const products = await productModel.find().populate({ path: 'seller', model: 'seller' })
+      return JSON.parse(JSON.stringify(products))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+export const productGetAllWithPopulateBySelect = async (select: string) => {
+   try {
+      await connectDB()
+      const products = await productModel.find().populate({ path: 'seller', model: 'seller', select })
+      return JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
    }
 }
 
-export const productGetById = async (id: string) => {
+export const productGetById = async (id: string, select: string) => {
    if (!id) return
    try {
       await connectDB()
-
-      return await productModel.findOne({ _id: id }).populate({ path: 'sellerId', model: 'seller' }).lean()
+      const product = await productModel.findOne({ _id: id }, select)
+      return JSON.parse(JSON.stringify(product))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+export const productGetByIdWithPopulate = async (id: string, selectProduct: string, selectSeller: string) => {
+   if (!id) return
+   try {
+      await connectDB()
+      const product = await productModel
+         .findOne({ _id: id }, selectProduct)
+         .populate({ path: 'sellerId', model: 'seller', select: selectSeller })
+      return JSON.parse(JSON.stringify(product))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -37,8 +67,8 @@ export const productDeleteById = async (id: string, sellerId: string) => {
             $pull: { products: new Types.ObjectId(id) },
          },
       )
-
-      return await productModel.deleteOne({ _id: id })
+      await productModel.deleteOne({ _id: id })
+      return 'Product deleted successfully'
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -47,8 +77,8 @@ export const productDeleteById = async (id: string, sellerId: string) => {
 export const productDeleteAll = async () => {
    try {
       await connectDB()
-
-      return await productModel.deleteMany({})
+      await productModel.deleteMany({})
+      return 'All products deleted successfully'
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -59,8 +89,8 @@ export const productUpdateById = async (id: string, data: any) => {
 
    try {
       await connectDB()
-
-      return await productModel.updateOne({ _id: id }, data)
+      await productModel.updateOne({ _id: id }, data)
+      return 'Product updated successfully'
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -72,19 +102,19 @@ export const productCreate = async (data: IProduct) => {
    try {
       await connectDB()
       const product = (await productModel.create(data)).toObject()
-      await sellerModel.updateOne({ _id: data.sellerId }, { $push: { products: product._id } })
+      await sellerModel.updateOne({ _id: data.seller }, { $push: { products: product._id } })
       return 'Product created successfully'
    } catch (err: Error | any) {
       throw new Error(err)
    }
 }
 
-export const productGetByCategory = async (category: string) => {
+export const productsGetByCategory = async (category: string) => {
    if (!category) return
    try {
       await connectDB()
-
-      return await productModel.find({ category: category })
+      const products = await productModel.find({ category: category })
+      return JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -94,8 +124,8 @@ export const productsGetByParams = async (params: any) => {
    if (!params) return
    try {
       await connectDB()
-
-      return await productModel.find(params)
+      const products = await productModel.find(params)
+      return JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -107,24 +137,9 @@ export const productsNameQuery = async (query: string) => {
       await connectDB()
       const regex = new RegExp(query, 'i')
       const data = await productModel.find({ name: { $regex: regex } })
-      console.log(data)
-
       return data
    } catch (err: Error | any) {
       throw new Error(err)
    }
 }
 
-export const getProductSelect = async (id: string) => {
-   if (!id) return
-
-   try {
-      await connectDB()
-
-      const product = await productModel.findById(id).select('name price').lean()
-      console.log(product)
-      return product
-   } catch (err: any) {
-      throw new Error(err.message || 'Məhsul tapılarkən xəta baş verdi.')
-   }
-}
