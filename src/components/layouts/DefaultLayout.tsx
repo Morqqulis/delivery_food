@@ -6,7 +6,7 @@ import { IDefaultProvider } from '#types/index'
 const DefaultLayout: React.FC<IDefaultProvider> = ({ children, full = true }: IDefaultProvider): JSX.Element => {
    return (
       <>
-         <div className={`flex min-h-full flex-col`}>
+         <div className={`flex min-h-full flex-col overflow-x-clip`}>
             {full ? (
                <>
                   <Header />

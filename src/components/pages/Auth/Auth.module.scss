@@ -1,20 +1,22 @@
-@import '../../../styles/av';
-
 .authForm {
-   @apply flex flex-col gap-4;
-
+   @apply mx-auto flex w-full max-w-[18.75rem] flex-col items-center justify-center gap-4;
+   @include adaptiveValue('margin-bottom', 25, 20);
+   label,
    input,
    select {
+      @apply w-full outline-none;
       @include adaptiveValue('padding', 10, 5);
-      max-width: 300px;
-      border: 1px solid black;
-      color: black;
-      outline: none
+   }
+   input {
+      @apply text-dark-800;
    }
 }
 .title {
    @include adaptiveValue('font-size', 40, 20);
+   @include adaptiveValue('margin-bottom', 100, 50);
+   @apply text-center;
+}
 
-   text-align: center;
-   max-width: 300px;
+.switch {
+   @apply flex justify-center;
 }

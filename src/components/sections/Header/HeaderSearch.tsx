@@ -4,9 +4,11 @@ import { Input } from '#ui/input'
 import { Label } from '#ui/label'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const HeaderSearch: React.FC = (): JSX.Element => {
+   const path = usePathname()
    const [value, setValue] = useState('')
    const [data, setData] = useState<any>([])
 
@@ -19,7 +21,9 @@ const HeaderSearch: React.FC = (): JSX.Element => {
    }, [value])
 
    return (
-      <Label className={`group/headerSearch relative flex w-full grow gap-4`}>
+      <Label
+         className={`group/headerSearch relative flex w-full grow gap-4 ${path === '/terms' || path === '/privacy' ? 'hidden' : ''}`}
+      >
          <Input
             className={`border-none bg-dark-900 py-4 outline-none transition-all duration-300 placeholder:text-center placeholder:text-light-500 placeholder:transition-all placeholder:duration-500 focus-within:placeholder:text-[0] focus-visible:ring-mini-100 focus-visible:ring-offset-1 focus-visible:ring-offset-mini-100`}
             type={'text'}

@@ -123,3 +123,17 @@ export interface IBasket {
    _id: string
    quantity: number
 }
+export interface IGroupedProductsOrders {
+   sellerId: string
+   products: {
+      productId: string
+      quantity: number
+   }[]
+}
+
+export interface IGoogleResponseUser {
+   email: string
+   image: string
+   name: string
+}
+

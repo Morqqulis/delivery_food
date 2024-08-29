@@ -1,15 +1,18 @@
 'use client'
+import { userGetBasket } from '#backend/actions/userActions'
 import Btn from '#ui/Btn/Btn'
 import Logo from '#ui/Logo'
 import { LogIn } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import styles from './Header.module.scss'
 import HeaderSearch from './HeaderSearch'
-import { useEffect, useState } from 'react'
-import { userGetBasket } from '#backend/actions/userActions'
+import HeaderUser from './HeaderUser'
 
 const Header = () => {
    const [basket, setBasket] = useState([])
+   const session = useSession()
 
    useEffect(() => {
       ;(async () => {
@@ -31,9 +34,15 @@ const Header = () => {
                   ariaLabel={'Orders Btn'}
                   href="/user/basket"
                />
-               <Link className={`group p-0`} href={'/auth'}>
-                  <LogIn className={`duration-300 group-hover:text-mini-100`} />
-               </Link>
+               {session.status === 'loading' ? (
+                  <div>Loading...</div>
+               ) : session.status === 'unauthenticated' ? (
+                  <Link className={`group p-0`} href={'/auth'}>
+                     <LogIn className={`duration-300 group-hover:text-mini-100`} />
+                  </Link>
+               ) : (
+                  <HeaderUser userData={session?.data?.user} />
+               )}
             </nav>
          </div>
       </header>
