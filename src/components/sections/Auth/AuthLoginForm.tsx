@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import styles from './Auth.module.scss'
 import Btn from '#ui/Btn/Btn'
+import Image from 'next/image'
 
 const loginShema = z.object({
    email: z
@@ -36,7 +37,7 @@ const AuthLoginForm: React.FC = (): JSX.Element => {
             email: values.email,
             password: values.password,
             callbackUrl,
-            redirect: false,
+            // redirect: false,
          })
 
          if (res?.error) {
@@ -65,37 +66,48 @@ const AuthLoginForm: React.FC = (): JSX.Element => {
    }
 
    return (
-      <Form {...form}>
-         <form className={`${styles.authForm}`} onSubmit={form.handleSubmit(handleLogin)}>
-            <FormField
-               control={form.control}
-               name="email"
-               render={({ field }) => (
-                  <FormItem className={`!space-y-0`}>
-                     <FormLabel className={`!p-0`}>
-                        <FormControl>
-                           <Input type="email" placeholder="Enter your email" {...field} />
-                        </FormControl>
-                     </FormLabel>
-                  </FormItem>
-               )}
-            />
-            <FormField
-               control={form.control}
-               name="password"
-               render={({ field }) => (
-                  <FormItem className={`!space-y-0`}>
-                     <FormLabel className={`!p-0`}>
-                        <FormControl>
-                           <Input type="password" placeholder="Enter your password" {...field} />
-                        </FormControl>
-                     </FormLabel>
-                  </FormItem>
-               )}
-            />
-            <Btn type={'submit'} ariaLabel={'Sign In button'} text={'Sign In'} />
-         </form>
-      </Form>
+      <>
+         <Form {...form}>
+            <form className={`${styles.authForm}`} onSubmit={form.handleSubmit(handleLogin)}>
+               <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                     <FormItem className={`!space-y-0`}>
+                        <FormLabel className={`!p-0`}>
+                           <FormControl>
+                              <Input type="email" placeholder="Enter your email" {...field} />
+                           </FormControl>
+                        </FormLabel>
+                     </FormItem>
+                  )}
+               />
+               <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                     <FormItem className={`!space-y-0`}>
+                        <FormLabel className={`!p-0`}>
+                           <FormControl>
+                              <Input type="password" placeholder="Enter your password" {...field} />
+                           </FormControl>
+                        </FormLabel>
+                     </FormItem>
+                  )}
+               />
+               <Btn type={'submit'} ariaLabel={'Sign In button'} text={'Sign In'} />
+            </form>
+         </Form>
+         <Btn
+            className={'w-full max-w-[350px] mb-5'}
+            text={'Login with Google'}
+            type={'button'}
+            ariaLabel={'Login with Google'}
+            onClick={() => signIn('google', { callbackUrl })}
+         >
+            <Image src={'/google.svg'} alt={'google'} width={32} height={32} />
+         </Btn>
+      </>
    )
 }
 
