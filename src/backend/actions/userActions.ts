@@ -3,7 +3,6 @@
 import { connectDB } from '#backend/DB'
 import userModel from '#backend/models/userModel'
 import { IUser } from '#types/index'
-import { Types } from 'mongoose'
 
 export const userGetAll = async () => {
    try {
@@ -116,25 +115,3 @@ export const userDeleteBasketItem = async (userId: string, product: string) => {
       throw new Error(err)
    }
 }
-
-// export const startChangeStreamListener = async (userId: string) => {
-//    await connectDB()
-//    const changeStream = userModel.watch([
-//       {
-//          $match: {
-//             'documentKey._id': userId,
-//          },
-//       },
-//    ])
-//    changeStream.on('change', (change) => {
-//       console.log('Dəyişiklik aşkarlandı:', change)
-//    })
-
-//    changeStream.on('error', (error) => {
-//       console.error('Change stream error:', error)
-//    })
-
-//    changeStream.on('end', () => {
-//       console.log('Change stream bitdi.')
-//    })
-// }

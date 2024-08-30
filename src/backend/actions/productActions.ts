@@ -137,7 +137,7 @@ export const productsNameQuery = async (query: string) => {
       await connectDB()
       const regex = new RegExp(query, 'i')
       const data = await productModel.find({ name: { $regex: regex } })
-      return data
+      return JSON.parse(JSON.stringify(data))
    } catch (err: Error | any) {
       throw new Error(err)
    }
