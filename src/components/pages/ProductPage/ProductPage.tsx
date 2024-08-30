@@ -1,7 +1,5 @@
 'use client'
-import {
-   productGetById,
-} from '#backend/actions/productActions'
+import { productGetById } from '#backend/actions/productActions'
 import { userCreate, userDeleteById, userGetAll, userGetById, userUpdateById } from '#backend/actions/userActions'
 import Counter from '#sections/Counter'
 import Image from 'next/image'
@@ -11,8 +9,6 @@ interface IProductPage {
    id: string
 }
 
-
-
 const ProductPage: React.FC<IProductPage> = ({ id }): JSX.Element => {
    const [product, setProduct] = useState<any>()
    const [count, setCount] = useState(1)
@@ -20,7 +16,7 @@ const ProductPage: React.FC<IProductPage> = ({ id }): JSX.Element => {
    useEffect(() => {
       if (!id) return
       ;(async () => {
-         const prod = await productGetById(id)
+         const prod = await productGetById(id, '')
          setProduct(prod)
       })()
    }, [id])

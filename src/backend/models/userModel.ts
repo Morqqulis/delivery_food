@@ -1,7 +1,6 @@
 import { IUser } from '#types/index'
 import { model, models, Schema, Types } from 'mongoose'
 import product from '#backend/models/productModel'
-// console.log(models);
 
 const userSchema = new Schema<IUser>(
    {

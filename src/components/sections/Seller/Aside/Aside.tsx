@@ -1,4 +1,5 @@
 import Btn from '#ui/Btn/Btn'
+import Logo from '#ui/Logo'
 import { AlignEndVertical, Bolt, CirclePlus, House, ListOrdered } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
