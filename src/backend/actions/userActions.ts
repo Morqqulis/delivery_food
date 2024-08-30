@@ -54,7 +54,10 @@ export const userCreate = async (data: IUser) => {
 
    try {
       await connectDB()
-      await userModel.create(data)
+      const user = await userModel.findOne({ email: data.email })
+      if (user) return null
+
+      await userModel.create({ id: new Types.ObjectId(), ...data })
       return 'User created successfully'
    } catch (err: Error | any) {
       throw new Error(err)

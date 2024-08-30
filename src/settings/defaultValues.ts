@@ -14,7 +14,7 @@ export const LoginDefault = {
 export const RegisterDefault = {
    email: '',
    password: '',
-   name: '',
+   firstName: '',
    gender: 'male',
 }
 export const AddProductDefault = {

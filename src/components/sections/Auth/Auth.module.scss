@@ -1,5 +1,5 @@
 .authForm {
-   @apply mx-auto flex w-full max-w-[18.75rem] flex-col items-center justify-center gap-4;
+   @apply flex w-full max-w-[350px] flex-col gap-5;
    @include adaptiveValue('margin-bottom', 25, 20);
    label,
    input,

@@ -23,7 +23,7 @@ export interface IClassName {
 
 export interface IBtn extends IClassName {
    type?: HTMLButtonElement['type']
-   onClick?: () => void
+   onClick?: () => void | Promise<void> | any
    ariaLabel: string
    text: string
    children?: React.ReactNode
@@ -69,7 +69,7 @@ export interface IProduct {
 export interface IFormValues {
    email: string
    password: string
-   name?: string
+   firstName?: string
    gender?: string
 }
 
@@ -127,4 +127,3 @@ export interface IGoogleResponseUser {
    image: string
    name: string
 }
-
