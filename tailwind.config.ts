@@ -14,11 +14,11 @@ const config = {
       },
       extend: {
          screens: {
-            xs: { max: '489.99px' },
-            sm: { max: '566.99px' },
-            md: { max: '767.99px' },
-            lg: { max: '991.99px' },
-            pc: { max: '1149.99px' },
+            mxs: { max: '489.99px' },
+            msm: { max: '566.99px' },
+            mmd: { max: '767.99px' },
+            mlg: { max: '991.99px' },
+            mpc: { max: '1149.99px' },
          },
 
          colors: {

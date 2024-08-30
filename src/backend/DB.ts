@@ -5,13 +5,20 @@ export const connectDB = async () => {
       console.log('Already connected')
       return
    }
-
    await mongoose.connect(process.env.MONGODB_URI as string, {
       dbName: 'DB',
+      serverApi: {
+         strict: true,
+         deprecationErrors: true,
+         version: '1',
+      },
    })
+
    console.log('Connected to MongoDB')
 }
 
 export const disconnectDB = async () => {
    await mongoose.disconnect()
 }
+
+//----------------------------------------------
