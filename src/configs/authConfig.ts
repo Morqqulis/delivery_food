@@ -1,4 +1,4 @@
-import { userGetAll } from '#backend/actions/userActions'
+import {  userGetByEmail } from '#backend/actions/userActions'
 import { IUser } from '#types/index'
 import { MongoDBAdapter } from '@auth/mongodb-adapter'
 import { NextAuthOptions, User } from 'next-auth'
@@ -40,11 +40,8 @@ export const authConfig: NextAuthOptions = {
          },
          authorize: async (credentials) => {
             if (!credentials?.email || !credentials?.password) return null
-            // console.log(credentials)
-            const users = await userGetAll()
-
-            const currentUser = users.find((user: IUser) => user.email === credentials.email)
-
+            const currentUser = await userGetByEmail(credentials.email)
+            // @ts-ignore
             if (!currentUser || currentUser.password !== credentials.password) return null
 
             return {

@@ -3,6 +3,7 @@
 import { connectDB } from '#backend/DB'
 import userModel from '#backend/models/userModel'
 import { IUser } from '#types/index'
+import { Types } from 'mongoose'
 
 export const userGetAll = async () => {
    try {
@@ -19,6 +20,17 @@ export const userGetById = async (id: string) => {
    try {
       await connectDB()
       const user = await userModel.findOne({ _id: id })
+      return JSON.parse(JSON.stringify(user))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+
+export const userGetByEmail = async (email: string) => {
+   if (!email) return
+   try {
+      await connectDB()
+      const user = await userModel.findOne({ email: email })
       return JSON.parse(JSON.stringify(user))
    } catch (err: Error | any) {
       throw new Error(err)
