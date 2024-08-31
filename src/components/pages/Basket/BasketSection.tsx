@@ -1,6 +1,7 @@
 'use client'
 import { orderCreate } from '#backend/actions/orderAction'
-import { listenForDocumentChanges, userDeleteBasketItem, userGetBasket } from '#backend/actions/userActions'
+import { userDeleteBasketItem, userGetBasket } from '#backend/actions/userActions'
+import CheckoutForm from '#sections/Basket/CheckoutForm'
 import Btn from '#ui/Btn/Btn'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '#ui/table'
 import { useEffect, useState } from 'react'
@@ -81,7 +82,8 @@ const BasketSection: React.FC = (): JSX.Element => {
                </TableRow>
             </TableFooter>
          </Table>
-         <Btn className="w-fit" text="Checkout" ariaLabel="Checkout" onClick={getCheckout} />
+
+         <CheckoutForm  />
       </div>
    )
 }
