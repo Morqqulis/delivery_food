@@ -30,17 +30,6 @@ export interface IBtn extends IClassName {
    href?: string
 }
 
-export interface IUser {
-   _id: Types.ObjectId
-   name: string
-   email: string
-   password: string
-   gender: string
-   role?: string
-   image?: string
-   createdAt?: Date
-   basket?: []
-}
 export interface ISeller {
    _id: Types.ObjectId
    name: string
@@ -88,6 +77,29 @@ export interface IAddProduct {
    category: string
    image?: any
 }
+
+export interface IUser {
+   _id: Types.ObjectId
+   name: string
+   email: string
+   password: string
+   gender: string
+   role?: string
+   image?: string
+   createdAt?: Date
+   basket?: []
+   phone?: string
+}
+
+export interface ICheckoutForm {
+   fullName: string
+   phone: string
+   city: string
+   deliveryType: string
+   deliveryPoint: string
+   note: string
+   street: string
+}
 export interface IOrder {
    _id?: Types.ObjectId
    payment: string
@@ -96,6 +108,8 @@ export interface IOrder {
    customerNote?: string
    products: []
    createdAt?: Date
+   deliveryType: string
+   deliveryAdress: string
 }
 
 export interface IOrderHistory {
@@ -108,7 +122,7 @@ export interface IOrderHistory {
 }
 
 export interface IBasket {
-   productId: {
+   product: {
       category: string
       _id: string
       createdAt: Date
@@ -116,7 +130,7 @@ export interface IBasket {
       image: string
       name: string
       price: number
-      sellerId: string
+      seller: string
       updatedAt: Date
       __v: number
    }

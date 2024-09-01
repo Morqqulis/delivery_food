@@ -1,5 +1,5 @@
 import DefaultLayout from '#layouts/DefaultLayout'
-import BasketSection from '#pages/Basket/BasketSection'
+import BasketSection from '#sections/Basket/BasketSection'
 import { NextPage } from 'next'
 
 const Auth: NextPage = (): JSX.Element => {

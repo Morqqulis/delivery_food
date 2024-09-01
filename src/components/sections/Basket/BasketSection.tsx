@@ -2,20 +2,23 @@
 import { orderCreate } from '#backend/actions/orderAction'
 import { userDeleteBasketItem, userGetBasket } from '#backend/actions/userActions'
 import CheckoutForm from '#sections/Basket/CheckoutForm'
+import { IBasket } from '#types/index'
 import Btn from '#ui/Btn/Btn'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '#ui/table'
+import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
 const BasketSection: React.FC = (): JSX.Element => {
-   const [basket, setBasket] = useState<any>([])
-
+   const [basket, setBasket] = useState<IBasket[]>([])
+  
    useEffect(() => {
       ;(async () => {
          const user = await userGetBasket('66cf65fb10760b3633230284')
          setBasket(user?.basket)
+         
       })()
    }, [])
-
+   
    const calculateTotal = () => {
       return basket
          ? basket
@@ -30,7 +33,7 @@ const BasketSection: React.FC = (): JSX.Element => {
    }
 
    const getCheckout = async () => {
-      await orderCreate(basket, '66cf65fb10760b3633230284')
+      // await orderCreate(basket, '66cf65fb10760b3633230284')
       setBasket([])
    }
 
@@ -83,7 +86,7 @@ const BasketSection: React.FC = (): JSX.Element => {
             </TableFooter>
          </Table>
 
-         <CheckoutForm  />
+         <CheckoutForm basket={basket} setBasket={setBasket} />
       </div>
    )
 }

@@ -1,5 +1,5 @@
 import DefaultLayout from '#layouts/DefaultLayout'
-import ProductAdd from '#pages/Seller/Products/ProductAdd'
+import ProductAdd from '#sections/Seller/Products/ProductAdd'
 
 interface Ipage {}
 

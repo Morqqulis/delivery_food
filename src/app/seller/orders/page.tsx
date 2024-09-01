@@ -1,5 +1,5 @@
 import DefaultLayout from '#layouts/DefaultLayout'
-import SellerOrders from '#pages/Seller/Orders/SellerOrders'
+import SellerOrders from '#sections/Seller/Orders/SellerOrders'
 
 interface Ipage {}
 

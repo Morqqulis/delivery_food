@@ -5,8 +5,60 @@ import orderModel from '#backend/models/orderModel'
 import productModel from '#backend/models/productModel'
 import sellerModel from '#backend/models/sellerModel'
 import userModel from '#backend/models/userModel'
+import { ICheckoutForm } from '#types/index'
 import mongoose, { Types } from 'mongoose'
 
+export const orderCreate2 = async (basket: any, customer: ICheckoutForm) => {
+   if (!basket || !customer) return
+   const { fullName, phone, city, deliveryPoint, deliveryType, note, street } = customer
+
+   try {
+      await connectDB()
+
+      const orderData = {
+         payment: 'cash',
+         deliveryType: deliveryType,
+         deliveryPoint: deliveryPoint,
+         adress: city + street,
+         phone: phone,
+         fullName: fullName,
+         status: 'pending',
+         // customer: new Types.ObjectId(customer),
+         customerNote: note,
+         products: basket.map((product: any) => ({
+            product: product.product._id,
+            quantity: product.quantity,
+         })),
+      }
+
+      const order = await orderModel.create(orderData)
+
+      // await userModel.updateOne({ _id: new Types.ObjectId(customer) }, { $set: { basket: [] } })
+
+      const sellerIds = Array.from(
+         new Set(
+            basket.map(
+               (item: {
+                  product: {
+                     seller: string
+                  }
+               }) => item.product.seller,
+            ),
+         ),
+      )
+
+      await Promise.all(
+         sellerIds.map(async (sellerId) => {
+            // @ts-ignore
+            await sellerModel.updateOne({ _id: new Types.ObjectId(sellerId) }, { $push: { order: order._id } })
+         }),
+      )
+
+      return JSON.parse(JSON.stringify(order))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
 export const orderCreate = async (basket: any, customer: string) => {
    if (!basket || !customer) return
    try {
@@ -122,11 +174,11 @@ export const orderDelete = async (orderId: string) => {
 
 export const orderUpdateStatus = async (id: string, status: string) => {
    if (!id) return
-   
+
    try {
       await connectDB()
       const order = await orderModel.updateOne({ _id: id }, { status: status })
-      return "Updated"
+      return 'Updated'
    } catch (err: Error | any) {
       throw new Error(err)
    }

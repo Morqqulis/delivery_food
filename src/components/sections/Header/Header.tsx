@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import styles from './Header.module.scss'
 import HeaderSearch from './HeaderSearch'
 import HeaderUser from './HeaderUser'
+import { productGetAll } from '#backend/actions/productActions'
 
 const Header = () => {
    const [basket, setBasket] = useState([])
@@ -32,7 +33,7 @@ const Header = () => {
                   text={`Orders (${basket?.length || 0})`}
                   type={'button'}
                   ariaLabel={'Orders Btn'}
-                  href="/user/basket"
+                  href="/basket"
                />
                {session.status === 'loading' ? (
                   <div>Loading...</div>

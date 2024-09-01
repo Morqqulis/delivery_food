@@ -27,6 +27,14 @@ const orderSchema = new Schema<IOrder>(
          type: String,
          required: false,
       },
+      deliveryType: {
+         type: String,
+         required: true,
+      },
+      deliveryAdress: {
+         type: String,
+         required: true,
+      },
       products: [
          {
             product: {
