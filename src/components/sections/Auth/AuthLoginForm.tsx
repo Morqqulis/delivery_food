@@ -99,7 +99,7 @@ const AuthLoginForm: React.FC = (): JSX.Element => {
             </form>
          </Form>
          <Btn
-            className={'w-full max-w-[350px] mb-5'}
+            className={'mb-5 w-full max-w-[350px]'}
             text={'Login with Google'}
             type={'button'}
             ariaLabel={'Login with Google'}

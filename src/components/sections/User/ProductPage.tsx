@@ -22,22 +22,27 @@ const ProductPage: React.FC<IProductPage> = ({ id }): JSX.Element => {
    }, [id])
 
    return (
-      <div className="container flex w-full items-center gap-10">
-         <div className="">
-            <Image src={'/qazan.svg'} width={300} height={300} alt={'product image'} />
+      <section className={`py-20`}>
+         <div className="container">
+            <h1 className={`mb-10 text-center text-5xl`}>{product?.name}</h1>
+            <div className="flex w-full items-center gap-10">
+               <div className="">
+                  <Image src={'/qazan.svg'} width={300} height={300} alt={'product image'} />
+               </div>
+               <div className="flex flex-col gap-6">
+                  <p>{product?.name}</p>
+                  <p>{product?.description}</p>
+                  <Counter
+                     count={count}
+                     setCount={setCount}
+                     text={`ADD - $ ${product?.price ? (count * product?.price).toFixed(2) : 0}`}
+                     id={id}
+                     className="mt-6"
+                  />
+               </div>
+            </div>
          </div>
-         <div className="flex flex-col gap-6">
-            <p>{product?.name}</p>
-            <p>{product?.description}</p>
-            <Counter
-               count={count}
-               setCount={setCount}
-               text={`ADD - $ ${product?.price ? (count * product?.price).toFixed(2) : 0}`}
-               id={id}
-               className="mt-6"
-            />
-         </div>
-      </div>
+      </section>
    )
 }
 
