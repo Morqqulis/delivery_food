@@ -57,6 +57,16 @@ export const productGetByIdWithPopulate = async (id: string, selectProduct: stri
    }
 }
 
+export const productsGetByIds = async (params: string[]) => {
+   try {
+      const products = await productModel.find({ _id: { $in: params } })
+      return JSON.parse(JSON.stringify(products))
+   } catch (err) {
+      console.error('Məhsulları əldə etmək zamanı xəta baş verdi:', err)
+      throw err
+   }
+}
+
 export const productDeleteById = async (id: string, sellerId: string) => {
    if (!id) return
    try {
@@ -142,4 +152,3 @@ export const productsNameQuery = async (query: string) => {
       throw new Error(err)
    }
 }
-

@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import styles from './Header.module.scss'
 import HeaderSearch from './HeaderSearch'
 import HeaderUser from './HeaderUser'
-import { productGetAll } from '#backend/actions/productActions'
+import { productsGetByIds, productGetAll } from '#backend/actions/productActions'
 
 const Header = () => {
    const [basket, setBasket] = useState([])
