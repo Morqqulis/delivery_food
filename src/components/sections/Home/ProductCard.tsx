@@ -15,7 +15,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
    const [like, setLike] = useState(false)
 
    return (
-      <div className="relative flex w-[250px] flex-col items-center gap-4 rounded-lg bg-[#00070A] p-6">
+      <div className="relative flex min-w-[250px] flex-col items-center gap-4 rounded-lg bg-[#00070A] p-6">
          <Link href={`/${product._id}`} className="flex flex-col items-center gap-4">
             <Image src="./qazan.svg" width={150} height={150} alt={'product image'} priority />
             <p className="text-2xl font-bold">{product.name} &gt; </p>

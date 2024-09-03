@@ -62,11 +62,12 @@ export const ProductSchema = z.object({
 })
 
 export const checkoutSchema = z.object({
-   name: z.string().min(1, 'Adınızı daxil edin'),
+   fullName: z.string().min(1, 'Adınızı daxil edin'),
    city: z.string().min(1, 'Şəhər adı daxil edin'),
    deliveryType: z.string().min(1, 'Delivery type is required'),
-   deliveryPoint: z.string().min(1, 'Delivery point is required'),
    phone: z.string().min(1, 'Phone number is required'),
    street: z.string().min(1, 'Street is required'),
-   note: z.string().min(1, 'Note is required'),
+   sellerNote: z.string().min(1, 'Note is required'),
+   village: z.string().min(1, 'Village is required'),
+   deliveryNote: z.string().min(1, 'Delivery note is required'),
 })

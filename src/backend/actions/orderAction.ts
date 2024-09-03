@@ -5,51 +5,46 @@ import orderModel from '#backend/models/orderModel'
 import productModel from '#backend/models/productModel'
 import sellerModel from '#backend/models/sellerModel'
 import userModel from '#backend/models/userModel'
-import { ICheckoutForm } from '#types/index'
+import { IBasket, IBasketItem, ICheckoutForm } from '#types/index'
 import mongoose, { Types } from 'mongoose'
 
-export const orderCreate2 = async (basket: any, customer: ICheckoutForm) => {
-   if (!basket || !customer) return
-   const { fullName, phone, city, deliveryPoint, deliveryType, note, street } = customer
+export const orderCreate = async (basket: IBasket[], session: { email: string; name: string }, form: ICheckoutForm) => {
+   if (!basket || !session || !form) return
+   const { phone, city, deliveryType, deliveryNote, sellerNote, street, village } = form
 
    try {
       await connectDB()
 
+      let user = await userModel.findOne({ email: session.email })
+
+      if (!user) {
+         user = await userModel.create({
+            name: session.name,
+            phone: phone,
+            password: '12345',
+            email: session.email,
+         })
+      }
       const orderData = {
-         payment: 'cash',
-         deliveryType: deliveryType,
-         deliveryPoint: deliveryPoint,
-         adress: city + street,
          phone: phone,
-         fullName: fullName,
+         adress: city + '' + street + '' + village,
+         deliveryType: deliveryType,
+         deliveryNote: deliveryNote,
+         sellerNote: sellerNote,
          status: 'pending',
-         // customer: new Types.ObjectId(customer),
-         customerNote: note,
+         customer: user._id,
          products: basket.map((product: any) => ({
-            product: product.product._id,
+            product: product._id,
             quantity: product.quantity,
          })),
       }
 
       const order = await orderModel.create(orderData)
 
-      // await userModel.updateOne({ _id: new Types.ObjectId(customer) }, { $set: { basket: [] } })
-
-      const sellerIds = Array.from(
-         new Set(
-            basket.map(
-               (item: {
-                  product: {
-                     seller: string
-                  }
-               }) => item.product.seller,
-            ),
-         ),
-      )
+      const sellerIds = Array.from(new Set(basket.map((item) => item.seller)))
 
       await Promise.all(
          sellerIds.map(async (sellerId) => {
-            // @ts-ignore
             await sellerModel.updateOne({ _id: new Types.ObjectId(sellerId) }, { $push: { order: order._id } })
          }),
       )
@@ -59,50 +54,51 @@ export const orderCreate2 = async (basket: any, customer: ICheckoutForm) => {
       throw new Error(err)
    }
 }
-export const orderCreate = async (basket: any, customer: string) => {
-   if (!basket || !customer) return
-   try {
-      await connectDB()
 
-      const orderData = {
-         payment: 'cash',
-         status: 'pending',
-         customer: new Types.ObjectId(customer),
-         customerNote: 'Sifarişləri yaxşı paketləyin',
-         products: basket.map((product: any) => ({
-            product: product.product._id,
-            quantity: product.quantity,
-         })),
-      }
+// export const orderCreate = async (basket: any, customer: string) => {
+//    if (!basket || !customer) return
+//    try {
+//       await connectDB()
 
-      const order = await orderModel.create(orderData)
+//       const orderData = {
+//          payment: 'cash',
+//          status: 'pending',
+//          customer: new Types.ObjectId(customer),
+//          customerNote: 'Sifarişləri yaxşı paketləyin',
+//          products: basket.map((product: any) => ({
+//             product: product.product._id,
+//             quantity: product.quantity,
+//          })),
+//       }
 
-      await userModel.updateOne({ _id: new Types.ObjectId(customer) }, { $set: { basket: [] } })
+//       const order = await orderModel.create(orderData)
 
-      const sellerIds = Array.from(
-         new Set(
-            basket.map(
-               (item: {
-                  product: {
-                     seller: string
-                  }
-               }) => item.product.seller,
-            ),
-         ),
-      )
+//       await userModel.updateOne({ _id: new Types.ObjectId(customer) }, { $set: { basket: [] } })
 
-      await Promise.all(
-         sellerIds.map(async (sellerId) => {
-            // @ts-ignore
-            await sellerModel.updateOne({ _id: new Types.ObjectId(sellerId) }, { $push: { order: order._id } })
-         }),
-      )
+//       const sellerIds = Array.from(
+//          new Set(
+//             basket.map(
+//                (item: {
+//                   product: {
+//                      seller: string
+//                   }
+//                }) => item.product.seller,
+//             ),
+//          ),
+//       )
 
-      return JSON.parse(JSON.stringify(order))
-   } catch (err: Error | any) {
-      throw new Error(err)
-   }
-}
+//       await Promise.all(
+//          sellerIds.map(async (sellerId) => {
+//             // @ts-ignore
+//             await sellerModel.updateOne({ _id: new Types.ObjectId(sellerId) }, { $push: { order: order._id } })
+//          }),
+//       )
+
+//       return JSON.parse(JSON.stringify(order))
+//    } catch (err: Error | any) {
+//       throw new Error(err)
+//    }
+// }
 
 export const orderGet = async (id: string) => {
    if (!id) return

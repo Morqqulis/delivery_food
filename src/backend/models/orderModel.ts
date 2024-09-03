@@ -10,10 +10,6 @@ const orderSchema = new Schema<IOrder>(
          required: true,
          default: () => new Types.ObjectId(),
       },
-      payment: {
-         type: String,
-         required: true,
-      },
       status: {
          type: String,
          required: true,
@@ -23,7 +19,7 @@ const orderSchema = new Schema<IOrder>(
          ref: 'user',
          required: true,
       },
-      customerNote: {
+      sellerNote: {
          type: String,
          required: false,
       },
@@ -31,7 +27,11 @@ const orderSchema = new Schema<IOrder>(
          type: String,
          required: true,
       },
-      deliveryAdress: {
+      deliveryNote: {
+         type: String,
+         required: false,
+      },
+      adress: {
          type: String,
          required: true,
       },
@@ -46,6 +46,10 @@ const orderSchema = new Schema<IOrder>(
                type: Number,
                required: true,
                default: 1,
+            },
+            accepted: {
+               type: Boolean,
+               default: false,
             },
          },
       ],

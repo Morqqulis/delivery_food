@@ -1,8 +1,10 @@
 'use client'
+import { coockieRemoveFromBasket, cookieGetBasket } from '#backend/actions/cookieBasketActions'
 import { orderCreate } from '#backend/actions/orderAction'
+import { productsGetByIds } from '#backend/actions/productActions'
 import { userDeleteBasketItem, userGetBasket } from '#backend/actions/userActions'
 import CheckoutForm from '#sections/Basket/CheckoutForm'
-import { IBasket } from '#types/index'
+import { IBasket, IBasketItem } from '#types/index'
 import Btn from '#ui/Btn/Btn'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '#ui/table'
 import { useSession } from 'next-auth/react'
@@ -10,31 +12,24 @@ import { useEffect, useState } from 'react'
 
 const BasketSection: React.FC = (): JSX.Element => {
    const [basket, setBasket] = useState<IBasket[]>([])
-  
+
    useEffect(() => {
       ;(async () => {
-         const user = await userGetBasket('66cf65fb10760b3633230284')
-         setBasket(user?.basket)
-         
+         const data=await cookieGetBasket()
+         const basket = await productsGetByIds(data)
+         setBasket(basket)
       })()
    }, [])
-   
+
    const calculateTotal = () => {
       return basket
-         ? basket
-              .reduce((total: number, product: any) => total + product.product.price * product.quantity, 0)
-              .toFixed(2)
+         ? basket.reduce((total: number, product: any) => total + product.price * product.quantity, 0).toFixed(2)
          : 0
    }
 
    const deleteBasket = async (id: string) => {
-      await userDeleteBasketItem('66cf65fb10760b3633230284', id)
-      setBasket(basket.filter((product: any) => product.product._id !== id))
-   }
-
-   const getCheckout = async () => {
-      // await orderCreate(basket, '66cf65fb10760b3633230284')
-      setBasket([])
+      await coockieRemoveFromBasket(id)
+      setBasket(basket.filter((product: any) => product._id !== id))
    }
 
    return (
@@ -55,17 +50,15 @@ const BasketSection: React.FC = (): JSX.Element => {
             {basket && (
                <TableBody>
                   {basket.map((product: any) => (
-                     <TableRow key={product.product._id}>
-                        <TableCell className="font-medium">{`${product.product._id.slice(0, 2)}***${product.product._id.slice(-4)}`}</TableCell>
-                        <TableCell>{product.product.name}</TableCell>
-                        <TableCell>{product.product.description}</TableCell>
+                     <TableRow key={product._id}>
+                        <TableCell className="font-medium">{`${product._id.slice(0, 2)}***${product._id.slice(-4)}`}</TableCell>
+                        <TableCell>{product.name}</TableCell>
+                        <TableCell>{product.description}</TableCell>
                         <TableCell>{product.quantity}</TableCell>
-                        <TableCell>{product.product.price}</TableCell>
-                        <TableCell className="text-right">
-                           ${(product.quantity * product.product.price).toFixed(2)}
-                        </TableCell>
+                        <TableCell>{product.price}</TableCell>
+                        <TableCell className="text-right">${(product.quantity * product.price).toFixed(2)}</TableCell>
                         <TableCell>
-                           <p className="cursor-pointer" onClick={() => deleteBasket(product.product._id)}>
+                           <p className="cursor-pointer" onClick={() => deleteBasket(product._id)}>
                               Delete
                            </p>
                         </TableCell>

@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 const Logo: React.FC<IClassName & { iconClassName?: string }> = ({ className = '', iconClassName }): JSX.Element => {
    return (
-      <Link className={`${className} group/logo font-bold ${secondaryFont.className}`} href={'/'}>
+      <Link className={`${className} group/logo font-bold `} href={'/'}>
          <svg
             className={`group-hover/logo:fill-mini-100 ${iconClassName ? iconClassName : 'fill-cake-100'} duration-300 ease-in`}
             width="25.980469"

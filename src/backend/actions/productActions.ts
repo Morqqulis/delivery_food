@@ -3,7 +3,7 @@
 import { connectDB } from '#backend/DB'
 import productModel from '#backend/models/productModel'
 import sellerModel from '#backend/models/sellerModel'
-import { IProduct } from '#types/index'
+import { IBasket, IProduct } from '#types/index'
 import { Types } from 'mongoose'
 
 export const productGetAll = async () => {
@@ -56,11 +56,22 @@ export const productGetByIdWithPopulate = async (id: string, selectProduct: stri
       throw new Error(err)
    }
 }
-
-export const productsGetByIds = async (params: string[]) => {
+type BasketItem = {
+   product: string
+   quantity: number
+}
+export const productsGetByIds = async (params: BasketItem[]) => {
    try {
-      const products = await productModel.find({ _id: { $in: params } })
-      return JSON.parse(JSON.stringify(products))
+      const productIds = params.map((product) => product.product)
+      const products = await productModel.find({ _id: { $in: productIds } })
+      const result = products.map((product) => {
+         const item = params.find((item) => item.product === product._id.toString())
+         return {
+            ...product.toObject(),
+            quantity: item?.quantity || 1,
+         }
+      })
+      return JSON.parse(JSON.stringify(result))
    } catch (err) {
       console.error('Məhsulları əldə etmək zamanı xəta baş verdi:', err)
       throw err

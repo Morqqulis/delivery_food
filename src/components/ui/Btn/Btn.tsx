@@ -7,24 +7,14 @@ import styles from './Btn.module.scss'
 const Btn: React.FC<IBtn> = ({ type, className, ariaLabel, children, onClick, text, href }): JSX.Element => {
    if (href) {
       return (
-         <Link
-            className={`${styles.btn} ${className} ${primaryFont.className}`}
-            href={href}
-            onClick={onClick}
-            aria-label={ariaLabel}
-         >
+         <Link className={`${styles.btn} ${className} `} href={href} onClick={onClick} aria-label={ariaLabel}>
             {children}
             {text}
          </Link>
       )
    } else
       return (
-         <Button
-            className={`${styles.btn} ${className} ${primaryFont.className}`}
-            type={type}
-            onClick={onClick}
-            aria-label={ariaLabel}
-         >
+         <Button className={`${styles.btn} ${className} `} type={type} onClick={onClick} aria-label={ariaLabel}>
             {children}
             {text}
          </Button>

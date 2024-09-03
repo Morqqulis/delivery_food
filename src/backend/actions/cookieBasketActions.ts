@@ -1,14 +1,12 @@
 'use server'
 
+import { IBasketItem } from '#types/index'
 import { cookies } from 'next/headers'
 
-type BasketItem = {
-   productId: string
-   quantity: number
-}
+
 
 // Cookie-den basketi elde edirik
-export function cookieGetBasket(): BasketItem[] {
+export async function cookieGetBasket(): Promise<IBasketItem[]> {
    const cookieStore = cookies()
    const basketCookie = cookieStore.get('basket')
 
@@ -25,7 +23,7 @@ export function cookieGetBasket(): BasketItem[] {
 }
 
 // Basketin yaranmasi cookie-de
-export function cookieSetBasket(basket: BasketItem[]) {
+export async function cookieSetBasket(basket: IBasketItem[]) {
    cookies().set({
       name: 'basket',
       value: JSON.stringify(basket),
@@ -37,31 +35,31 @@ export function cookieSetBasket(basket: BasketItem[]) {
 }
 
 // Mehsul elave etmek.
-export function cookieAddToBasket(productId: string, quantity: number = 1) {
-   const basket = cookieGetBasket()
-   const existingItem = basket.find((item) => item.productId === productId)
+export async function cookieAddToBasket(productId: string, quantity: number = 1) {
+   const basket = await cookieGetBasket()
+   const existingItem = basket.find((item: IBasketItem) => item.product === productId)
 
    if (existingItem) {
       existingItem.quantity += quantity
    } else {
-      basket.push({ productId, quantity })
+      basket.push({ product: productId, quantity })
    }
 
    cookieSetBasket(basket)
 }
 
 // Mehsulu silmek.
-export function removeFromBasket(productId: string) {
-   const basket = cookieGetBasket()
-   const updatedBasket = basket.filter((item) => item.productId !== productId)
+export async function coockieRemoveFromBasket(productId: string) {
+   const basket = await cookieGetBasket()
+   const updatedBasket = basket.filter((item) => item.product !== productId)
 
    cookieSetBasket(updatedBasket)
 }
 
 // quantity deyisdir
-export function updateBasketItem(productId: string, quantity: number) {
-   const basket = cookieGetBasket()
-   const item = basket.find((item) => item.productId === productId)
+export async function updateIBasketItem(productId: string, quantity: number) {
+   const basket = await cookieGetBasket()
+   const item = basket.find((item: IBasketItem) => item.product === productId)
 
    if (item) {
       item.quantity = quantity
@@ -70,6 +68,6 @@ export function updateBasketItem(productId: string, quantity: number) {
 }
 
 // Basketi temizlemek ucun.
-export function clearBasket() {
-   cookieSetBasket([])
+export async function clearBasket() {
+   await cookieSetBasket([])
 }

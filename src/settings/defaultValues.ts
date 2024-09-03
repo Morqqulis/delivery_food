@@ -24,3 +24,14 @@ export const AddProductDefault = {
    category: '',
    image: '',
 }
+
+export const CheckoutDefault = {
+   deliveryType: '',
+   fullName: '',
+   phone: '+994',
+   city: '',
+   street: '',
+   sellerNote: '',
+   village: '',
+   deliveryNote: '',
+}

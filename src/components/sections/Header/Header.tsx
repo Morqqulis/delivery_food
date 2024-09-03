@@ -1,7 +1,5 @@
 'use client'
 import { userGetBasket } from '#backend/actions/userActions'
-import Btn from '#ui/Btn/Btn'
-import Logo from '#ui/Logo'
 import { LogIn } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -10,15 +8,18 @@ import styles from './Header.module.scss'
 import HeaderSearch from './HeaderSearch'
 import HeaderUser from './HeaderUser'
 import { productsGetByIds, productGetAll } from '#backend/actions/productActions'
+import { cookieGetBasket } from '#backend/actions/cookieBasketActions'
+import { IBasketItem } from '#types/index'
+import Logo from '#ui/Logo'
+import Btn from '#ui/Btn/Btn'
 
 const Header = () => {
-   const [basket, setBasket] = useState([])
+   const [basket, setBasket] = useState<IBasketItem[]>([])
    const session = useSession()
 
    useEffect(() => {
       ;(async () => {
-         const user = await userGetBasket('66cf65fb10760b3633230284')
-         setBasket(user?.basket)
+         setBasket(await cookieGetBasket())
       })()
    }, [])
 

@@ -22,21 +22,6 @@ const userSchema = new Schema<IUser>(
          required: true,
       },
 
-      basket: [
-         {
-            product: {
-               type: Schema.Types.ObjectId,
-               ref: 'product',
-               required: true,
-            },
-            quantity: {
-               type: Number,
-               required: true,
-               default: 1,
-            },
-         },
-      ],
-
       email: {
          type: String,
          required: true,

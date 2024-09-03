@@ -82,12 +82,11 @@ export interface IUser {
    _id: Types.ObjectId
    name: string
    email: string
-   password: string
-   gender: string
+   password?: string
+   gender?: string
    role?: string
    image?: string
    createdAt?: Date
-   basket?: []
    phone?: string
 }
 
@@ -96,20 +95,23 @@ export interface ICheckoutForm {
    phone: string
    city: string
    deliveryType: string
-   deliveryPoint: string
-   note: string
    street: string
+   sellerNote?: string
+   village: string
+   deliveryNote?: string
 }
+
 export interface IOrder {
    _id?: Types.ObjectId
-   payment: string
    status: string
    customer: Types.ObjectId
-   customerNote?: string
+   city: string
    products: []
+   sellerNote?:string
    createdAt?: Date
    deliveryType: string
-   deliveryAdress: string
+   adress: string
+   deliveryNote?: string
 }
 
 export interface IOrderHistory {
@@ -122,19 +124,20 @@ export interface IOrderHistory {
 }
 
 export interface IBasket {
-   product: {
-      category: string
-      _id: string
-      createdAt: Date
-      description: string
-      image: string
-      name: string
-      price: number
-      seller: string
-      updatedAt: Date
-      __v: number
-   }
+   category: string
    _id: string
+   createdAt: Date
+   description: string
+   image: string
+   name: string
+   price: number
+   seller: string
+   updatedAt: Date
+   quantity: number
+   __v: number
+}
+export interface IBasketItem {
+   product: string
    quantity: number
 }
 export interface IGroupedProductsOrders {
