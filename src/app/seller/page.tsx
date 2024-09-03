@@ -1,5 +1,5 @@
 import DefaultLayout from '#layouts/DefaultLayout'
-import SellerHome from '#pages/Seller/Home/SellerHome'
+import SellerHome from '#sections/Seller/Home/SellerHome'
 
 const Seller: React.FC = (): JSX.Element => {
    return (
