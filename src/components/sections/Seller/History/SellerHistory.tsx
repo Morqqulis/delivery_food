@@ -1,7 +1,7 @@
 'use client'
 import { sellerOrdersNotIncludes } from '#backend/actions/sellerActions'
-import Table from '#sections/Table'
 import { IOrderHistory } from '#types/index'
+import Table from '#ui/Table/Table'
 import React, { useEffect, useState } from 'react'
 
 const SellerHistory: React.FC = () => {
@@ -14,18 +14,18 @@ const SellerHistory: React.FC = () => {
       })()
    }, [])
 
-   const header = ['Products', 'Total', 'Payment', 'Status', 'Date']
-   const tableBody = orders.map((order) => [
-      order.products.map((product) => product.product.name + '*' + product.quantity).join(', '),
-      `$${order.products.reduce((crr, product) => crr + product.product.price * product.quantity, 0)}`,
-      order.payment,
-      order.status,
-      order.createdAt.toLocaleString(),
-   ])
+   const header = ['Products', 'Total', 'Status', 'Date']
+   const tableBody = orders.map((order) => {
+      return {
+         name: order.products.map((product) => product.product.name + '*' + product.quantity).join(', '),
+         total: `$${order.products.reduce((crr, product) => crr + product.product.price * product.quantity, 0)}`,
+         status: order.status,
+         date: order.createdAt.toLocaleString().slice(0, 10),
+      }
+   })
 
    const footer = [
       `Total Orders: ${orders.length}`,
-      '',
       '',
       'Total Revenue:',
       `$${orders.reduce((acc, order) => acc + order.products.reduce((crr, product) => crr + product.product.price * product.quantity, 0), 0).toFixed(2)}`,
@@ -34,7 +34,7 @@ const SellerHistory: React.FC = () => {
    return (
       <div className="flex flex-col p-6">
          <h2 className="mb-4 text-2xl font-bold text-white">Order History</h2>
-         <Table header={header} body={tableBody} footer={footer} />
+         <Table headers={header} body={tableBody} footer={footer} />
       </div>
    )
 }

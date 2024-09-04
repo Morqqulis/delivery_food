@@ -104,9 +104,8 @@ export const sellerGetFilteredOrders = async (sellerId: string, status: string) 
          {
             $group: {
                _id: '$_id',
-               payment: { $first: '$payment' },
                status: { $first: '$status' },
-               customerNote: { $first: '$customerNote' },
+               sellerNote: { $first: '$sellerNote' },
                createdAt: { $first: '$createdAt' },
                products: {
                   $push: {
@@ -119,9 +118,8 @@ export const sellerGetFilteredOrders = async (sellerId: string, status: string) 
          {
             $project: {
                _id: 1,
-               payment: 1,
                status: 1,
-               customerNote: 1,
+               sellerNote: 1,
                createdAt: 1,
                products: 1,
             },

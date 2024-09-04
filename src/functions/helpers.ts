@@ -13,3 +13,19 @@ export function processToken(str: string) {
       .filter((_, i) => i % 25 === 0)
       .join('')
 }
+
+export function daysSince(dateString: string): number {
+   const now = new Date()
+   const past = new Date(dateString)
+   const diffInMs = now.getTime() - past.getTime()
+   const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
+   return diffInDays
+}
+
+export function hoursSince(dateString: string): number {
+   const now = new Date()
+   const past = new Date(dateString)
+   const diffInMs = now.getTime() - past.getTime()
+   const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60))
+   return diffInHours
+}
