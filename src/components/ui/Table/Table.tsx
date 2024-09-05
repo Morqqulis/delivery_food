@@ -9,7 +9,7 @@ interface ITable {
 
 const Table: React.FC<ITable> = ({ headers, body, footer }): JSX.Element => {
    return (
-      <div className="w-full  pt-10 mmd:overflow-auto">
+      <div className="w-full pt-10 mmd:overflow-auto">
          <table className="min-w-full overflow-y-auto bg-gray-100 text-gray-800">
             <thead className="rounded-2xl shadow-md">
                <tr>
@@ -25,7 +25,7 @@ const Table: React.FC<ITable> = ({ headers, body, footer }): JSX.Element => {
             </thead>
             <tbody className="text-sm font-medium uppercase tracking-wider text-gray-500">
                {body?.map((row) => (
-                  <tr key={Math.random() * 10000} className="text-center border-b-2">
+                  <tr key={Math.random() * 10000} className="border-b-2 text-center">
                      {Object.entries(row).map(([key, value]: any) => (
                         <td
                            key={Math.random() * 10000}

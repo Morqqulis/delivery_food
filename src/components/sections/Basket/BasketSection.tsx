@@ -32,10 +32,19 @@ const BasketSection: React.FC = (): JSX.Element => {
    })
    const tableFooter = ['', 'Total Amount', '', '', `$${calculateTotal()}`, '']
    return (
-      <div className="flex flex-col gap-6 p-10">
-         <Table headers={tableHeader} body={tableBody} footer={tableFooter} />
-         <CheckoutForm basket={basket} />
-      </div>
+      <section className={`py-20`}>
+         <div className="container">
+            <h1 className={`mb-10 text-center text-5xl`}>Basket</h1>
+            {basket.length > 0 ? (
+               <div className="flex flex-col gap-6">
+                  <Table headers={tableHeader} body={tableBody} footer={tableFooter} />
+                  <CheckoutForm basket={basket} />
+               </div>
+            ) : (
+               <h2 className={`text-center text-4xl font-bold text-tomato-200`}>Basket is empty</h2>
+            )}
+         </div>
+      </section>
    )
 }
 
