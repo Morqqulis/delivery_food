@@ -4,6 +4,7 @@ import { orderCreate } from '#backend/actions/orderAction'
 import { productsGetByIds } from '#backend/actions/productActions'
 import { userDeleteBasketItem, userGetBasket } from '#backend/actions/userActions'
 import CheckoutForm from '#sections/Basket/CheckoutForm'
+import { useBasketStore } from '#stores/basketStore'
 import { IBasket, IBasketItem } from '#types/index'
 import Btn from '#ui/Btn/Btn'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '#ui/table'
@@ -11,15 +12,17 @@ import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
 const BasketSection: React.FC = (): JSX.Element => {
-   const [basket, setBasket] = useState<IBasket[]>([])
+   // const [basket, setBasket] = useState<IBasket[]>([])
 
-   useEffect(() => {
-      ;(async () => {
-         const data=await cookieGetBasket()
-         const basket = await productsGetByIds(data)
-         setBasket(basket)
-      })()
-   }, [])
+   const { removeFromBasket, basket } = useBasketStore()
+
+   // useEffect(() => {
+   //    ;(async () => {
+   //       const data = await cookieGetBasket()
+   //       const basket = await productsGetByIds(data)
+   //       // setBasket(basket)
+   //    })()
+   // }, [])
 
    const calculateTotal = () => {
       return basket
@@ -28,9 +31,11 @@ const BasketSection: React.FC = (): JSX.Element => {
    }
 
    const deleteBasket = async (id: string) => {
-      await coockieRemoveFromBasket(id)
-      setBasket(basket.filter((product: any) => product._id !== id))
+      removeFromBasket(id)
+      // await coockieRemoveFromBasket(id)
+      // setBasket(basket.filter((product: any) => product._id !== id))
    }
+   console.log(basket)
 
    return (
       <div className="flex flex-col gap-6 p-3">
@@ -47,7 +52,7 @@ const BasketSection: React.FC = (): JSX.Element => {
                   <TableHead></TableHead>
                </TableRow>
             </TableHeader>
-            {basket && (
+            {basket.length > 0 && (
                <TableBody>
                   {basket.map((product: any) => (
                      <TableRow key={product._id}>
@@ -79,7 +84,7 @@ const BasketSection: React.FC = (): JSX.Element => {
             </TableFooter>
          </Table>
 
-         <CheckoutForm basket={basket} setBasket={setBasket} />
+         {/* <CheckoutForm basket={basket} setBasket={setBasket} /> */}
       </div>
    )
 }
