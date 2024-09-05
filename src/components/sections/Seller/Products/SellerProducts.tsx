@@ -2,16 +2,16 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Pencil, Trash } from 'lucide-react'
-import {  productDeleteById } from '#backend/actions/productActions'
+import { productDeleteById } from '#backend/actions/productActions'
 import { ISeller } from '#types/index'
-import { sellerGetById } from '#backend/actions/sellerActions'
+import { sellerGetProductsWithSelect } from '#backend/actions/sellerActions'
 
 const ProductPage: React.FC = () => {
    const [seller, setSeller] = useState<ISeller>()
 
    useEffect(() => {
       ;(async () => {
-         const sel = await sellerGetById('66cf9ec6e996c60736959ed9', 'name category price')
+         const sel = await sellerGetProductsWithSelect('66d02490d14d9bc8e4366bd1', 'name category price')
          if (sel) {
             setSeller(sel)
          }
@@ -19,8 +19,7 @@ const ProductPage: React.FC = () => {
    }, [])
 
    const deleteProduct = async (id: string) => {
-      const deleted = await productDeleteById(id,"66cf9ec6e996c60736959ed9")
-      console.log(deleted);
+      await productDeleteById(id, '66d02490d14d9bc8e4366bd1')
    }
 
    return (
@@ -30,7 +29,7 @@ const ProductPage: React.FC = () => {
             {seller &&
                seller?.products?.map((product) => (
                   <div
-                     key={product._id}
+                     key={product._id.toString()}
                      className="flex w-[300px] items-center justify-center gap-4 rounded-lg bg-gray-800 p-4"
                   >
                      <div className="flex-shrink-0">
@@ -45,7 +44,7 @@ const ProductPage: React.FC = () => {
                      <div className="flex flex-col gap-2">
                         <Pencil className="cursor-pointer text-blue-400 hover:text-blue-500" size={20} />
                         <Trash
-                           onClick={() => deleteProduct(product?._id)}
+                           onClick={() => deleteProduct(product?._id.toString())}
                            className="cursor-pointer text-red-400 hover:text-red-500"
                            size={20}
                         />
