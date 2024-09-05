@@ -21,15 +21,11 @@ export const useBasketStore = create<IBasketStore>((set) => ({
       } catch (error) {
          console.log('Error in fetchBasket at useBasketStore: ', error)
       }
-
-      set({ basket: [] })
    },
 
    addToBasket: async (productId: string, quantity: number) => {
-      const cookieBasket = await cookieGetBasket()
-
       try {
-         if (!cookieBasket.length) return
+         const cookieBasket = await cookieGetBasket()
          const currentCookieItem = cookieBasket.some((product) => product.product === productId)
          if (currentCookieItem) {
             await updateBasketItem(productId, quantity)
@@ -38,8 +34,6 @@ export const useBasketStore = create<IBasketStore>((set) => ({
                   product._id === productId ? { ...product, quantity: product.quantity + quantity } : product,
                ),
             }))
-
-            return
          } else {
             await cookieAddToBasket(productId, quantity)
             const newProduct = await productGetById(productId, '')
@@ -48,8 +42,6 @@ export const useBasketStore = create<IBasketStore>((set) => ({
       } catch (error) {
          console.log('Error in addToBasket at useBasketStore: ', error)
       }
-
-      set({ basket: [] })
    },
 
    removeFromBasket: async (productId: string) => {
@@ -61,8 +53,6 @@ export const useBasketStore = create<IBasketStore>((set) => ({
       } catch (error) {
          console.log('Error in removeFromBasket at useBasketStore: ', error)
       }
-
-      set({ basket: [] })
    },
 
    clearBasket: () => {
