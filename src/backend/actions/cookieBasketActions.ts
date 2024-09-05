@@ -48,16 +48,16 @@ export async function coockieRemoveFromBasket(productId: string) {
    cookieSetBasket(updatedBasket)
 }
 
-export async function updateIBasketItem(productId: string, quantity: number) {
+export async function updateBasketItem(productId: string, quantity: number) {
    const basket = await cookieGetBasket()
    const item = basket.find((item: IBasketItem) => item.product === productId)
 
    if (item) {
-      item.quantity = quantity
+      item.quantity += quantity
       cookieSetBasket(basket)
    }
 }
 
-export async function clearBasket() {
+export async function cookieClearBasket() {
    await cookieSetBasket([])
 }

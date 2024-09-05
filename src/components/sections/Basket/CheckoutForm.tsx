@@ -1,26 +1,24 @@
 'use client'
-
-import { clearBasket } from '#backend/actions/cookieBasketActions'
 import { orderCreate } from '#backend/actions/orderAction'
 import { checkoutSchema } from '#schemes/scheme'
 import { CheckoutDefault } from '#settings/defaultValues'
-import { IBasket, IBasketItem, ICheckoutForm } from '#types/index'
+import { useBasketStore } from '#stores/basketStore'
+import { IBasket, ICheckoutForm } from '#types/index'
 import Btn from '#ui/Btn/Btn'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '#ui/sheet'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 interface CheckoutFormProps {
    basket: IBasket[]
-   setBasket: React.Dispatch<React.SetStateAction<IBasket[]>>
 }
 
-const CheckoutForm: React.FC<CheckoutFormProps> = ({ basket, setBasket }) => {
+const CheckoutForm: React.FC<CheckoutFormProps> = ({ basket }) => {
    const session = useSession()
-
+   const { clearBasket } = useBasketStore()
+   
    const { register, handleSubmit, reset } = useForm({
       resolver: zodResolver(checkoutSchema),
       defaultValues: CheckoutDefault,
@@ -33,7 +31,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ basket, setBasket }) => {
       }
       await orderCreate(basket, user, form)
       reset()
-      setBasket([])
       clearBasket()
    }
 

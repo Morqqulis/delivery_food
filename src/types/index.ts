@@ -154,8 +154,9 @@ export interface IGoogleResponseUser {
 }
 
 export interface IBasketStore {
-   basket: IBasketItem[]
+   basket: IBasket[]
    fetchBasket: () => Promise<void>
    addToBasket: (productId: string, quantity: number) => Promise<void>
    removeFromBasket: (productId: string) => Promise<void>
+   clearBasket: () => void
 }
