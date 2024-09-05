@@ -1,6 +1,6 @@
 'use client'
-import Counter from '#sections/Counter'
 import { IProduct } from '#types/index'
+import Counter from '#ui/Counter'
 import { Heart } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'

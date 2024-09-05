@@ -71,3 +71,60 @@ export const checkoutSchema = z.object({
    village: z.string().min(1, 'Village is required'),
    deliveryNote: z.string().min(1, 'Delivery note is required'),
 })
+
+export const userProfileSchema = z.object({
+   firstName: z.string().min(1, 'Adınızı daxil edin.'),
+   secondName: z
+      .string({
+         required_error: 'Soyadınızı daxil edin.',
+         message: 'Soyadınızı daxil edin.',
+      })
+      .min(1, 'Soyadınızı daxil edin.'),
+   email: z
+      .string()
+      .min(4, {
+         message: 'Emailinizi daxil edin.',
+      })
+      .email({
+         message: 'Emailinizi duzgun daxil edin.',
+      }),
+   phone: z
+      .number({
+         invalid_type_error: 'Telefon nömrəniz duzgun daxil edilməyib.',
+         required_error: 'Telefon nömrəsi mutləqdir.',
+         message: 'Telefon nömrənizi daxil edin.',
+      })
+      .min(9, 'Telefon nömrənizi daxil edin.'),
+   password: z
+      .string({
+         required_error: 'Şifrənizi daxil edin.',
+         message: 'Şifrənizi daxil edin.',
+         invalid_type_error: 'Şifrəniz duzgun daxil edilməyib.',
+      })
+      .min(1, 'Şifrənizi daxil edin.'),
+
+   newPassword: z
+      .string({
+         required_error: 'Şifrənizi daxil edin.',
+         message: 'Şifrənizi daxil edin.',
+         invalid_type_error: 'Şifrəniz duzgun daxil edilməyib.',
+      })
+      .min(1, 'Şifrəniz cox qisadir.'),
+   confirmNewPassword: z
+      .string({
+         required_error: 'Yeni Şifrənizi testiq edin.',
+         message: 'Yeni Şifrənizi testiq edin.',
+         invalid_type_error: 'Şifrəniz duzgun daxil edilməyib.',
+      })
+      .min(1, 'Şifrəniz cox qisadir.'),
+   address: z
+      .string({
+         required_error: 'Ünvanı daxil etmek zəruridir.',
+         message: 'Ünvanınızı daxil edin',
+      })
+      .min(5, 'Ünvanınızı daxil edin'),
+   gender: z.enum(['male', 'female'], { required_error: 'Cins zəruridir' }),
+})
+
+
+export const emailSchema = z.string().email({ message: 'Please enter a valid email' })

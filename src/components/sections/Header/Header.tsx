@@ -6,7 +6,7 @@ import Link from 'next/link'
 import styles from './Header.module.scss'
 import HeaderBasketBtn from './HeaderBasketBtn'
 import HeaderSearch from './HeaderSearch'
-import HeaderUser from './HeaderUser'
+import HeaderUserDropdown from './HeaderUserDropdown'
 
 const Header = () => {
    const session = useSession()
@@ -25,7 +25,7 @@ const Header = () => {
                      <LogIn className={`duration-300 group-hover:text-mini-100`} />
                   </Link>
                ) : (
-                  <HeaderUser userData={session?.data?.user} />
+                  <HeaderUserDropdown userData={session?.data?.user} />
                )}
             </nav>
          </div>
