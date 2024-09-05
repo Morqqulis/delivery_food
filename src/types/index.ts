@@ -29,19 +29,7 @@ export interface IBtn extends React.ButtonHTMLAttributes<HTMLButtonElement> {
    href?: string
 }
 
-export interface ISeller {
-   _id: Types.ObjectId
-   name: string
-   secondName: string
-   address: string
-   phone: string
-   email: string
-   password: string
-   image?: string
-   createdAt?: Date
-   products?: []
-   order?: []
-}
+
 
 export interface IProduct {
    _id: Types.ObjectId
@@ -53,7 +41,19 @@ export interface IProduct {
    image?: string
    createdAt?: Date
 }
-
+export interface ISeller {
+   _id: Types.ObjectId
+   name: string
+   secondName: string
+   address: string
+   phone: string
+   email: string
+   password: string
+   image?: string
+   createdAt?: Date
+   products?: IProduct[]
+   order?: []
+}
 export interface IFormValues {
    email: string
    password: string
