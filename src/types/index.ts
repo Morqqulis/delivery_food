@@ -21,10 +21,9 @@ export interface IClassName {
    className?: string
 }
 
-export interface IBtn extends IClassName {
-   type?: HTMLButtonElement['type']
+export interface IBtn extends React.ButtonHTMLAttributes<HTMLButtonElement> {
    onClick?: () => void | Promise<void> | any
-   ariaLabel: string
+   ariaLabel?: string
    text: string
    children?: React.ReactNode
    href?: string

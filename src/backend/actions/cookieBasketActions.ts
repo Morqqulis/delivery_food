@@ -14,7 +14,7 @@ export async function cookieGetBasket(): Promise<IBasketItem[]> {
          return []
       }
    }
-   return basketCookie ? JSON.parse(basketCookie.value) : []
+   return []
 }
 
 export async function cookieSetBasket(basket: IBasketItem[]) {

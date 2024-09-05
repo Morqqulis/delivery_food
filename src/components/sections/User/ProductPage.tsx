@@ -1,6 +1,5 @@
 'use client'
 import { productGetById } from '#backend/actions/productActions'
-import { userCreate, userDeleteById, userGetAll, userGetById, userUpdateById } from '#backend/actions/userActions'
 import Counter from '#sections/Counter'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'

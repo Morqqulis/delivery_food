@@ -1,18 +1,18 @@
 'use client'
-import { useEffect } from 'react'
 import { useBasketStore } from '#stores/basketStore'
 import Btn from '#ui/Btn/Btn'
 import Logo from '#ui/Logo'
+import { LogIn } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { LogIn } from 'lucide-react'
+import { useEffect } from 'react'
+import styles from './Header.module.scss'
 import HeaderSearch from './HeaderSearch'
 import HeaderUser from './HeaderUser'
-import styles from './Header.module.scss'
 
 const Header = () => {
-   const basket = useBasketStore((state) => state.basket)
-   const fetchBasket = useBasketStore((state) => state.fetchBasket)
+   const { basket, fetchBasket } = useBasketStore()
+
    const session = useSession()
 
    useEffect(() => {
