@@ -107,7 +107,7 @@ export interface IOrder {
    customer: Types.ObjectId
    city: string
    products: []
-   sellerNote?:string
+   sellerNote?: string
    createdAt?: Date
    deliveryType: string
    adress: string
@@ -152,4 +152,11 @@ export interface IGoogleResponseUser {
    email: string
    image: string
    name: string
+}
+
+export interface IBasketStore {
+   basket: IBasketItem[]
+   fetchBasket: () => Promise<void>
+   addToBasket: (productId: string, quantity: number) => Promise<void>
+   removeFromBasket: (productId: string) => Promise<void>
 }
