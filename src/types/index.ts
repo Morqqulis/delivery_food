@@ -37,7 +37,8 @@ export interface IProduct {
    createdAt?: Date
 }
 export interface ISeller {
-   _id: Types.ObjectId
+   _id?: Types.ObjectId
+   point: string
    name: string
    secondName: string
    address: string
@@ -100,7 +101,14 @@ export interface IOrder {
    status: string
    customer: Types.ObjectId
    city: string
-   products: []
+   products: [
+      {
+         product: Types.ObjectId
+         quantity: Number
+         accepted: Boolean
+         point: Types.ObjectId
+      },
+   ]
    sellerNote?: string
    createdAt?: Date
    deliveryType: string
@@ -166,5 +174,16 @@ export interface IPoint {
    name: string
    address: string
    phone: string
+   orders: [
+      {
+         order: Types.ObjectId
+         products: [
+            {
+               products: Types.ObjectId
+               sellerId: Types.ObjectId
+            },
+         ]
+      },
+   ]
    createdAt?: Date
 }

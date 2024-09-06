@@ -50,7 +50,7 @@ export const productGetByIdWithPopulate = async (id: string, selectProduct: stri
       await connectDB()
       const product = await productModel
          .findOne({ _id: id }, selectProduct)
-         .populate({ path: 'sellerId', model: 'seller', select: selectSeller })
+         .populate({ path: 'seller', model: 'seller', select: selectSeller })
       return JSON.parse(JSON.stringify(product))
    } catch (err: Error | any) {
       throw new Error(err)

@@ -26,6 +26,7 @@ export const sellerGetAll = async () => {
       throw new Error(err)
    }
 }
+
 export const sellerGetById = async (id: string) => {
    if (!id) return
    try {
@@ -36,11 +37,22 @@ export const sellerGetById = async (id: string) => {
       throw new Error(err)
    }
 }
-export const sellerGetByIdWithPopulate = async (id: string) => {
+
+export const sellerGetByIdWithSelect = async (id: string, select: string) => {
    if (!id) return
    try {
       await connectDB()
-      const seller = await sellerModel.findOne({ _id: id }).populate('products')
+      const seller = await sellerModel.findOne({ _id: id }, select)
+      return JSON.parse(JSON.stringify(seller))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+export const sellerGetByIdWithPopulate = async (id: string, populate: string) => {
+   if (!id) return
+   try {
+      await connectDB()
+      const seller = await sellerModel.findOne({ _id: id }).populate(populate)
       return JSON.parse(JSON.stringify(seller))
    } catch (err: Error | any) {
       throw new Error(err)

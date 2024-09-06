@@ -2,11 +2,14 @@
 
 import { connectDB } from '#backend/DB'
 import orderModel from '#backend/models/orderModel'
+import pointModel from '#backend/models/pointModel'
 import productModel from '#backend/models/productModel'
 import sellerModel from '#backend/models/sellerModel'
 import userModel from '#backend/models/userModel'
 import { IBasket, IBasketItem, ICheckoutForm } from '#types/index'
 import mongoose, { Types } from 'mongoose'
+import { sellerGetByIdWithSelect } from './sellerActions'
+import { productGetByIdWithPopulate } from './productActions'
 
 export const orderCreate = async (basket: IBasket[], session: { email: string; name: string }, form: ICheckoutForm) => {
    if (!basket || !session || !form) return
@@ -15,40 +18,71 @@ export const orderCreate = async (basket: IBasket[], session: { email: string; n
    try {
       await connectDB()
 
-      let user = await userModel.findOne({ email: session.email })
+      const user = await userModel.findOneAndUpdate(
+         { email: session.email },
+         { name: session.name, phone, email: session.email },
+         { new: true, upsert: true },
+      )
 
-      if (!user) {
-         user = await userModel.create({
-            name: session.name,
-            phone: phone,
-            password: '12345',
-            email: session.email,
-         })
-      }
-      const orderData = {
-         phone: phone,
-         adress: city + '' + street + '' + village,
-         deliveryType: deliveryType,
-         deliveryNote: deliveryNote,
-         sellerNote: sellerNote,
-         status: 'pending',
-         customer: user._id,
-         products: basket.map((product: any) => ({
-            product: product._id,
-            quantity: product.quantity,
-         })),
-      }
-
-      const order = await orderModel.create(orderData)
-
-      const sellerIds = Array.from(new Set(basket.map((item) => item.seller)))
-
-      await Promise.all(
-         sellerIds.map(async (sellerId) => {
-            await sellerModel.updateOne({ _id: new Types.ObjectId(sellerId) }, { $push: { order: order._id } })
+      const products = await Promise.all(
+         basket.map(async (product) => {
+            const {
+               seller: { point },
+            } = await productGetByIdWithPopulate(product._id, 'seller', 'point')
+            return { product: product._id, quantity: product.quantity, point }
          }),
       )
 
+      const order = await orderModel.create({
+         phone,
+         adress: city + '' + street + '' + village,
+         deliveryType,
+         deliveryNote,
+         sellerNote,
+         status: 'pending',
+         customer: user._id,
+         products,
+      })
+
+      // satıcılara sifarişlər haqqında məlumat verilməsi
+      const sellers = Array.from(new Set(basket.map((item) => item.seller)))
+      await sellerModel.updateMany({ _id: { $in: sellers } }, { $push: { order: order._id } })
+
+      // cəmləşmə nöqtələrinə sifarişlər haqqında məlumat verilməsi
+      const pointOrders: Record<string, { order: Types.ObjectId; products: { product: string; quantity: number }[] }> =
+         {}
+
+      order.products.forEach((prod: { product: string; quantity: number; point: Types.ObjectId }) => {
+         const pointId = prod.point.toString()
+
+         if (!pointOrders[pointId]) {
+            pointOrders[pointId] = {
+               order: order._id,
+               products: [],
+            }
+         }
+
+         pointOrders[pointId].products.push({
+            product: prod.product,
+            quantity: prod.quantity,
+         })
+      })
+
+      await Promise.all(
+         Object.keys(pointOrders).map(async (pointId) => {
+            await pointModel.updateOne(
+               { _id: pointId },
+               {
+                  $push: {
+                     orders: {
+                        order: pointOrders[pointId].order,
+                        products: pointOrders[pointId].products,
+                     },
+                  },
+               },
+            )
+         }),
+      )
       return JSON.parse(JSON.stringify(order))
    } catch (err: Error | any) {
       throw new Error(err)
@@ -104,8 +138,8 @@ export const orderGet = async (id: string) => {
    if (!id) return
    try {
       await connectDB()
-      const order = await orderModel.findOne({ _id: id }).populate('customer').populate('products.product').lean()
-      return order
+      const order = await orderModel.findOne({ _id: id }).populate('customer').populate('products.product')
+      return JSON.parse(JSON.stringify(order))
    } catch (err: Error | any) {
       throw new Error(err)
    }

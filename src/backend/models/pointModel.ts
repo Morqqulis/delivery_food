@@ -1,6 +1,8 @@
 import { IPoint } from '#types/index'
 import { model, models, Schema, Types } from 'mongoose'
-
+import order from '#backend/models/orderModel'
+import product from '#backend/models/productModel'
+import seller from '#backend/models/sellerModel'
 const pointSchema = new Schema<IPoint>(
    {
       _id: {
@@ -22,6 +24,28 @@ const pointSchema = new Schema<IPoint>(
          type: String,
          required: true,
       },
+      orders: [
+         {
+            order: {
+               type: Schema.Types.ObjectId,
+               ref: 'order',
+            },
+            products: [
+               {
+                  product: {
+                     type: Schema.Types.ObjectId,
+                     ref: 'product',
+                  },
+
+                  quantity: {
+                     type: Number,
+                     required: true,
+                  },
+               },
+            ],
+         },
+      ],
+
       createdAt: {
          type: Date,
          required: true,

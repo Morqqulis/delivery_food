@@ -34,7 +34,7 @@ const AddProduct: React.FC = () => {
             price: price,
             category: category,
             image: './qazan.svg',
-            seller: new Types.ObjectId('66d02490d14d9bc8e4366bd1'),
+            seller: new Types.ObjectId('66dacdf06c5dc6205ccfd518'),
          }
          await productCreate(product)
          reset()

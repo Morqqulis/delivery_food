@@ -2,6 +2,7 @@ import { IOrder } from '#types/index'
 import { model, models, Schema, Types } from 'mongoose'
 import product from './productModel'
 import user from './userModel'
+import point from './pointModel'
 
 const orderSchema = new Schema<IOrder>(
    {
@@ -50,6 +51,11 @@ const orderSchema = new Schema<IOrder>(
             accepted: {
                type: Boolean,
                default: false,
+            },
+            point: {
+               type: Schema.Types.ObjectId,
+               ref: 'point',
+               required: true,
             },
          },
       ],

@@ -1,12 +1,13 @@
 import { ISeller } from '#types/index'
 import product from '#backend/models/productModel'
+import point from '#backend/models/pointModel'
 import { model, models, Schema, Types } from 'mongoose'
-
 const sellerSchema = new Schema<ISeller>(
    {
       _id: {
          type: Schema.Types.ObjectId,
          required: true,
+         default: () => new Types.ObjectId(),
       },
       name: {
          type: String,
@@ -16,7 +17,10 @@ const sellerSchema = new Schema<ISeller>(
          type: String,
          required: true,
       },
-
+      point: {
+         type: String,
+         ref: 'point',
+      },
       address: {
          type: String,
          required: true,
