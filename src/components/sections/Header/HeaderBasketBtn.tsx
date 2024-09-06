@@ -1,5 +1,6 @@
 'use client'
 
+import { pointCreate } from '#backend/actions/pointActions'
 import { useBasketStore } from '#stores/basketStore'
 import Btn from '#ui/Btn/Btn'
 import { useEffect } from 'react'
@@ -8,6 +9,14 @@ const HeaderBasketBtn: React.FC = (): JSX.Element => {
    const { basket, fetchBasket } = useBasketStore()
    useEffect(() => {
       fetchBasket()
+      ;(async () => {
+         const data = {
+            name: 'salam',
+            address: 'baku',
+            phone: '4488444',
+         }
+         // console.log(await pointCreate(data))
+      })()
    }, [])
    return (
       <Btn

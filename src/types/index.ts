@@ -29,8 +29,6 @@ export interface IBtn extends React.ButtonHTMLAttributes<HTMLButtonElement> {
    href?: string
 }
 
-
-
 export interface IProduct {
    _id: Types.ObjectId
    name: string
@@ -159,4 +157,12 @@ export interface IBasketStore {
    addToBasket: (productId: string, quantity: number) => Promise<void>
    removeFromBasket: (productId: string) => Promise<void>
    clearBasket: () => void
+}
+
+export interface IPoint {
+   _id?: Types.ObjectId
+   name: string
+   address: string
+   phone: string
+   createdAt?: Date
 }

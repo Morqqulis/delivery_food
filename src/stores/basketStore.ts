@@ -13,8 +13,10 @@ export const useBasketStore = create<IBasketStore>((set) => ({
    basket: [],
    fetchBasket: async () => {
       const basketCookie = await cookieGetBasket()
-      const products = await productsGetByIds(basketCookie)
-      set({ basket: products })
+      if (basketCookie.length) {
+         const products = await productsGetByIds(basketCookie)
+         set({ basket: products })
+      }
    },
 
    addToBasket: async (productId: string, quantity: number) => {
