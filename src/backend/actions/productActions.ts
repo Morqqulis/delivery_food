@@ -10,7 +10,7 @@ export const productGetAll = async () => {
    try {
       await connectDB()
       const products = await productModel.find()
-      return JSON.parse(JSON.stringify(products))
+      return products
    } catch (err: Error | any) {
       throw new Error(err)
    }

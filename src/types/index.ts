@@ -9,10 +9,7 @@ export interface IParamsID {
       id: string
    }
 }
-export interface IProductsSection {
-   products: IProduct[]
-   title: string
-}
+
 export interface IDefaultProvider extends IChildren {
    full: boolean
 }
@@ -28,8 +25,6 @@ export interface IBtn extends React.ButtonHTMLAttributes<HTMLButtonElement> {
    children?: React.ReactNode
    href?: string
 }
-
-
 
 export interface IProduct {
    _id: Types.ObjectId
@@ -159,4 +154,9 @@ export interface IBasketStore {
    addToBasket: (productId: string, quantity: number) => Promise<void>
    removeFromBasket: (productId: string) => Promise<void>
    clearBasket: () => void
+}
+
+export interface ISessionStore {
+   session: any
+   checkSession: () => void
 }
