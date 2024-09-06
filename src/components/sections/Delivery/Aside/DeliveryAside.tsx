@@ -9,18 +9,17 @@ interface IProps {
 }
 const DeliveryAside: React.FC<IProps> = ({ pointInfo }): JSX.Element => {
    const menuItems = [
-      { id: 1, name: 'Dashboard', icon: <House />, route: '/seller' },
-      { id: 2, name: 'Products', icon: <AlignEndVertical />, route: '/seller/products' },
-      { id: 3, name: 'Add Product', icon: <CirclePlus />, route: '/seller/products/add' },
-      { id: 4, name: 'Active Orders', icon: <Bolt />, route: '/seller/orders' },
-      { id: 5, name: 'History', icon: <ListOrdered />, route: '/seller/history' },
+      { id: 1, name: 'Dashboard', icon: <House />, route: '/delivery' },
+      { id: 2, name: 'Məhsul qəbulu', icon: <CirclePlus />, route: '/delivery/import' },
+      { id: 3, name: 'Hazır sifarişlər', icon: <AlignEndVertical />, route: '/delivery/completedOrders' },
+      { id: 4, name: 'Gözləyən sifarişlər', icon: <Bolt />, route: '/delivery/pendingOrders' },
    ]
 
    return (
       <div className="flex h-screen w-full flex-col gap-6 bg-[#1a1a2e] p-4 text-white">
          <div className="mb-6 flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-500 text-2xl font-bold text-white">
-               {pointInfo.name.charAt(0)}
+               {pointInfo?.name?.charAt(0)}
             </div>
             <div>
                <h3 className="text-lg font-semibold">{pointInfo.name}</h3>

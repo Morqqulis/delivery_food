@@ -2,6 +2,7 @@
 
 import { connectDB } from '#backend/DB'
 import pointModel from '#backend/models/pointModel'
+import productModel from '#backend/models/productModel'
 import { IPoint } from '#types/index'
 
 export const pointCreate = async (data: IPoint) => {
@@ -27,12 +28,11 @@ export const pointGetByIdWithPopulate = async (id: string) => {
    if (!id) return
    try {
       await connectDB()
-      const point = await pointModel
-         .findOne({ _id: id })
-         .populate('orders.order') // 'orders.order' sahəsi üzrə doldurma
-         .populate('products.product')
+      const point = await pointModel.findOne({ _id: id }).populate('orders.order').populate('orders.products.product')
+
       return JSON.parse(JSON.stringify(point))
    } catch (err: Error | any) {
       throw new Error(err)
    }
 }
+
