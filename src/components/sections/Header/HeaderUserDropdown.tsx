@@ -11,7 +11,7 @@ import {
 import { DefaultSession } from 'next-auth'
 import { signOut } from 'next-auth/react'
 
-const HeaderUser = ({ userData }: { userData: DefaultSession['user'] }): JSX.Element => {
+const HeaderUserDropdown = ({ userData }: { userData: DefaultSession['user'] }): JSX.Element => {
    return (
       <DropdownMenu>
          <DropdownMenuTrigger>
@@ -28,7 +28,7 @@ const HeaderUser = ({ userData }: { userData: DefaultSession['user'] }): JSX.Ele
             <DropdownMenuItem>
                <Btn
                   className={`w-full text-center hover:bg-gray-300`}
-                  href={'/user'}
+                  href={'/profile'}
                   ariaLabel={'Profile Button'}
                   text={'Profile'}
                />
@@ -47,4 +47,4 @@ const HeaderUser = ({ userData }: { userData: DefaultSession['user'] }): JSX.Ele
    )
 }
 
-export default HeaderUser
+export default HeaderUserDropdown

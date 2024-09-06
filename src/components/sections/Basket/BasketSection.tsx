@@ -30,7 +30,9 @@ const BasketSection: React.FC = (): JSX.Element => {
          ),
       }
    })
-   const tableFooter = ['', 'Total Amount', '', '', '', `$${calculateTotal()}`, '']
+   
+   const tableFooter = ['', 'Total Amount', '', '', `$${calculateTotal()}`, '']
+
    return (
       <section className={`py-20`}>
          <div className="container">

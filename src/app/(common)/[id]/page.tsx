@@ -1,7 +1,5 @@
-import { productGetById } from '#backend/actions/productActions'
 import DefaultLayout from '#layouts/DefaultLayout'
-import ProductsSection from '#sections/Home/ProductsSection'
-import ProductPage from '#sections/User/ProductPage'
+import ProductPage from '#sections/Profile/ProductPage'
 import { IParamsID } from '#types/index'
 import { NextPage } from 'next'
 

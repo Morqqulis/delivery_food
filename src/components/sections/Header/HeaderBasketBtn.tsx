@@ -7,6 +7,7 @@ import { useEffect } from 'react'
 
 const HeaderBasketBtn: React.FC = (): JSX.Element => {
    const { basket, fetchBasket } = useBasketStore()
+
    useEffect(() => {
       fetchBasket()
       ;(async () => {
@@ -18,6 +19,7 @@ const HeaderBasketBtn: React.FC = (): JSX.Element => {
          // console.log(await pointCreate(data))
       })()
    }, [])
+
    return (
       <Btn
          className={`px-11 py-2`}

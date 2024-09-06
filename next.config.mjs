@@ -23,6 +23,20 @@ const nextConfig = {
    experimental: {
       reactCompiler: true,
       // typedRoutes: true,
+      optimizePackageImports: [
+         'bcryptjs',
+         'next-auth',
+         'clsx',
+         'class-variance-authority',
+         'cookie',
+         'mongodb',
+         'mongoose',
+         'react-hook-form',
+         'zod',
+         'formidable',
+         'gridfs-stream',
+         'lucide-react',
+      ],
       ppr: true,
       cssChunking: 'loose',
       turbo: {

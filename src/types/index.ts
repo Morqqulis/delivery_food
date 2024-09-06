@@ -9,10 +9,7 @@ export interface IParamsID {
       id: string
    }
 }
-export interface IProductsSection {
-   products: IProduct[]
-   title: string
-}
+
 export interface IDefaultProvider extends IChildren {
    full: boolean
 }
@@ -157,6 +154,11 @@ export interface IBasketStore {
    addToBasket: (productId: string, quantity: number) => Promise<void>
    removeFromBasket: (productId: string) => Promise<void>
    clearBasket: () => void
+}
+
+export interface ISessionStore {
+   session: any
+   checkSession: () => void
 }
 
 export interface IPoint {

@@ -1,10 +1,11 @@
 import { authConfig } from '#configs/authConfig'
 import { getServerSession } from 'next-auth'
 import Image from 'next/image'
+import ProfileForm from './ProfileForm'
 
 interface IMainSection {}
 
-const UserMainSection: React.FC = async (): Promise<JSX.Element> => {
+const ProfileSection: React.FC = async (): Promise<JSX.Element> => {
    const session = await getServerSession(authConfig)
 
    return (
@@ -14,18 +15,10 @@ const UserMainSection: React.FC = async (): Promise<JSX.Element> => {
                Profile of <br />
                <span className={`text-5xl text-mini-100`}>{session?.user?.name}</span>
             </h1>
-            {session?.user?.image && (
-               <Image
-                  className={`mx-auto rounded-xl`}
-                  src={session.user.image}
-                  alt={'User image'}
-                  width={300}
-                  height={300}
-               />
-            )}
+            <ProfileForm />
          </div>
       </section>
    )
 }
 
-export default UserMainSection
+export default ProfileSection

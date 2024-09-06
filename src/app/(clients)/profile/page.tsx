@@ -1,12 +1,12 @@
 import DefaultLayout from '#layouts/DefaultLayout'
-import UserMainSection from '#sections/User/UserMainSection'
+import ProfileSection from '#sections/Profile/ProfileSection'
 import { NextPage } from 'next'
 
 const UserPage: NextPage = (): JSX.Element => {
    return (
       <DefaultLayout full>
          <main>
-            <UserMainSection />
+            <ProfileSection />
          </main>
       </DefaultLayout>
    )
