@@ -14,6 +14,7 @@ const DeliveryAside: React.FC<IProps> = ({ pointInfo }): JSX.Element => {
       { id: 3, name: 'Hazır sifarişlər', icon: <AlignEndVertical />, route: '/delivery/completedOrders' },
       { id: 4, name: 'Gözləyən sifarişlər', icon: <Bolt />, route: '/delivery/pendingOrders' },
    ]
+console.log(pointInfo);
 
    return (
       <div className="flex h-screen w-full flex-col gap-6 bg-[#1a1a2e] p-4 text-white">

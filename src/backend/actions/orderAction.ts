@@ -145,6 +145,16 @@ export const orderGet = async (id: string) => {
    }
 }
 
+export const orderGetAll = async () => {
+   try {
+      await connectDB()
+      const orders = await orderModel.find().populate('customer').populate('products.product')
+      return JSON.parse(JSON.stringify(orders))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+
 export const orderDelete = async (orderId: string) => {
    if (!orderId) return
 
