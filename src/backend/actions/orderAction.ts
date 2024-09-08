@@ -49,90 +49,28 @@ export const orderCreate = async (basket: IBasket[], session: { email: string; n
       await sellerModel.updateMany({ _id: { $in: sellers } }, { $push: { order: order._id } })
 
       // cəmləşmə nöqtələrinə sifarişlər haqqında məlumat verilməsi
-      const pointOrders: Record<string, { order: Types.ObjectId; products: { product: string; quantity: number }[] }> =
-         {}
-
+      const pointsSet = new Set() // Pointlərin siyahısını tutmaq üçün Set
       order.products.forEach((prod: { product: string; quantity: number; point: Types.ObjectId }) => {
-         const pointId = prod.point.toString()
-
-         if (!pointOrders[pointId]) {
-            pointOrders[pointId] = {
-               order: order._id,
-               products: [],
-            }
-         }
-
-         pointOrders[pointId].products.push({
-            product: prod.product,
-            quantity: prod.quantity,
-         })
+         pointsSet.add(prod.point.toString()) 
       })
 
+      // Hər bir point üçün tapırıq və orders arrayına order id əlavə edirik
       await Promise.all(
-         Object.keys(pointOrders).map(async (pointId) => {
+         Array.from(pointsSet).map(async (pointId) => {
             await pointModel.updateOne(
-               { _id: pointId },
+               { _id: pointId }, 
                {
-                  $push: {
-                     orders: {
-                        order: pointOrders[pointId].order,
-                        products: pointOrders[pointId].products,
-                     },
-                  },
+                  $addToSet: { orders: order._id }, 
                },
             )
          }),
       )
+
       return JSON.parse(JSON.stringify(order))
    } catch (err: Error | any) {
       throw new Error(err)
    }
 }
-
-// export const orderCreate = async (basket: any, customer: string) => {
-//    if (!basket || !customer) return
-//    try {
-//       await connectDB()
-
-//       const orderData = {
-//          payment: 'cash',
-//          status: 'pending',
-//          customer: new Types.ObjectId(customer),
-//          customerNote: 'Sifarişləri yaxşı paketləyin',
-//          products: basket.map((product: any) => ({
-//             product: product.product._id,
-//             quantity: product.quantity,
-//          })),
-//       }
-
-//       const order = await orderModel.create(orderData)
-
-//       await userModel.updateOne({ _id: new Types.ObjectId(customer) }, { $set: { basket: [] } })
-
-//       const sellerIds = Array.from(
-//          new Set(
-//             basket.map(
-//                (item: {
-//                   product: {
-//                      seller: string
-//                   }
-//                }) => item.product.seller,
-//             ),
-//          ),
-//       )
-
-//       await Promise.all(
-//          sellerIds.map(async (sellerId) => {
-//             // @ts-ignore
-//             await sellerModel.updateOne({ _id: new Types.ObjectId(sellerId) }, { $push: { order: order._id } })
-//          }),
-//       )
-
-//       return JSON.parse(JSON.stringify(order))
-//    } catch (err: Error | any) {
-//       throw new Error(err)
-//    }
-// }
 
 export const orderGet = async (id: string) => {
    if (!id) return
@@ -219,6 +157,30 @@ export const orderUpdateStatus = async (id: string, status: string) => {
       await connectDB()
       const order = await orderModel.updateOne({ _id: id }, { status: status })
       return 'Updated'
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+
+export const updateProductAcceptedStatus = async (orderId: string, productId: string, value: boolean) => {
+   if (!orderId || !productId) return
+
+   try {
+      await connectDB()
+
+      // Hədəf orderi və products içərisində olan productı tapın və accepted dəyərini yeniləyin
+      const updatedOrder = await orderModel.updateOne(
+         {
+            _id: orderId,
+            'products.product': productId,
+         },
+         {
+            $set: { 'products.$.accepted': value },
+         },
+         { new: true },
+      )
+
+      return updatedOrder
    } catch (err: Error | any) {
       throw new Error(err)
    }

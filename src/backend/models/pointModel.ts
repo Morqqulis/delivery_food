@@ -26,23 +26,8 @@ const pointSchema = new Schema<IPoint>(
       },
       orders: [
          {
-            order: {
-               type: Schema.Types.ObjectId,
-               ref: 'order',
-            },
-            products: [
-               {
-                  product: {
-                     type: Schema.Types.ObjectId,
-                     ref: 'product',
-                  },
-
-                  quantity: {
-                     type: Number,
-                     required: true,
-                  },
-               },
-            ],
+            type: Schema.Types.ObjectId,
+            ref: 'order',
          },
       ],
 

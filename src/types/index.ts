@@ -96,24 +96,33 @@ export interface ICheckoutForm {
    deliveryNote?: string
 }
 
+export interface IOrderItem {
+   product: IProduct
+   quantity: Number
+   accepted: Boolean
+   point: Types.ObjectId
+}
 export interface IOrder {
    _id?: Types.ObjectId
    status: string
    customer: Types.ObjectId
    city: string
-   products: [
-      {
-         product: Types.ObjectId
-         quantity: Number
-         accepted: Boolean
-         point: Types.ObjectId
-      },
-   ]
+   products: IOrderItem[]
    sellerNote?: string
    createdAt?: Date
    deliveryType: string
    adress: string
    deliveryNote?: string
+}
+
+export interface IPoint {
+   _id?: Types.ObjectId
+   name: string
+   address: string
+   phone: string
+   orders: IOrder[]
+
+   createdAt?: Date
 }
 
 export interface IOrderHistory {
@@ -167,23 +176,4 @@ export interface IBasketStore {
 export interface ISessionStore {
    session: any
    checkSession: () => void
-}
-
-export interface IPoint {
-   _id?: Types.ObjectId
-   name: string
-   address: string
-   phone: string
-   orders: [
-      {
-         order: Types.ObjectId
-         products: [
-            {
-               products: Types.ObjectId
-               sellerId: Types.ObjectId
-            },
-         ]
-      },
-   ]
-   createdAt?: Date
 }
