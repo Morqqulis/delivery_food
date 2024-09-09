@@ -106,7 +106,7 @@ export interface IOrderItem {
 export interface IOrder {
    _id: Types.ObjectId
    status: string
-   customer: Types.ObjectId
+   customer: IUser
    city: string
    products: IOrderItem[]
    sellerNote?: string

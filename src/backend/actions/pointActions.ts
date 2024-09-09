@@ -33,7 +33,7 @@ export const pointGetByIdWithPopulate = async (id: string) => {
             await pointModel.findOne({ _id: id }).populate({
                path: 'orders',
                populate: {
-                  path: 'products.product',
+                  path: 'products.product customer',
                },
             }),
          ),

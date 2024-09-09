@@ -9,8 +9,6 @@ import Btn from '#ui/Btn/Btn'
 
 const HomeDelivery: React.FC = (): JSX.Element => {
    const { point, updateProductAcceptStatus, updateOrderStatus } = useDeliveryStore()
-
-   const header = ['ID', 'Address', 'Status', 'Date', 'Note', 'Type', 'Customer', 'Action']
    const body = point?.orders?.map((item: IOrder) => {
       const { adress, createdAt, products, customer, deliveryNote, deliveryType, status, _id } = item
       const dialogBody = products.map((product: IOrderItem) => {
@@ -37,7 +35,7 @@ const HomeDelivery: React.FC = (): JSX.Element => {
          date: createdAt?.toLocaleString().slice(0, 10),
          deliveryNote,
          deliveryType,
-         customer,
+         customer: customer?.name,
          action: (
             <Dialog>
                <DialogTrigger className="font-bold text-green-700">
@@ -74,7 +72,7 @@ const HomeDelivery: React.FC = (): JSX.Element => {
             <DeliveryAside pointInfo={point} />
          </div>
          <div className="w-[80%]">
-            <Table headers={header} body={body} />
+            <Table headers={['ID', 'Address', 'Status', 'Date', 'Note', 'Type', 'Customer', 'Action']} body={body} />
          </div>
       </div>
    )
