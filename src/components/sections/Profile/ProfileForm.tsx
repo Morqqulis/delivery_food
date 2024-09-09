@@ -122,13 +122,13 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                         >
                            <FormItem className={`flex items-center gap-2 text-center`}>
                               <FormControl>
-                                 <RadioGroupItem value={'male'} />
+                                 <RadioGroupItem className={`text-white`} value={'male'} />
                               </FormControl>
                               <FormLabel className={`-translate-y-1`}>Male</FormLabel>
                            </FormItem>
                            <FormItem className={`flex items-center gap-2 text-center`}>
                               <FormControl>
-                                 <RadioGroupItem value={'female'} />
+                                 <RadioGroupItem className={`text-white`} value={'female'} />
                               </FormControl>
                               <FormLabel className={`-translate-y-1`}>Female</FormLabel>
                            </FormItem>
