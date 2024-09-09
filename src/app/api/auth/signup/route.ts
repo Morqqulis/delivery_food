@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
    const { firstName, email, password, gender } = await request.json()
 
    try {
-      const newUser = await userCreate({ _id: new Types.ObjectId(), name: firstName, email, password, gender })
+      const newUser = await userCreate({ name: firstName, email, password, gender })
 
       if (!newUser) return NextResponse.json({ message: 'Email artıq istifadə olunub.' }, { status: 400 })
 

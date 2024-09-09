@@ -192,7 +192,8 @@ export const sellerOrdersNotIncludes = async (sellerId: string, status: string) 
          },
       ])
 
-      return JSON.parse(JSON.stringify(orders))
+      // return JSON.parse(JSON.stringify(orders))
+      return orders
    } catch (error: any) {
       throw new Error('Error retrieving orders by seller: ' + error.message)
    }

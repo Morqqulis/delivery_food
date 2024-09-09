@@ -74,7 +74,7 @@ export interface IAddProduct {
 }
 
 export interface IUser {
-   _id: Types.ObjectId
+   _id?: Types.ObjectId
    name: string
    email: string
    password?: string
@@ -83,6 +83,7 @@ export interface IUser {
    image?: string
    createdAt?: Date
    phone?: string
+   address?: string
 }
 
 export interface ICheckoutForm {

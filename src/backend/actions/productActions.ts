@@ -10,7 +10,7 @@ export const productGetAll = async () => {
    try {
       await connectDB()
       const products = await productModel.find()
-      return JSON.parse(JSON.stringify(products))
+      return await JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -19,7 +19,7 @@ export const productGetAllPopulate = async () => {
    try {
       await connectDB()
       const products = await productModel.find().populate({ path: 'seller', model: 'seller' })
-      return JSON.parse(JSON.stringify(products))
+      return await JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -34,7 +34,7 @@ export const productGetAllWithPopulateBySelect = async (select: string) => {
    }
 }
 
-export const productGetById = async (id: string, select?: string) => {
+export const productGetById = async (id: Types.ObjectId, select?: string) => {
    if (!id) return
    try {
       await connectDB()
@@ -60,12 +60,14 @@ type BasketItem = {
    product: string
    quantity: number
 }
-export const productsGetByIds = async (params: BasketItem[]) => {
+export const productsGetByIds = async (items: BasketItem[]) => {
    try {
-      const productIds = params.map((product) => product.product)
+      await connectDB()
+      const productIds = items.map((product) => product.product)
       const products = await productModel.find({ _id: { $in: productIds } })
+      if (products.length === 0) return console.error('Products not found')
       const result = products.map((product) => {
-         const item = params.find((item) => item.product === product._id.toString())
+         const item = items.find((item) => item.product === product._id.toString())
          return {
             ...product.toObject(),
             quantity: item?.quantity || 1,

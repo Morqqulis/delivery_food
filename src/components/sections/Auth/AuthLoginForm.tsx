@@ -1,16 +1,16 @@
 'use client'
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '#ui/form'
+import Btn from '#ui/Btn/Btn'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '#ui/form'
 import { Input } from '#ui/input'
 import { useToast } from '#ui/use-toast'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
+import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import styles from './Auth.module.scss'
-import Btn from '#ui/Btn/Btn'
-import Image from 'next/image'
 
 const loginShema = z.object({
    email: z
@@ -29,7 +29,7 @@ const AuthLoginForm: React.FC = (): JSX.Element => {
    const { toast } = useToast()
    const router = useRouter()
    const searchParams = useSearchParams()
-   const callbackUrl = searchParams.get('callbackUrl') || '/user'
+   const callbackUrl = searchParams.get('callbackUrl') || '/profile'
 
    const handleLogin = async (values: z.infer<typeof loginShema>) => {
       try {

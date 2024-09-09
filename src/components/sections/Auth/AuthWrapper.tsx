@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useActionState, useState } from 'react'
 import AuthLoginForm from './AuthLoginForm'
 import AuthRegisterForm from './AuthRegisterForm'
 import { Button } from '#ui/button'
@@ -8,6 +8,7 @@ interface IAuthWrapper {}
 
 const AuthWrapper: React.FC = (): JSX.Element => {
    const [value, setValue] = useState('signIn')
+   
 
    const handleChangeValue = () => {
       setValue(value === 'signIn' ? 'signUp' : 'signIn')

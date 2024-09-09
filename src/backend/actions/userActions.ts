@@ -31,7 +31,8 @@ export const userGetByEmail = async (email: string) => {
    try {
       await connectDB()
       const user = await userModel.findOne({ email: email })
-      return JSON.parse(JSON.stringify(user))
+
+      return user
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -43,6 +44,18 @@ export const userDeleteById = async (id: string) => {
       await connectDB()
       await userModel.deleteOne({ _id: id })
       return 'Deleted successfully'
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+
+export const userUpdateByEmail = async (email: string, data: IUser) => {
+   if (!email || !data) return
+
+   try {
+      await connectDB()
+      await userModel.updateOne({ email: email }, data)
+      return 'Updated successfully'
    } catch (err: Error | any) {
       throw new Error(err)
    }

@@ -1,12 +1,12 @@
 import { authConfig } from '#configs/authConfig'
-import { getServerSession } from 'next-auth'
+import { getServerSession, Session } from 'next-auth'
 import Image from 'next/image'
 import ProfileForm from './ProfileForm'
 
 interface IMainSection {}
 
 const ProfileSection: React.FC = async (): Promise<JSX.Element> => {
-   const session = await getServerSession(authConfig)
+   const session: Session | null = await getServerSession(authConfig)
 
    return (
       <section className={`py-20`}>
@@ -15,7 +15,7 @@ const ProfileSection: React.FC = async (): Promise<JSX.Element> => {
                Profile of <br />
                <span className={`text-5xl text-mini-100`}>{session?.user?.name}</span>
             </h1>
-            <ProfileForm />
+            <ProfileForm sessionUser={session?.user ? session?.user : null} />
          </div>
       </section>
    )

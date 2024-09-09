@@ -5,10 +5,10 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 interface IProductPage {
-   id: string
+   id: any
 }
 
-const ProductPage: React.FC<IProductPage> = ({ id }): JSX.Element => {
+const HomeProductDetails: React.FC<IProductPage> = ({ id }): JSX.Element => {
    const [product, setProduct] = useState<any>()
    const [count, setCount] = useState(1)
 
@@ -45,4 +45,4 @@ const ProductPage: React.FC<IProductPage> = ({ id }): JSX.Element => {
    )
 }
 
-export default ProductPage
+export default HomeProductDetails
