@@ -4,7 +4,7 @@ import { authConfig } from '#configs/authConfig'
 import { userProfileSchema } from '#schemes/scheme'
 import { IUser } from '#types/index'
 import Btn from '#ui/Btn/Btn'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '#ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '#ui/form'
 import { Input } from '#ui/input'
 import { RadioGroup, RadioGroupItem } from '#ui/radio-group'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -56,6 +56,7 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                      <FormControl>
                         <Input className={`text-black`} {...field} placeholder={'Adınızı daxil edin'} />
                      </FormControl>
+                     <FormMessage className={`text-tomato-200`} />
                   </FormItem>
                )}
             />
@@ -68,6 +69,7 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                      <FormControl>
                         <Input className={`text-black`} {...field} placeholder={'Emailinizi daxil edin.'} />
                      </FormControl>
+                     <FormMessage className={`text-tomato-200`} />
                   </FormItem>
                )}
             />
@@ -80,6 +82,7 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                      <FormControl>
                         <Input {...field} type={'password'} placeholder={'Şifrənizi daxil edin.'} />
                      </FormControl>
+                     <FormMessage className={`text-tomato-200`} />
                   </FormItem>
                )}
             />
@@ -92,6 +95,7 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                      <FormControl>
                         <Input {...field} type={'number'} placeholder={'Telefon nömrənizi daxil edin.'} />
                      </FormControl>
+                     <FormMessage className={`text-tomato-200`} />
                   </FormItem>
                )}
             />
@@ -104,6 +108,7 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                      <FormControl>
                         <Input {...field} type={'text'} placeholder={'Ünvanınızı daxil edin'} />
                      </FormControl>
+                     <FormMessage className={`text-tomato-200`} />
                   </FormItem>
                )}
             />
@@ -124,16 +129,17 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                               <FormControl>
                                  <RadioGroupItem className={`text-white`} value={'male'} />
                               </FormControl>
-                              <FormLabel className={`-translate-y-1`}>Male</FormLabel>
+                              <FormLabel className={`-translate-y-1`}>Kisi</FormLabel>
                            </FormItem>
                            <FormItem className={`flex items-center gap-2 text-center`}>
                               <FormControl>
                                  <RadioGroupItem className={`text-white`} value={'female'} />
                               </FormControl>
-                              <FormLabel className={`-translate-y-1`}>Female</FormLabel>
+                              <FormLabel className={`-translate-y-1`}>Qadin</FormLabel>
                            </FormItem>
                         </RadioGroup>
                      </FormControl>
+                     <FormMessage className={`text-tomato-200`} />
                   </FormItem>
                )}
             />
