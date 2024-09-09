@@ -1,9 +1,9 @@
 'use client'
 import { pointGetByIdWithPopulate, pointGetOne } from '#backend/actions/pointActions'
-import { IBasket, IOrder, IPoint, IProduct } from '#types/index'
+import { IBasket, IOrder, IOrderItem, IPoint, IProduct } from '#types/index'
 import { useEffect, useState } from 'react'
 import DeliveryAside from '../Aside/DeliveryAside'
-import { orderGetAll } from '#backend/actions/orderAction'
+import { orderGetAll, updateProductAcceptedStatus } from '#backend/actions/orderAction'
 import Table from '#ui/Table/Table'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '#ui/dialog'
 import { Check } from 'lucide-react'
@@ -14,30 +14,50 @@ const HomeDelivery: React.FC = (): JSX.Element => {
       ;(async () => {
          await orderGetAll()
          const point = await pointGetByIdWithPopulate('66dab6c6a3465f7246890205')
-         console.log(point)
          setPoint(point)
       })()
    }, [])
-   const header = ['ID', 'Address', 'Status', 'Date', 'Note', 'Type', 'Customer', 'Action']
-   const body = point?.orders?.map((item) => {
-      const {
-         order: { adress, createdAt, customer, deliveryNote, deliveryType, status, _id },
-         products,
-      } = item
 
-      const dialogBody = products.map((product: IBasket) => {
+   const updateAcceptedStatus = async (orderId: any, prodId: any) => {
+      await updateProductAcceptedStatus(orderId, prodId, true)
+      setPoint({
+         ...point,
+         orders: point.orders.map((order) =>
+            order._id === orderId
+               ? {
+                    ...order,
+                    products: order.products.map((product) =>
+                       product.product._id === prodId ? { ...product, accepted: true } : product,
+                    ),
+                 }
+               : order,
+         ),
+      })
+   }
+   const header = ['ID', 'Address', 'Status', 'Date', 'Note', 'Type', 'Customer', 'Action']
+   const body = point?.orders?.map((item: IOrder) => {
+      const { adress, createdAt, products, customer, deliveryNote, deliveryType, status, _id } = item
+
+      const dialogBody = products.map((product: IOrderItem) => {
          return {
             name: product.product.name,
             count: product.quantity,
-            accept: <Check className="cursor-pointer text-green-700" onClick={() => console.log(product.product._id)} />,
+            accept: product.accepted ? (
+               'Accepted'
+            ) : (
+               <Check
+                  className="cursor-pointer text-green-700"
+                  onClick={() => updateAcceptedStatus(_id, product.product._id)}
+               />
+            ),
          }
       })
 
       return {
-         id: '***' + _id.toString().slice(_id.toString().length - 5, _id.toString().length),
+         id: '***' + _id?.toString().slice(_id.toString().length - 5, _id.toString().length),
          adress,
          status,
-         date: createdAt.toLocaleString().slice(0, 10),
+         date: createdAt?.toLocaleString().slice(0, 10),
          deliveryNote,
          deliveryType,
          customer,
