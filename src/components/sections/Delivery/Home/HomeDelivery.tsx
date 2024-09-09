@@ -1,43 +1,18 @@
 'use client'
-import { pointGetByIdWithPopulate, pointGetOne } from '#backend/actions/pointActions'
-import { IBasket, IOrder, IOrderItem, IPoint, IProduct } from '#types/index'
-import { useEffect, useState } from 'react'
+import { IOrder, IOrderItem } from '#types/index'
 import DeliveryAside from '../Aside/DeliveryAside'
-import { orderGetAll, updateProductAcceptedStatus } from '#backend/actions/orderAction'
 import Table from '#ui/Table/Table'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '#ui/dialog'
 import { Check } from 'lucide-react'
+import { useDeliveryStore } from '#stores/deliveryStore'
+import Btn from '#ui/Btn/Btn'
 
 const HomeDelivery: React.FC = (): JSX.Element => {
-   const [point, setPoint] = useState({} as IPoint)
-   useEffect(() => {
-      ;(async () => {
-         await orderGetAll()
-         const point = await pointGetByIdWithPopulate('66dab6c6a3465f7246890205')
-         setPoint(point)
-      })()
-   }, [])
+   const { point, updateProductAcceptStatus, updateOrderStatus } = useDeliveryStore()
 
-   const updateAcceptedStatus = async (orderId: any, prodId: any) => {
-      await updateProductAcceptedStatus(orderId, prodId, true)
-      setPoint({
-         ...point,
-         orders: point.orders.map((order) =>
-            order._id === orderId
-               ? {
-                    ...order,
-                    products: order.products.map((product) =>
-                       product.product._id === prodId ? { ...product, accepted: true } : product,
-                    ),
-                 }
-               : order,
-         ),
-      })
-   }
    const header = ['ID', 'Address', 'Status', 'Date', 'Note', 'Type', 'Customer', 'Action']
    const body = point?.orders?.map((item: IOrder) => {
       const { adress, createdAt, products, customer, deliveryNote, deliveryType, status, _id } = item
-
       const dialogBody = products.map((product: IOrderItem) => {
          return {
             name: product.product.name,
@@ -47,11 +22,13 @@ const HomeDelivery: React.FC = (): JSX.Element => {
             ) : (
                <Check
                   className="cursor-pointer text-green-700"
-                  onClick={() => updateAcceptedStatus(_id, product.product._id)}
+                  onClick={() => updateProductAcceptStatus(_id, product.product._id)}
                />
             ),
          }
       })
+
+      const acceptedProducts = products.every((product) => product.accepted)
 
       return {
          id: '***' + _id?.toString().slice(_id.toString().length - 5, _id.toString().length),
@@ -63,12 +40,28 @@ const HomeDelivery: React.FC = (): JSX.Element => {
          customer,
          action: (
             <Dialog>
-               <DialogTrigger>Bax</DialogTrigger>
+               <DialogTrigger className="font-bold text-green-700">
+                  {acceptedProducts ? 'Check order status' : 'Check product status'}
+               </DialogTrigger>
                <DialogContent className="min-w-[80%] bg-gray-800">
                   <DialogHeader>
                      <DialogTitle></DialogTitle>
                      <DialogDescription>Məhsulları quşlamaq üçün dialog</DialogDescription>
                      <Table headers={['Name', 'Count', 'Accept']} body={dialogBody} />
+                     {acceptedProducts && (
+                        <div className="flex justify-end">
+                           {status !== 'accepted' ? (
+                              <Btn
+                                 text={'Check order status'}
+                                 type={'button'}
+                                 ariaLabel={'Check order status'}
+                                 onClick={() => updateOrderStatus(_id, 'accepted')}
+                              />
+                           ) : (
+                              'Order Accepted'
+                           )}
+                        </div>
+                     )}
                   </DialogHeader>
                </DialogContent>
             </Dialog>

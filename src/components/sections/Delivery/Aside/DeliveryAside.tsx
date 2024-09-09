@@ -1,18 +1,27 @@
+'use client'
+import { useDeliveryStore } from '#stores/deliveryStore'
 import { IPoint } from '#types/index'
 import Btn from '#ui/Btn/Btn'
 import Logo from '#ui/Logo'
 import { AlignEndVertical, Bolt, CirclePlus, House, ListOrdered } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 interface IProps {
    pointInfo: IPoint
 }
 const DeliveryAside: React.FC<IProps> = ({ pointInfo }): JSX.Element => {
+   const { fetchPoint } = useDeliveryStore()
+
+   useEffect(() => {
+      ;(async () => {
+         fetchPoint()
+      })()
+   }, [])
    const menuItems = [
       { id: 1, name: 'Dashboard', icon: <House />, route: '/delivery' },
-      { id: 2, name: 'Məhsul qəbulu', icon: <CirclePlus />, route: '/delivery/import' },
+      // { id: 2, name: 'Məhsul qəbulu', icon: <CirclePlus />, route: '/delivery/import' },
       { id: 3, name: 'Hazır sifarişlər', icon: <AlignEndVertical />, route: '/delivery/completedOrders' },
-      { id: 4, name: 'Gözləyən sifarişlər', icon: <Bolt />, route: '/delivery/pendingOrders' },
+      // { id: 4, name: 'Gözləyən sifarişlər', icon: <Bolt />, route: '/delivery/pendingOrders' },
    ]
 
    return (

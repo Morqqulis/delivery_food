@@ -1,6 +1,6 @@
 import HomeDelivery from "#sections/Delivery/Home/HomeDelivery"
 
-const Seller: React.FC = (): JSX.Element => {
+const PointHomePage: React.FC = (): JSX.Element => {
    return (
       <main>
          <HomeDelivery />
@@ -8,4 +8,4 @@ const Seller: React.FC = (): JSX.Element => {
    )
 }
 
-export default Seller
+export default PointHomePage

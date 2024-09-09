@@ -51,16 +51,16 @@ export const orderCreate = async (basket: IBasket[], session: { email: string; n
       // cəmləşmə nöqtələrinə sifarişlər haqqında məlumat verilməsi
       const pointsSet = new Set() // Pointlərin siyahısını tutmaq üçün Set
       order.products.forEach((prod: { product: string; quantity: number; point: Types.ObjectId }) => {
-         pointsSet.add(prod.point.toString()) 
+         pointsSet.add(prod.point.toString())
       })
 
       // Hər bir point üçün tapırıq və orders arrayına order id əlavə edirik
       await Promise.all(
          Array.from(pointsSet).map(async (pointId) => {
             await pointModel.updateOne(
-               { _id: pointId }, 
+               { _id: pointId },
                {
-                  $addToSet: { orders: order._id }, 
+                  $addToSet: { orders: order._id },
                },
             )
          }),
@@ -150,7 +150,7 @@ export const orderDelete = async (orderId: string) => {
    }
 }
 
-export const orderUpdateStatus = async (id: string, status: string) => {
+export const orderUpdateStatus = async (id: Types.ObjectId, status: string) => {
    if (!id) return
 
    try {
@@ -162,7 +162,11 @@ export const orderUpdateStatus = async (id: string, status: string) => {
    }
 }
 
-export const updateProductAcceptedStatus = async (orderId: string, productId: string, value: boolean) => {
+export const updateProductAcceptedStatus = async (
+   orderId: Types.ObjectId,
+   productId: Types.ObjectId,
+   value: boolean,
+) => {
    if (!orderId || !productId) return
 
    try {

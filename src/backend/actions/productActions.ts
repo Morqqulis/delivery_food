@@ -34,7 +34,7 @@ export const productGetAllWithPopulateBySelect = async (select: string) => {
    }
 }
 
-export const productGetById = async (id: Types.ObjectId, select?: string) => {
+export const productGetById = async (id: string, select?: string) => {
    if (!id) return
    try {
       await connectDB()

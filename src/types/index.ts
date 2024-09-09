@@ -104,7 +104,7 @@ export interface IOrderItem {
    point: Types.ObjectId
 }
 export interface IOrder {
-   _id?: Types.ObjectId
+   _id: Types.ObjectId
    status: string
    customer: Types.ObjectId
    city: string
@@ -174,6 +174,12 @@ export interface IBasketStore {
    clearBasket: () => void
 }
 
+export interface IDeliveryStore {
+   point: IPoint
+   fetchPoint: () => Promise<void>
+   updateProductAcceptStatus: (orderId: Types.ObjectId, productId: Types.ObjectId) => Promise<void>
+   updateOrderStatus: (orderId: Types.ObjectId, status: string) => Promise<void>
+}
 export interface ISessionStore {
    session: any
    checkSession: () => void
