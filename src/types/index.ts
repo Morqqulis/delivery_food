@@ -25,12 +25,22 @@ export interface IBtn extends React.ButtonHTMLAttributes<HTMLButtonElement> {
    children?: React.ReactNode
    href?: string
 }
-
+export interface IAddComment {
+   name: string
+   text: string
+}
+export interface IComment {
+   name: string
+   text: string
+   rating: number
+   date: Date
+}
 export interface IProduct {
    _id: Types.ObjectId
    name: string
    description: string
    price: number
+   comments?: IComment[]
    category: string
    seller: Types.ObjectId
    image?: string
@@ -184,3 +194,5 @@ export interface ISessionStore {
    session: any
    checkSession: () => void
 }
+
+

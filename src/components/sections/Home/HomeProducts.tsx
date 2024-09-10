@@ -3,6 +3,7 @@ import { IProduct } from '#types/index'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import ProductCard from '../../ui/ProductCard'
+import '../../../styles/scrollbar.scss'
 
 // export const revalidate = 0
 
@@ -21,7 +22,7 @@ const HomeProducts = () => {
 
    return (
       <div className="flex flex-col gap-[26px]">
-         <div className="flex w-full gap-7 overflow-x-auto">
+         <div className="scrollbar-custom flex w-full gap-7 overflow-x-auto">
             {products.length === 0 && <p>Loading...</p>}
             {products.length > 0 &&
                products.map((product: IProduct) => <ProductCard key={product._id.toString()} product={product} />)}

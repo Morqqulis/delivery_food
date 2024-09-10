@@ -1,15 +1,17 @@
 'use client'
 import { productGetById } from '#backend/actions/productActions'
+import CommentsHero from '#sections/Comments/CommentsHero'
+import { IProduct } from '#types/index'
 import Counter from '#ui/Counter'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 interface IProductPage {
-   id: any
+   id: string
 }
 
 const HomeProductDetails: React.FC<IProductPage> = ({ id }): JSX.Element => {
-   const [product, setProduct] = useState<any>()
+   const [product, setProduct] = useState<IProduct>()
    const [count, setCount] = useState(1)
 
    useEffect(() => {
@@ -39,6 +41,9 @@ const HomeProductDetails: React.FC<IProductPage> = ({ id }): JSX.Element => {
                      className="mt-6"
                   />
                </div>
+            </div>
+            <div className="mt-6 flex justify-center">
+               <CommentsHero prodId={id} comments={product?.comments} />
             </div>
          </div>
       </section>
