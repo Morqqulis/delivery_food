@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import { averageRating } from '../../../functions/helpers'
 import Link from 'next/link'
 import { Heart } from 'lucide-react'
+import LikeHeart from '#ui/LikeHeart'
 
 interface IProductPage {
    id: string
@@ -17,8 +18,6 @@ interface IProductPage {
 const HomeProductDetails: React.FC<IProductPage> = ({ id }): JSX.Element => {
    const [product, setProduct] = useState<IProduct>()
    const [count, setCount] = useState(1)
-   const [like, setLike] = useState(false)
-   console.log(product)
 
    useEffect(() => {
       if (!id) return
@@ -34,18 +33,15 @@ const HomeProductDetails: React.FC<IProductPage> = ({ id }): JSX.Element => {
             {product ? (
                <>
                   <div className="flex w-full items-center gap-3 p-5">
-                     <div className="h-[500px] w-[50%] p-2">
+                     <div className="relative h-[500px] w-[50%] p-2">
                         <Image
                            src={'/qazan.svg'}
                            width={500}
                            height={500}
                            alt={'product image'}
-                           className="h-full w-full relative"
+                           className="h-full w-full"
                         />
-                        <Heart
-                           className={`cursor-pointer ${like ? 'fill-red-500' : 'fill-transparent'} absolute right-2 top-2`}
-                           onClick={() => setLike(!like)}
-                        />
+                        <LikeHeart id={id} />
                      </div>
                      <div className="flex w-[50%] flex-col p-2">
                         <div className="border-b-[0.3px] border-gray-400 pb-4">
@@ -57,7 +53,7 @@ const HomeProductDetails: React.FC<IProductPage> = ({ id }): JSX.Element => {
                         </div>
                         <div className="border-b-[0.3px] border-gray-400 py-4">
                            <div className="flex gap-2">
-                              <Link href={`/seller/${product?.seller?._id}`} className="font-bold">
+                              <Link href={`/store/${product?.seller?._id}`} className="font-bold">
                                  {product?.seller?.name}
                               </Link>
                               <StarRating rating={4.4} size="10" />
@@ -76,6 +72,7 @@ const HomeProductDetails: React.FC<IProductPage> = ({ id }): JSX.Element => {
                   <div className="mt-6 flex justify-center">
                      <CommentsHero prodId={id} comments={product?.comments} />
                   </div>
+                  
                </>
             ) : (
                'Loading...'

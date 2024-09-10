@@ -48,11 +48,11 @@ export const sellerGetByIdWithSelect = async (id: string, select: string) => {
       throw new Error(err)
    }
 }
-export const sellerGetByIdWithPopulate = async (id: string, populate: string) => {
+export const sellerGetByIdPopulateProducts = async (id: string) => {
    if (!id) return
    try {
       await connectDB()
-      const seller = await sellerModel.findOne({ _id: id }).populate(populate)
+      const seller = await sellerModel.findOne({ _id: id }).populate({ path: 'products', model: 'product' })
       return JSON.parse(JSON.stringify(seller))
    } catch (err: Error | any) {
       throw new Error(err)

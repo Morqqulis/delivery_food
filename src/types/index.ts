@@ -162,6 +162,7 @@ export interface IBasketItem {
    product: string
    quantity: number
 }
+
 export interface IGroupedProductsOrders {
    sellerId: string
    products: {
@@ -194,5 +195,3 @@ export interface ISessionStore {
    session: any
    checkSession: () => void
 }
-
-
