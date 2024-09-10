@@ -42,7 +42,7 @@ export interface IProduct {
    price: number
    comments?: IComment[]
    category: string
-   seller: Types.ObjectId
+   seller: ISeller
    image?: string
    createdAt?: Date
 }
