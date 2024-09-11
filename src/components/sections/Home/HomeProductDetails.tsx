@@ -8,8 +8,9 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { averageRating } from '../../../functions/helpers'
 import Link from 'next/link'
-import { Heart } from 'lucide-react'
 import LikeHeart from '#ui/LikeHeart'
+import ProductsSlider from '#ui/Products/ProductsSlider'
+import { cookieUpdateRecently } from '#backend/actions/cookieRecently'
 
 interface IProductPage {
    id: string
@@ -24,6 +25,7 @@ const HomeProductDetails: React.FC<IProductPage> = ({ id }): JSX.Element => {
       ;(async () => {
          const prod = await productGetByIdWithPopulate(id, '', 'name secondName')
          setProduct(prod)
+         await cookieUpdateRecently(id)
       })()
    }, [id])
 
@@ -72,7 +74,25 @@ const HomeProductDetails: React.FC<IProductPage> = ({ id }): JSX.Element => {
                   <div className="mt-6 flex justify-center">
                      <CommentsHero prodId={id} comments={product?.comments} />
                   </div>
-                  
+                  <div className="mt-6 flex flex-col items-center gap-5">
+                     <div className="relative flex h-[50px] w-full items-center justify-center">
+                        <div className="h-1 w-full bg-white"></div>
+                        <div className="absolute left-[50%] translate-x-[-50%] bg-dark-400 px-5 text-center text-5xl">
+                           Your liked products
+                        </div>
+                     </div>
+                     <ProductsSlider title="liked" />
+                  </div>
+
+                  <div className="mt-6 flex flex-col items-center gap-5">
+                     <div className="relative flex h-[50px] w-full items-center justify-center">
+                        <div className="h-1 w-full bg-white"></div>
+                        <div className="absolute left-[50%] translate-x-[-50%] bg-dark-400 px-5 text-center text-5xl">
+                           Recently products
+                        </div>
+                     </div>
+                     <ProductsSlider title="recently" />
+                  </div>
                </>
             ) : (
                'Loading...'

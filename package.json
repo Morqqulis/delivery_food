@@ -24,6 +24,7 @@
 		"@radix-ui/react-tabs": "^1.1.0",
 		"@radix-ui/react-toast": "^1.2.1",
 		"@radix-ui/react-toggle": "^1.1.0",
+		"aws4": "^1.13.2",
 		"axios": "^1.7.7",
 		"babel-plugin-react-compiler": "^0.0.0-experimental-48eb8f4-20240822",
 		"bcryptjs": "^2.4.3",

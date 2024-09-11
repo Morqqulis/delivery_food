@@ -80,6 +80,17 @@ export const productsGetByIds = async (items: BasketItem[]) => {
    }
 }
 
+export const productsGetByIdsEtc = async (ids: string[]) => {
+   if (!ids) return
+   try {
+      await connectDB()
+      const products = await productModel.find({ _id: { $in: ids } })
+      return JSON.parse(JSON.stringify(products))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+
 export const productDeleteById = async (id: string, sellerId: string) => {
    if (!id) return
    try {

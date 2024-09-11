@@ -1,11 +1,11 @@
 'use client'
 import { IProduct } from '#types/index'
 import Counter from '#ui/Counter'
+import LikeHeart from '#ui/LikeHeart'
 import { Heart } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import LikeHeart from './LikeHeart'
 
 interface ProductCardProps {
    product: IProduct
@@ -17,7 +17,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
    return (
       <div className="relative flex w-[250px] min-w-[250px] flex-col items-center justify-between gap-4 rounded-lg bg-[#00070A] p-6">
          <Link href={`/products/${product._id}`} className="flex flex-col items-center gap-4">
-            <Image src="./qazan.svg" width={150} height={150} alt={'product image'} priority />
+            <Image src="/qazan.svg" width={150} height={150} alt={'product image'} priority />
             <p className="text-2xl font-bold">{product.name} &gt; </p>
             <p className="text-center">
                {product.description.length > 40 ? product.description.slice(0, 40) + '...' : product.description}
