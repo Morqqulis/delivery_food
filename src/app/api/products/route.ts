@@ -5,8 +5,7 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
    try {
-      await connectDB()
-      const products = await productModel.find()
+      const products = await productGetAll()
 
       if (products.length > 0) {
          return NextResponse.json(products, {
@@ -15,6 +14,8 @@ export async function GET() {
          })
       }
    } catch (error) {
-      return NextResponse.json(error, { status: 500, statusText: 'Internal Server Error from api/products' })
+      console.log('Error in api products route GET: ', error)
+
+      return NextResponse.json(null, { statusText: 'No data' })
    }
 }

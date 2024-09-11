@@ -78,7 +78,7 @@ export interface IUser {
    name: string
    email: string
    password?: string
-   gender?: string
+   gender?: 'male' | 'female'
    role?: string
    image?: string
    createdAt?: Date

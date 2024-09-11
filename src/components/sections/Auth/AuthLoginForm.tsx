@@ -56,7 +56,7 @@ const AuthLoginForm: React.FC = (): JSX.Element => {
                variant: 'default',
             })
             setTimeout(() => {
-               router.push('/')
+               router.push('/profile')
             }, 2000)
          }
       } catch (error) {
