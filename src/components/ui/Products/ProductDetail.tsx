@@ -16,7 +16,7 @@ interface IProductPage {
    id: string
 }
 
-const HomeProductDetails: React.FC<IProductPage> = ({ id }): JSX.Element => {
+const ProductDetail: React.FC<IProductPage> = ({ id }): JSX.Element => {
    const [product, setProduct] = useState<IProduct>()
    const [count, setCount] = useState(1)
 
@@ -102,4 +102,4 @@ const HomeProductDetails: React.FC<IProductPage> = ({ id }): JSX.Element => {
    )
 }
 
-export default HomeProductDetails
+export default ProductDetail

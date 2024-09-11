@@ -1,6 +1,6 @@
 import DefaultLayout from '#layouts/DefaultLayout'
-import HomeProductDetails from '#sections/Home/HomeProductDetails'
 import { IParamsID } from '#types/index'
+import ProductDetail from '#ui/Products/ProductDetail'
 import { NextPage } from 'next'
 
 export const revalidate = 0
@@ -9,7 +9,7 @@ const Product: NextPage<IParamsID> = async ({ params: { id } }: IParamsID): Prom
    return (
       <DefaultLayout full>
          <main>
-            <HomeProductDetails id={id} />
+            <ProductDetail id={id} />
          </main>
       </DefaultLayout>
    )

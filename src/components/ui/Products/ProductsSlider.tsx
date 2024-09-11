@@ -22,16 +22,14 @@ const ProductsSlider: React.FC<{ title: string }> = ({ title }) => {
             const res = await axios.get('http://localhost:3000/api/products')
             setProducts(res.data)
          }
-         if (title==='liked') {
+         if (title === 'liked') {
             const idsLiked = await cookieGetLiked()
             const res = await productsGetByIdsEtc(idsLiked)
             setProducts(res)
          }
-         if (title==='recently') {
+         if (title === 'recently') {
             const idsRecently = await cookieGetRecently()
-            console.log(idsRecently)
             const res = await productsGetByIdsEtc(idsRecently)
-            console.log(res)
             setProducts(res)
          }
       })()
