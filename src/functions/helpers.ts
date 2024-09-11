@@ -1,3 +1,5 @@
+import { IComment } from '#types/index'
+
 export function createToken(str: string): string {
    const getRandomChars = (length: number) =>
       Array.from({ length }, () => ((Math.random() * 36) | 0).toString(36)).join('')
@@ -28,4 +30,8 @@ export function hoursSince(dateString: string): number {
    const diffInMs = now.getTime() - past.getTime()
    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60))
    return diffInHours
+}
+
+export function averageRating(comments: IComment[] | undefined): number {
+   return comments?.length ? comments.reduce((acc, comment) => acc + comment.rating, 0) / comments.length : 0
 }

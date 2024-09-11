@@ -107,3 +107,13 @@ export const userProfileSchema = z.object({
 })
 
 export const emailSchema = z.string().email({ message: 'Please enter a valid email' })
+
+export const addCommentSchema = z.object({
+   name: z.string().min(2, 'Adınızı daxil edin.'),
+   text: z
+      .string({
+         required_error: 'Rəyinizi daxil edin.',
+         message: 'Rəyinizi daxil edin',
+      })
+      .min(5, 'Rəyinizi  daxil edin'),
+})

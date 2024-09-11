@@ -3,6 +3,7 @@ import { IProduct } from '#types/index'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import ProductCard from '../../ui/ProductCard'
+import '../../../styles/scrollbar.scss'
 
 // export const revalidate = 0
 

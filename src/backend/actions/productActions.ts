@@ -3,7 +3,7 @@
 import { connectDB } from '#backend/DB'
 import productModel from '#backend/models/productModel'
 import sellerModel from '#backend/models/sellerModel'
-import { IBasket, IProduct } from '#types/index'
+import { IBasket, IComment, IProduct } from '#types/index'
 import { Types } from 'mongoose'
 
 export const productGetAll = async () => {
@@ -164,4 +164,14 @@ export const productsNameQuery = async (query: string) => {
    } catch (err: Error | any) {
       throw new Error(err)
    }
+}
+
+export const productAddComment = async (id: string, data: IComment) => {
+   if (!id || !data) return
+   try {
+      await connectDB()
+
+      await productModel.updateOne({ _id: id }, { $push: { comments: data } })
+      return 'comment added'
+   } catch (error: Error | any) {}
 }

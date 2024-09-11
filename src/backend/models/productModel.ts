@@ -20,6 +20,14 @@ const productSchema: Schema = new Schema<IProduct>(
          type: Number,
          required: true,
       },
+      comments: [
+         {
+            name: String,
+            text: String,
+            rating: Number,
+            date: Date,
+         },
+      ],
       category: {
          type: String,
          required: true,
