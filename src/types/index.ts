@@ -40,7 +40,7 @@ export interface IProduct {
    name: string
    description: string
    price: number
-   viewed:number
+   viewed: number
    comments?: IComment[]
    category: string
    seller: ISeller
@@ -195,4 +195,18 @@ export interface IDeliveryStore {
 export interface ISessionStore {
    session: any
    checkSession: () => void
+}
+
+export interface IPromotion {
+   name: string
+   discountAmount: number
+   discountType: 'percentage' | 'fixed' | 'buy_x_get_y' | 'free_shipping'
+   buyX?: number
+   getY?: number
+   discountedProduct?: Types.ObjectId
+   applicableProducts?: Types.ObjectId[]
+   seller: Types.ObjectId
+   startDate: Date
+   endDate: Date
+   isActive?: boolean
 }

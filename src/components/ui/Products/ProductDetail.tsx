@@ -12,6 +12,7 @@ import LikeHeart from '#ui/LikeHeart'
 import ProductsSlider from '#ui/Products/ProductsSlider'
 import { cookieUpdateRecently } from '#backend/actions/cookieRecently'
 import { ordersFindWithProduct } from '#backend/actions/orderAction'
+import { promoCreate } from '#backend/actions/promotionActions'
 
 interface IProductPage {
    id: string
@@ -32,6 +33,7 @@ const ProductDetail: React.FC<IProductPage> = ({ id }): JSX.Element => {
          setProduct(prod)
          setOrderCount(orders.length)
          await cookieUpdateRecently(id)
+
       })()
    }, [])
 
@@ -114,7 +116,7 @@ const ProductDetail: React.FC<IProductPage> = ({ id }): JSX.Element => {
                            Related products
                         </div>
                      </div>
-                     <ProductsSlider title="related" product={product}/>
+                     <ProductsSlider title="related" product={product} />
                   </div>
                </>
             ) : (
