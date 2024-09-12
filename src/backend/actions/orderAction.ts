@@ -172,7 +172,6 @@ export const updateProductAcceptedStatus = async (
    try {
       await connectDB()
 
-      // Hədəf orderi və products içərisində olan productı tapın və accepted dəyərini yeniləyin
       const updatedOrder = await orderModel.updateOne(
          {
             _id: orderId,
@@ -187,5 +186,24 @@ export const updateProductAcceptedStatus = async (
       return updatedOrder
    } catch (err: Error | any) {
       throw new Error(err)
+   }
+}
+
+export const ordersFindWithProduct = async (productId: string) => {
+   try {
+      await connectDB()
+
+      const orders = await orderModel.aggregate([
+         {
+            $match: {
+               'products.product': new Types.ObjectId(productId),
+            },
+         },
+      ])
+
+      return JSON.parse(JSON.stringify(orders))
+   } catch (error) {
+      console.error('Error finding orders with product:', error)
+      return null
    }
 }

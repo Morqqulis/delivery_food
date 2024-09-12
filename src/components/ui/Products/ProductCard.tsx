@@ -1,11 +1,12 @@
 'use client'
 import { IProduct } from '#types/index'
 import Counter from '#ui/Counter'
-import { Heart } from 'lucide-react'
+import LikeHeart from '#ui/LikeHeart'
+import { Eye, Heart, Star } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import LikeHeart from './LikeHeart'
+import { averageRating } from '../../../functions/helpers'
 
 interface ProductCardProps {
    product: IProduct
@@ -13,16 +14,25 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
    const [count, setCount] = useState(1)
-
    return (
       <div className="relative flex w-[250px] min-w-[250px] flex-col items-center justify-between gap-4 rounded-lg bg-[#00070A] p-6">
          <Link href={`/products/${product._id}`} className="flex flex-col items-center gap-4">
-            <Image src="./qazan.svg" width={150} height={150} alt={'product image'} priority />
+            <Image src="/qazan.svg" width={150} height={150} alt={'product image'} priority />
             <p className="text-2xl font-bold">{product.name} &gt; </p>
             <p className="text-center">
                {product.description.length > 40 ? product.description.slice(0, 40) + '...' : product.description}
             </p>
             <p className="text-3xl font-bold text-[#82F3FF]">$ {product.price}</p>
+            <div className="flex w-full justify-between px-2 ">
+               <div className="flex items-center gap-2 text-yellow-600">
+                  <Star fill="yellow" size={18} />
+                  {averageRating(product.comments)}
+               </div>
+               <div className="flex items-center gap-2 text-[#38a0fa]">
+                  <Eye size={18} />
+                  {product.viewed}
+               </div>
+            </div>
          </Link>
          <Counter
             count={count}

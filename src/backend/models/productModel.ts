@@ -42,6 +42,10 @@ const productSchema: Schema = new Schema<IProduct>(
          ref: 'seller',
          required: true,
       },
+      viewed: {
+         type: Number,
+         default: 0,
+      },
    },
    {
       timestamps: true,

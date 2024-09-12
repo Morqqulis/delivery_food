@@ -80,6 +80,17 @@ export const productsGetByIds = async (items: BasketItem[]) => {
    }
 }
 
+export const productsGetByIdsEtc = async (ids: string[]) => {
+   if (!ids) return
+   try {
+      await connectDB()
+      const products = await productModel.find({ _id: { $in: ids } })
+      return JSON.parse(JSON.stringify(products))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+
 export const productDeleteById = async (id: string, sellerId: string) => {
    if (!id) return
    try {
@@ -174,4 +185,25 @@ export const productAddComment = async (id: string, data: IComment) => {
       await productModel.updateOne({ _id: id }, { $push: { comments: data } })
       return 'comment added'
    } catch (error: Error | any) {}
+}
+
+export const productRelatedNameAndCategory = async (currentProduct: IProduct) => {
+   if (!currentProduct) return
+   try {
+      await connectDB()
+      const nameKeywords = currentProduct.name.split(' ')
+      const products = await productModel
+         .find({
+            _id: { $ne: currentProduct._id },
+            $or: [
+               ...nameKeywords.map((keyword) => ({ name: { $regex: keyword, $options: 'i' } })),
+               { category: currentProduct.category },
+            ],
+         })
+         .limit(20)
+
+      return JSON.parse(JSON.stringify(products))
+   } catch (error: Error | any) {
+      throw new Error(error)
+   }
 }
