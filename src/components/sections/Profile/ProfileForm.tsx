@@ -13,7 +13,7 @@ import axios from 'axios'
 import { DefaultUser, getServerSession } from 'next-auth'
 import { getSession, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 

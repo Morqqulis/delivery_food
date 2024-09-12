@@ -10,8 +10,9 @@ export interface IParamsID {
    }
 }
 
-export interface IDefaultProvider extends IChildren {
+export interface IDefaultLayout extends IChildren {
    full: boolean
+   aside?: boolean
 }
 
 export interface IClassName {
