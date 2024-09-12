@@ -1,5 +1,5 @@
 'use client'
-import { productGetById, productGetByIdWithPopulate } from '#backend/actions/productActions'
+import { productGetById, productGetByIdWithPopulate, productUpdateById } from '#backend/actions/productActions'
 import CommentsHero from '#sections/Comments/CommentsHero'
 import StarRating from '#sections/Comments/StarRating'
 import { IProduct } from '#types/index'
@@ -11,6 +11,7 @@ import Link from 'next/link'
 import LikeHeart from '#ui/LikeHeart'
 import ProductsSlider from '#ui/Products/ProductsSlider'
 import { cookieUpdateRecently } from '#backend/actions/cookieRecently'
+import { ordersFindWithProduct } from '#backend/actions/orderAction'
 
 interface IProductPage {
    id: string
@@ -18,16 +19,21 @@ interface IProductPage {
 
 const ProductDetail: React.FC<IProductPage> = ({ id }): JSX.Element => {
    const [product, setProduct] = useState<IProduct>()
+   const [orderCount, setOrderCount] = useState(0)
    const [count, setCount] = useState(1)
 
    useEffect(() => {
       if (!id) return
       ;(async () => {
          const prod = await productGetByIdWithPopulate(id, '', 'name secondName')
+         const orders = await ordersFindWithProduct(id)
+         prod.viewed += 1
+         await productUpdateById(id, { viewed: prod?.viewed })
          setProduct(prod)
+         setOrderCount(orders.length)
          await cookieUpdateRecently(id)
       })()
-   }, [id])
+   }, [])
 
    return (
       <section className={`py-20`}>
@@ -48,7 +54,6 @@ const ProductDetail: React.FC<IProductPage> = ({ id }): JSX.Element => {
                      <div className="flex w-[50%] flex-col p-2">
                         <div className="border-b-[0.3px] border-gray-400 pb-4">
                            <h1 className={`mb-1 text-5xl font-bold text-blue-700`}>{product?.name}</h1>
-                           <StarRating rating={averageRating(product?.comments)} size="15" />
                         </div>
                         <div className="border-b-[0.3px] border-gray-400 py-4">
                            <p>{product?.description}</p>
@@ -61,6 +66,14 @@ const ProductDetail: React.FC<IProductPage> = ({ id }): JSX.Element => {
                               <StarRating rating={4.4} size="10" />
                            </div>
                            <p>{product?.seller?.secondName}</p>
+                        </div>
+                        <div className="flex items-center gap-9 border-b-[0.3px] border-gray-400 py-2">
+                           <p className="text-[10px]">Sold:&nbsp;{orderCount}</p>
+                           <p className="text-[10px]">Viewed:&nbsp;{product.viewed}</p>
+                           <div className="flex gap-1 text-[10px] items-center">
+                              <p>Rating:</p>
+                              <StarRating rating={averageRating(product?.comments)} size="13" />
+                           </div>
                         </div>
                         <Counter
                            count={count}

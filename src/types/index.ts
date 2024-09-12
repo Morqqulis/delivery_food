@@ -40,6 +40,7 @@ export interface IProduct {
    name: string
    description: string
    price: number
+   viewed:number
    comments?: IComment[]
    category: string
    seller: ISeller

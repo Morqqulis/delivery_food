@@ -36,8 +36,8 @@ const ProductsSlider: React.FC<{ title: string }> = ({ title }) => {
    }, [])
 
    return (
-      <div className="flex flex-col gap-[26px]">
-         <div className="scrollbar-custom flex w-full gap-7 overflow-x-auto">
+      <div className="flex w-full flex-col gap-[26px]">
+         <div className="scrollbar-custom flex w-full items-center gap-7 overflow-x-auto">
             {products.length === 0 && <p>Loading...</p>}
             {products.length > 0 &&
                products.map((product: IProduct) => <ProductCard key={product._id.toString()} product={product} />)}
