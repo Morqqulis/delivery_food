@@ -186,3 +186,24 @@ export const productAddComment = async (id: string, data: IComment) => {
       return 'comment added'
    } catch (error: Error | any) {}
 }
+
+export const productRelatedNameAndCategory = async (currentProduct: IProduct) => {
+   if (!currentProduct) return
+   try {
+      await connectDB()
+      const nameKeywords = currentProduct.name.split(' ')
+      const products = await productModel
+         .find({
+            _id: { $ne: currentProduct._id },
+            $or: [
+               ...nameKeywords.map((keyword) => ({ name: { $regex: keyword, $options: 'i' } })),
+               { category: currentProduct.category },
+            ],
+         })
+         .limit(20)
+
+      return JSON.parse(JSON.stringify(products))
+   } catch (error: Error | any) {
+      throw new Error(error)
+   }
+}

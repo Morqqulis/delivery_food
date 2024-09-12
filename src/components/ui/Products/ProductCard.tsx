@@ -23,16 +23,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
                {product.description.length > 40 ? product.description.slice(0, 40) + '...' : product.description}
             </p>
             <p className="text-3xl font-bold text-[#82F3FF]">$ {product.price}</p>
-            <p className="flex w-full justify-between px-2 ">
-               <p className="flex items-center gap-2 text-yellow-600">
+            <div className="flex w-full justify-between px-2 ">
+               <div className="flex items-center gap-2 text-yellow-600">
                   <Star fill="yellow" size={18} />
                   {averageRating(product.comments)}
-               </p>
-               <p className="flex items-center gap-2 text-[#38a0fa]">
+               </div>
+               <div className="flex items-center gap-2 text-[#38a0fa]">
                   <Eye size={18} />
                   {product.viewed}
-               </p>
-            </p>
+               </div>
+            </div>
          </Link>
          <Counter
             count={count}

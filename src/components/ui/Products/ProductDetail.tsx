@@ -70,7 +70,7 @@ const ProductDetail: React.FC<IProductPage> = ({ id }): JSX.Element => {
                         <div className="flex items-center gap-9 border-b-[0.3px] border-gray-400 py-2">
                            <p className="text-[10px]">Sold:&nbsp;{orderCount}</p>
                            <p className="text-[10px]">Viewed:&nbsp;{product.viewed}</p>
-                           <div className="flex gap-1 text-[10px] items-center">
+                           <div className="flex items-center gap-1 text-[10px]">
                               <p>Rating:</p>
                               <StarRating rating={averageRating(product?.comments)} size="13" />
                            </div>
@@ -105,6 +105,16 @@ const ProductDetail: React.FC<IProductPage> = ({ id }): JSX.Element => {
                         </div>
                      </div>
                      <ProductsSlider title="recently" />
+                  </div>
+
+                  <div className="mt-6 flex flex-col items-center gap-5">
+                     <div className="relative flex h-[50px] w-full items-center justify-center">
+                        <div className="h-1 w-full bg-white"></div>
+                        <div className="absolute left-[50%] translate-x-[-50%] bg-dark-400 px-5 text-center text-5xl">
+                           Related products
+                        </div>
+                     </div>
+                     <ProductsSlider title="related" product={product}/>
                   </div>
                </>
             ) : (
