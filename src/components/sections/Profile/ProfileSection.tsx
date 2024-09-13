@@ -1,12 +1,19 @@
 import { authConfig } from '#configs/authConfig'
 import { getServerSession, Session } from 'next-auth'
-import Image from 'next/image'
 import ProfileForm from './ProfileForm'
+import axios from 'axios'
 
 interface IMainSection {}
 
 const ProfileSection: React.FC = async (): Promise<JSX.Element> => {
    const session: Session | null = await getServerSession(authConfig)
+   const res = await axios.post('http://localhost:3000/api/user', { email: session?.user?.email })
+   const userData = await res.data
+   const user = {
+      name: session?.user?.name,
+      email: session?.user?.email,
+      ...userData,
+   }
 
    return (
       <section className={`py-20`}>
@@ -15,7 +22,7 @@ const ProfileSection: React.FC = async (): Promise<JSX.Element> => {
                Profile of <br />
                <span className={`text-5xl text-mini-100`}>{session?.user?.name}</span>
             </h1>
-            <ProfileForm sessionUser={session?.user ? session?.user : null} />
+            <ProfileForm userData={user ? user : null} />
          </div>
       </section>
    )

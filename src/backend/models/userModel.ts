@@ -36,6 +36,11 @@ const userSchema = new Schema<IUser>(
          required: true,
          default: 'male',
       },
+      address: {
+         type: String,
+         required: true,
+         default: null,
+      },
       role: {
          type: String,
          required: false,

@@ -10,7 +10,7 @@ import { cookieGetRecently } from '#backend/actions/cookieRecently'
 
 // export const revalidate = 0
 
-const ProductsSlider: React.FC<{ title: string; product?: IProduct }> = ({ title, product }) => {
+const ProductsSlider = ({ title, product }: { title: string; product?: IProduct }) => {
    // const res = await fetch('http://localhost:3000/api/products')
    // const products = await res.json()
 

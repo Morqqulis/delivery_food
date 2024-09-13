@@ -20,6 +20,9 @@ const Footer = () => {
                   <Link href={'/filtered'} className={`leading-[1.6] text-light-400`}>
                      filter page
                   </Link>
+                  <Link href={'/test-page'} className={`leading-[1.6] text-light-400`}>
+                     Test Page
+                  </Link>
                </div>
 
                <span className={`leading-[1.6] text-light-400`}>© 2023 - Todos os direitos reservados.</span>

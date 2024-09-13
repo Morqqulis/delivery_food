@@ -14,6 +14,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
    const [count, setCount] = useState(1)
+
    return (
       <div className="relative flex w-[250px] min-w-[250px] flex-col items-center justify-between gap-4 rounded-lg bg-[#00070A] p-6">
          <Link href={`/products/${product._id}`} className="flex flex-col items-center gap-4">
@@ -23,7 +24,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
                {product.description.length > 40 ? product.description.slice(0, 40) + '...' : product.description}
             </p>
             <p className="text-3xl font-bold text-[#82F3FF]">$ {product.price}</p>
-            <div className="flex w-full justify-between px-2 ">
+            <div className="flex w-full justify-between px-2">
                <div className="flex items-center gap-2 text-yellow-600">
                   <Star fill="yellow" size={18} />
                   {averageRating(product.comments)}

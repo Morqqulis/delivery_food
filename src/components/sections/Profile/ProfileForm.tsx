@@ -6,31 +6,26 @@ import { IUser } from '#types/index'
 import Btn from '#ui/Btn/Btn'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '#ui/form'
 import { Input } from '#ui/input'
+import Map from '#ui/Map/Map'
 import { RadioGroup, RadioGroupItem } from '#ui/radio-group'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { DefaultUser, getServerSession } from 'next-auth'
 import { getSession, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-interface ISessionUser {
-   name?: string | null
-   email?: string | null
-   image?: string | null
-}
-
-const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX.Element => {
+const ProfileForm = ({ userData }: { userData: IUser | null }): JSX.Element => {
    const form = useForm<z.infer<typeof userProfileSchema>>({
       defaultValues: {
-         name: sessionUser?.name ? sessionUser?.name.toString() : '',
-         email: sessionUser?.email ? sessionUser?.email.toString() : '',
-         password: '',
-         gender: 'male',
-         address: '',
-         phone: ``,
+         name: userData?.name ? userData.name : '',
+         email: userData?.email ? userData.email : '',
+         password: userData?.password ? userData.password : '',
+         gender: userData?.gender ? userData.gender : 'male',
+         address: userData?.address ? userData.address : '',
+         phone: userData?.phone ? userData.phone : '',
       },
       resolver: zodResolver(userProfileSchema),
    })
@@ -38,6 +33,7 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
    const submitForm = async (data: z.infer<typeof userProfileSchema>) => {
       const res = await axios.put('/api/user', data)
 
+      console.log(data)
       console.log(res.data)
    }
 
@@ -54,7 +50,11 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                   <FormItem>
                      <FormLabel>Name</FormLabel>
                      <FormControl>
-                        <Input className={`text-black`} {...field} placeholder={'Adınızı daxil edin'} />
+                        <Input
+                           className={`text-black focus-visible:ring-mini-100`}
+                           {...field}
+                           placeholder={'Adınızı daxil edin'}
+                        />
                      </FormControl>
                      <FormMessage className={`text-tomato-200`} />
                   </FormItem>
@@ -67,7 +67,11 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                   <FormItem>
                      <FormLabel>Email</FormLabel>
                      <FormControl>
-                        <Input className={`text-black`} {...field} placeholder={'Emailinizi daxil edin.'} />
+                        <Input
+                           className={`text-black focus-visible:ring-mini-100`}
+                           {...field}
+                           placeholder={'Emailinizi daxil edin.'}
+                        />
                      </FormControl>
                      <FormMessage className={`text-tomato-200`} />
                   </FormItem>
@@ -80,7 +84,12 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                   <FormItem>
                      <FormLabel>Şifrə</FormLabel>
                      <FormControl>
-                        <Input {...field} type={'password'} placeholder={'Şifrənizi daxil edin.'} />
+                        <Input
+                           className={`text-black focus-visible:ring-mini-100`}
+                           {...field}
+                           type={'password'}
+                           placeholder={'Şifrənizi daxil edin.'}
+                        />
                      </FormControl>
                      <FormMessage className={`text-tomato-200`} />
                   </FormItem>
@@ -93,7 +102,12 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                   <FormItem>
                      <FormLabel>Telefon nömrənisi</FormLabel>
                      <FormControl>
-                        <Input {...field} type={'number'} placeholder={'Telefon nömrənizi daxil edin.'} />
+                        <Input
+                           className={`!appearance-none text-black focus-visible:ring-mini-100`}
+                           {...field}
+                           type={'text'}
+                           placeholder={'Telefon nömrənizi daxil edin.'}
+                        />
                      </FormControl>
                      <FormMessage className={`text-tomato-200`} />
                   </FormItem>
@@ -103,13 +117,23 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                control={form.control}
                name={'address'}
                render={({ field }) => (
-                  <FormItem>
-                     <FormLabel>Ünvan</FormLabel>
-                     <FormControl>
-                        <Input {...field} type={'text'} placeholder={'Ünvanınızı daxil edin'} />
-                     </FormControl>
-                     <FormMessage className={`text-tomato-200`} />
-                  </FormItem>
+                  <>
+                     <FormItem>
+                        <FormLabel>Ünvan</FormLabel>
+                        <FormControl>
+                           <Input
+                              className={`text-black focus-visible:ring-mini-100`}
+                              {...field}
+                              type={'text'}
+                              placeholder={'Ünvanınızı daxil edin'}
+                           />
+                        </FormControl>
+                        <FormMessage className={`text-tomato-200`} />
+                     </FormItem>
+                     {/* <Btn text={'MAP'} className={`w-full`} type={'button'} ariaLabel={'Xerite'}>
+                        <Map />
+                     </Btn> */}
+                  </>
                )}
             />
             <FormField
@@ -129,13 +153,13 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                               <FormControl>
                                  <RadioGroupItem className={`text-white`} value={'male'} />
                               </FormControl>
-                              <FormLabel className={`-translate-y-1`}>Kisi</FormLabel>
+                              <FormLabel className={`-translate-y-1 cursor-pointer`}>Kisi</FormLabel>
                            </FormItem>
                            <FormItem className={`flex items-center gap-2 text-center`}>
                               <FormControl>
                                  <RadioGroupItem className={`text-white`} value={'female'} />
                               </FormControl>
-                              <FormLabel className={`-translate-y-1`}>Qadin</FormLabel>
+                              <FormLabel className={`-translate-y-1 cursor-pointer`}>Qadin</FormLabel>
                            </FormItem>
                         </RadioGroup>
                      </FormControl>
@@ -143,7 +167,12 @@ const ProfileForm = ({ sessionUser }: { sessionUser: ISessionUser | null }): JSX
                   </FormItem>
                )}
             />
-            <Btn className={`w-full`} type={'submit'} text={'Update profile'} />
+            <Btn
+               className={`w-full`}
+               type={'submit'}
+               text={'Update profile'}
+               onClick={() => form.handleSubmit(submitForm)}
+            />
          </form>
       </Form>
    )

@@ -32,7 +32,7 @@ export const userGetByEmail = async (email: string) => {
       await connectDB()
       const user = await userModel.findOne({ email: email })
 
-      return user
+      return JSON.parse(JSON.stringify(user))
    } catch (err: Error | any) {
       throw new Error(err)
    }
