@@ -1,15 +1,16 @@
 import DefaultLayout from '#layouts/DefaultLayout'
 import BasketSection from '#sections/Basket/BasketSection'
+import ProductsFiltered from '#ui/Products/ProductsFiltered'
 import { NextPage } from 'next'
 
-const Basket: NextPage = (): JSX.Element => {
+const FilterPage: NextPage = (): JSX.Element => {
    return (
       <DefaultLayout full={true}>
          <main>
-            <BasketSection />
+            <ProductsFiltered />
          </main>
       </DefaultLayout>
    )
 }
 
-export default Basket
+export default FilterPage

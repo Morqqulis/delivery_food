@@ -7,6 +7,7 @@ import styles from './Header.module.scss'
 import HeaderBasketBtn from './HeaderBasketBtn'
 import HeaderSearch from './HeaderSearch'
 import HeaderUserDropdown from './HeaderUserDropdown'
+import CategorySheet from '#sections/Category/CategorySheet'
 
 const Header = () => {
    const session = useSession()
@@ -17,6 +18,7 @@ const Header = () => {
             <nav className={`flex items-center justify-between gap-8`}>
                <Logo className={styles.logo} />
                <HeaderSearch />
+               <CategorySheet />
                <HeaderBasketBtn />
                {session.status === 'loading' ? (
                   <div>Loading...</div>
