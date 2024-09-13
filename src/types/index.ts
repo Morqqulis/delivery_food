@@ -42,12 +42,47 @@ export interface IProduct {
    description: string
    price: number
    viewed: number
-   comments?: IComment[]
-   category: string
+   comments: IComment[]
    seller: ISeller
-   image?: string
-   createdAt?: Date
+   image: string
+   attributes: {
+      category: {
+         main: string
+         sub: string
+         child: string
+      }
+      size: string[]
+      colors: string[]
+   }
 }
+
+export interface IProductCreate {
+   name: string
+   description: string
+   price: number
+   seller:  Types.ObjectId
+   image: string
+   attributes: {
+      category: {
+         main: string
+         sub: string
+         child: string
+      }
+      size?: string[]
+      colors?: string[]
+   }
+}
+
+export interface IAddProduct {
+   name: string
+   description: string
+   price: string
+   category: string
+   colors?: string[]
+   image?: any
+   size?: string[]
+}
+
 export interface ISeller {
    _id?: Types.ObjectId
    point: string
@@ -77,14 +112,6 @@ export interface IStoreFormValues {
    email: string
    image: string
 }
-export interface IAddProduct {
-   name: string
-   description: string
-   price: number
-   category: string
-   image?: any
-}
-
 export interface IUser {
    _id?: Types.ObjectId
    name: string

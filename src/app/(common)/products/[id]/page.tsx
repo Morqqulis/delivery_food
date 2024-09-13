@@ -1,6 +1,6 @@
 import DefaultLayout from '#layouts/DefaultLayout'
+import ProductDetail from '#sections/Products/ProductDetail'
 import { IParamsID } from '#types/index'
-import ProductDetail from '#ui/Products/ProductDetail'
 import { NextPage } from 'next'
 
 export const revalidate = 0

@@ -3,7 +3,7 @@
 import { connectDB } from '#backend/DB'
 import productModel from '#backend/models/productModel'
 import sellerModel from '#backend/models/sellerModel'
-import { IBasket, IComment, IProduct } from '#types/index'
+import { IBasket, IComment, IProduct, IProductCreate } from '#types/index'
 import { Types } from 'mongoose'
 
 export const productGetAll = async () => {
@@ -130,14 +130,14 @@ export const productUpdateById = async (id: string, data: any) => {
    }
 }
 
-export const productCreate = async (data: IProduct) => {
+export const productCreate = async (data: IProductCreate) => {
    if (!data) return
 
    try {
       await connectDB()
-      const product = (await productModel.create(data)).toObject()
+      const product = await productModel.create(data)
       await sellerModel.updateOne({ _id: data.seller }, { $push: { products: product._id } })
-      return 'Product created successfully'
+      // return JSON.parse(JSON.stringify(product))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -197,7 +197,7 @@ export const productRelatedNameAndCategory = async (currentProduct: IProduct) =>
             _id: { $ne: currentProduct._id },
             $or: [
                ...nameKeywords.map((keyword) => ({ name: { $regex: keyword, $options: 'i' } })),
-               { category: currentProduct.category },
+               { category: currentProduct.attributes.category },
             ],
          })
          .limit(20)

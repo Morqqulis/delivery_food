@@ -7,9 +7,9 @@ export interface IFilter {
    size: string
    color: string
    category: {
-      parent: string
-      current: string
-      childCategory: string
+      main: string
+      sub: string
+      child: string
    }
 }
 const FilteredPageSection: React.FC = (): JSX.Element => {
@@ -17,9 +17,9 @@ const FilteredPageSection: React.FC = (): JSX.Element => {
       size: '',
       color: '',
       category: {
-         parent: '',
-         current: '',
-         childCategory: '',
+         main: "",
+         sub:  "",
+         child:  "",
       },
    } as IFilter)
    console.log(filters)

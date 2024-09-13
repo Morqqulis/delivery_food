@@ -56,8 +56,10 @@ export const StoreEditSchema = z.object({
 export const ProductSchema = z.object({
    name: z.string().min(1, 'Name is required'),
    description: z.string().min(1, 'Description is required'),
-   price: z.number().positive('Price must be a positive number'),
-   category: z.string().min(1, 'Category is required'),
+   price: z.string().min(1, 'Price is required'),
+   category: z.string(),
+   colors: z.array(z.string()),
+   size: z.array(z.string()),
    image: z.any().optional(),
 })
 

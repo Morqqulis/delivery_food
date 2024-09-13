@@ -2,16 +2,17 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Pencil, Trash } from 'lucide-react'
-import { productDeleteById } from '#backend/actions/productActions'
+import { productDeleteById, productGetAll } from '#backend/actions/productActions'
 import { ISeller } from '#types/index'
 import { sellerGetProductsWithSelect } from '#backend/actions/sellerActions'
 
 const ProductPage: React.FC = () => {
    const [seller, setSeller] = useState<ISeller>()
-
+   console.log(seller)
    useEffect(() => {
       ;(async () => {
-         const sel = await sellerGetProductsWithSelect('66d02490d14d9bc8e4366bd1', 'name category price')
+         await productGetAll()
+         const sel = await sellerGetProductsWithSelect('66d02490d14d9bc8e4366bd1', 'name attributes price')
          if (sel) {
             setSeller(sel)
          }
@@ -38,7 +39,7 @@ const ProductPage: React.FC = () => {
                      <div className="flex-1">
                         <h2 className="text-lg font-semibold">{product?.name}</h2>
                         <p className="text-sm">
-                           {product?.category} - ${product?.price}
+                           {product.attributes.category.child} - ${product?.price}
                         </p>
                      </div>
                      <div className="flex flex-col gap-2">

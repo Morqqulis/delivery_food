@@ -1,6 +1,6 @@
+import { allColors } from '#static/filters'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '#ui/accordion'
 import { IFilter } from '../FilteredPageSection'
-import { allColors } from './static'
 
 const ColorSelect: React.FC<{ setFilters: React.Dispatch<React.SetStateAction<IFilter>> }> = ({
    setFilters,

@@ -1,6 +1,6 @@
 import { IFilter } from '../FilteredPageSection'
-import { allCategories } from './static'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '#ui/accordion'
+import { allCategories } from '#static/filters'
 
 const CategorySelect: React.FC<{ setFilters: React.Dispatch<React.SetStateAction<IFilter>> }> = ({
    setFilters,
@@ -9,41 +9,39 @@ const CategorySelect: React.FC<{ setFilters: React.Dispatch<React.SetStateAction
       <Accordion type="single" collapsible>
          <AccordionItem value="All">
             <AccordionTrigger>Categories</AccordionTrigger>
-            <AccordionContent className='px-3'>
+            <AccordionContent className="px-3">
                <Accordion type="single" collapsible>
-                  {Object.entries(allCategories).map(([parent, subcategories]) => (
-                     <AccordionItem key={parent} value={parent}>
+                  {Object.entries(allCategories).map(([main, subcategories]) => (
+                     <AccordionItem key={main} value={main}>
                         <AccordionTrigger
-                           onClick={() =>
-                              setFilters((prev) => ({ ...prev, category: { parent, current: '', childCategory: '' } }))
-                           }
+                           onClick={() => setFilters((prev) => ({ ...prev, category: { main, child: '', sub: '' } }))}
                         >
-                           {parent}
+                           {main}
                         </AccordionTrigger>
                         <AccordionContent>
-                           {Object.entries(subcategories).map(([current, items]) => (
-                              <Accordion className="px-3" key={current} type="single" collapsible>
-                                 <AccordionItem value={current} className="">
+                           {Object.entries(subcategories).map(([sub, items]) => (
+                              <Accordion className="px-3" key={sub} type="single" collapsible>
+                                 <AccordionItem value={sub} className="">
                                     <AccordionTrigger
                                        onClick={() =>
-                                          setFilters((prev) => ({ ...prev, category: { ...prev.category, current } }))
+                                          setFilters((prev) => ({ ...prev, category: { ...prev.category, sub } }))
                                        }
                                     >
-                                       {current}
+                                       {sub}
                                     </AccordionTrigger>
                                     <AccordionContent>
-                                       {items.map((childCategory) => (
+                                       {items.map((child) => (
                                           <p
                                              onClick={() =>
                                                 setFilters((prev) => ({
                                                    ...prev,
-                                                   category: { ...prev.category, childCategory },
+                                                   category: { ...prev.category, child },
                                                 }))
                                              }
                                              className="cursor-pointer px-3 py-1"
-                                             key={childCategory}
+                                             key={child}
                                           >
-                                             {childCategory}
+                                             {child}
                                           </p>
                                        ))}
                                     </AccordionContent>
