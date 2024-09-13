@@ -16,7 +16,7 @@ const CustomCard = ({ product }: { product: ITestProduct }) => {
    return (
       <Link href={`/products/${product.id}`}>
          <Card
-            className={`group/card relative z-10 max-w-[320px] border-none bg-[rgba(255,255,255,0)] text-white transition-all ease-in-out before:absolute before:left-1/2 before:top-1/2 before:-z-[1] before:h-0 before:w-0 before:rounded-xl before:bg-white before:opacity-0 before:transition-all before:duration-300 before:ease-in hover:text-black hover:before:left-0 hover:before:top-0 hover:before:h-full hover:before:w-full hover:before:opacity-100`}
+            className={`group/card relative z-10 max-w-[320px] border-none bg-[rgba(255,255,255,0.15)] text-white transition-all ease-in-out before:absolute before:left-1/2 before:top-1/2 before:-z-[1] before:h-0 before:w-0 before:rounded-xl before:bg-white before:opacity-0 before:transition-all before:duration-300 before:ease-in hover:text-black hover:before:left-0 hover:before:top-0 hover:before:h-full hover:before:w-full hover:before:opacity-100`}
          >
             <CardHeader className={`flex flex-col gap-4 px-3 py-2`}>
                <AspectRatio className={`duration-300 ease-in group-hover/card:scale-105`} ratio={1 / 1}>
