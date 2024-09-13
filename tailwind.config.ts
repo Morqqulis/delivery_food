@@ -18,6 +18,10 @@ const config = {
             mpc: { max: '1149.99px' },
          },
 
+         transitionDuration: {
+            400: '400ms',
+         },
+
          colors: {
             'light-100': '#FFFFFF',
             'light-200': '#FFFAF1',
