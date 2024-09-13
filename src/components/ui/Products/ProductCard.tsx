@@ -12,7 +12,7 @@ const ProductCard: React.FC<{ product: IProduct }> = ({ product }): JSX.Element 
    const [count, setCount] = useState(1)
 
    return (
-      <div className="relative flex w-[250px] min-w-[250px] flex-col items-center justify-between gap-4 rounded-lg bg-[#00070A] p-6">
+      <div className="relative flex w-[250px] min-w-[250px] flex-col items-center justify-between gap-4 rounded-lg bg-[#00070A] p-6 h-fit">
          <Link href={`/products/${product._id}`} className="flex flex-col items-center gap-4">
             <Image src={`${product?.image}`} width={150} height={150} alt={'product image'} priority />
             <p className="text-2xl font-bold">{product.name} &gt; </p>

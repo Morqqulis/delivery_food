@@ -3,7 +3,7 @@
 import { connectDB } from '#backend/DB'
 import productModel from '#backend/models/productModel'
 import sellerModel from '#backend/models/sellerModel'
-import { IBasket, IComment, IProduct, IProductCreate } from '#types/index'
+import { IBasket, IComment, IFilter, IProduct, IProductCreate } from '#types/index'
 import { Types } from 'mongoose'
 
 export const productGetAll = async () => {
@@ -137,17 +137,30 @@ export const productCreate = async (data: IProductCreate) => {
       await connectDB()
       const product = await productModel.create(data)
       await sellerModel.updateOne({ _id: data.seller }, { $push: { products: product._id } })
-      // return JSON.parse(JSON.stringify(product))
+      return JSON.parse(JSON.stringify(product))
    } catch (err: Error | any) {
       throw new Error(err)
    }
 }
 
-export const productsGetByCategory = async (category: string) => {
-   if (!category) return
+export const productsGetByFilters = async (filters: IFilter) => {
+   if (!filters) return
    try {
       await connectDB()
-      const products = await productModel.find({ category: category })
+
+      const query = Object.entries({
+         'attributes.size': filters.size ? { $in: filters.size } : undefined,
+         'attributes.colors': filters.color ? { $in: filters.color } : undefined,
+         'attributes.category.main': filters.category?.main ? { $in: filters.category.main } : undefined,
+         'attributes.category.sub': filters.category?.sub ? { $in: filters.category.sub } : undefined,
+         'attributes.category.child': filters.category?.child ? { $in: filters.category.child } : undefined,
+      }).reduce((acc, [key, value]) => {
+         if (value !== undefined) acc[key] = value
+         return acc
+      }, {} as any)
+
+      const products = await productModel.find(query)
+
       return JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
@@ -197,7 +210,9 @@ export const productRelatedNameAndCategory = async (currentProduct: IProduct) =>
             _id: { $ne: currentProduct._id },
             $or: [
                ...nameKeywords.map((keyword) => ({ name: { $regex: keyword, $options: 'i' } })),
-               { category: currentProduct.attributes.category },
+               { "attributes.category.main": currentProduct.attributes.category.main },
+               { "attributes.category.sub": currentProduct.attributes.category.sub },
+               { "attributes.category.child": currentProduct.attributes.category.child },
             ],
          })
          .limit(20)

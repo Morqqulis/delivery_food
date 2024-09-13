@@ -36,6 +36,15 @@ export interface IComment {
    rating: number
    date: Date
 }
+export interface IFilter {
+   size: string
+   color: string
+   category: {
+      main: string
+      sub: string
+      child: string
+   }
+}
 export interface IProduct {
    _id: Types.ObjectId
    name: string

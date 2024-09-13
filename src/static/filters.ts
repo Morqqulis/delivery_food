@@ -1,7 +1,7 @@
-
-export const allSize = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+export const allSize = ['All', 'XS', 'S', 'M', 'L', 'XL', 'XXL']
 
 export const allColors = [
+   'All',
    'White',
    'Black',
    'Red',
