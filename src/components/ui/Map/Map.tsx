@@ -1,136 +1,90 @@
 'use client'
-import { Suspense, useEffect, useState } from 'react'
+import { useMapStore } from '#stores/mapStore'
+import { Suspense, useEffect } from 'react'
 import { AdvancedMarker, GoogleMap, GoogleMapApiLoader, PinElement, useImportLibrary } from 'react-google-map-wrapper'
 
 const Map = () => {
-   const [address, setAddress] = useState('Baku, 28 Mall')
-   const [userLocaltion, setUserLocaltion] = useState<google.maps.LatLngLiteral>({
-      lat: 40.37906655792881,
-      lng: 49.84419047733686,
-   })
-   const geocoder = useImportLibrary('geocoding')
+   const { setAddress, location, setLocation } = useMapStore()
+   const geoLib = useImportLibrary('geocoding')
 
    useEffect(() => {
-      const handleGetUserGeolocation = () => {
-         navigator.geolocation.getCurrentPosition((position) => {
-            setUserLocaltion({
-               lat: position.coords.latitude,
-               lng: position.coords.longitude,
-            })
-         })
-      }
+      if (!navigator.geolocation) return
 
-      handleGetUserGeolocation()
-      if (!geocoder) return
-      console.log(geocoder)
-   }, [])
+      navigator.geolocation.getCurrentPosition((position) => {
+         const currentLocation: google.maps.LatLngLiteral = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+         }
 
-   const handleDragEnd = (e: any) => {
-      const position = {
-         lat: e.position.lat,
-         lng: e.position.lng,
-      }
+         mapGeocoder({ location: currentLocation })
+      })
+   }, [geoLib])
 
-      setUserLocaltion(position)
+   const mapGeocoder = (req: google.maps.GeocoderRequest) => {
+      if (!geoLib) return
+      const geocoder = new geoLib.Geocoder()
 
-      const geocoder = new google.maps.Geocoder()
-      geocoder.geocode({ location: position }, (results, status) => {
-         if (!results) return
-
-         console.log(results[0].formatted_address)
-
+      geocoder.geocode(req, (results, status) => {
          if (status === 'OK') {
-            if (results[0]) {
-               setAddress(results[0].formatted_address)
-            } else {
-               console.log('Bura haradi ay qa ?')
+            if (!results) {
+               return
             }
-         } else {
-            console.log(`Geocoder xoddanmadi =) status: ${status}`)
+            setAddress(results[0].formatted_address)
+            setLocation(results[0].geometry.location.toJSON())
          }
       })
    }
 
-   const handleGetUserAddress = (e: any) => {
-      // const
+   const handleDragEnd = (e: any) => {
+      const markerLocation = {
+         lat: e.position.lat,
+         lng: e.position.lng,
+      }
+
+      mapGeocoder({ location: markerLocation })
    }
 
    return (
-      <>
-         <Suspense
-            fallback={
-               <h3 className={`text-center text-3xl font-semibold text-tomato-200`}>
-                  Ya internetin pisdi ya da Google tormuzdu. Gozleyek - belke acildi =) <br />
-                  Loading map...
-               </h3>
-            }
+      <Suspense fallback={<h3 className={`text-center text-3xl font-semibold text-tomato-200`}>Loading map...</h3>}>
+         <GoogleMapApiLoader
+            apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string}
+            language={'az'}
+            suspense
+            region={'az'}
+            v={'beta'}
+            key={'some key'}
+            libraries={['maps', 'marker', 'places', 'geocoding']}
+            onSuccess={() => console.log('Google Maps API yuklendi!')}
          >
-            <GoogleMapApiLoader
-               apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string}
-               language={'az'}
-               suspense
-               region={'Baku'}
-               v={'beta'}
-               key={'some key'}
-               libraries={['maps', 'marker', 'places', 'geocoding']}
+            <GoogleMap
+               className={`h-[500px]`}
+               center={location}
+               key={'random key'}
+               zoom={12}
+               mapOptions={{
+                  // styles: mapStyles,
+                  zoomControl: false,
+                  mapId: process.env.NEXT_PUBLIC_GOOGLE_MAP_ID as string,
+                  clickableIcons: true,
+                  mapTypeControl: false,
+                  fullscreenControl: true,
+                  streetViewControl: true,
+                  rotateControl: true,
+                  scaleControl: true,
+               }}
             >
-               <GoogleMap
-                  className={`h-[500px] -z-[1]`}
-                  center={userLocaltion}
-                  key={'random key'}
-                  zoom={12}
-                  mapOptions={{
-                     // styles: mapStyles,
-                     zoomControl: false,
-                     mapId: process.env.NEXT_PUBLIC_GOOGLE_MAP_ID as string,
-                     clickableIcons: true,
-                     mapTypeControl: false,
-                     fullscreenControl: true,
-                     streetViewControl: true,
-                     rotateControl: true,
-                     scaleControl: true,
-                  }}
+               <AdvancedMarker
+                  gmpDraggable={true}
+                  lat={location.lat}
+                  lng={location.lng}
+                  onDragEnd={(e) => handleDragEnd(e)}
                >
-                  <AdvancedMarker
-                     gmpDraggable={true}
-                     lat={userLocaltion.lat}
-                     lng={userLocaltion.lng}
-                     onDragEnd={(e) => handleDragEnd(e)}
-                  >
-                     <PinElement scale={1.5} background={'black'} glyphColor={'red'} borderColor={'red'} />
-                  </AdvancedMarker>
-               </GoogleMap>
-            </GoogleMapApiLoader>
-         </Suspense>
-      </>
+                  <PinElement scale={1.1} glyphColor={'blue'} borderColor={'blue'} background={'red'} />
+               </AdvancedMarker>
+            </GoogleMap>
+         </GoogleMapApiLoader>
+      </Suspense>
    )
 }
 
 export default Map
-
-// const CustomMap = () => {
-//    const [userLocaltion, setUserLocaltion] = useState<google.maps.LatLngLiteral>({
-//       lat: 0,
-//       lng: 0,
-//    })
-
-//    useEffect(() => {
-//       navigator.geolocation.getCurrentPosition((position) => {
-//          setUserLocaltion({
-//             lat: position.coords.latitude,
-//             lng: position.coords.longitude,
-//          })
-//       })
-//    }, [])
-
-//    return (
-//       <GoogleMap
-//          className={`h-[500px]`}
-//          center={userLocaltion}
-//          zoom={12}
-//          mapOptions={{
-//             styles: mapStyles,
-//          }}
-//       ></GoogleMap>
-//    )
-// }

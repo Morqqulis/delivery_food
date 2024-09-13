@@ -1,13 +1,13 @@
 'use client'
-import { useMapAddressStore } from '#stores/mapAddressStore'
+import { useMapStore } from '#stores/mapStore'
 import { Input } from '#ui/input'
 import { Label } from '#ui/label'
 import { useEffect, useRef } from 'react'
 import { useImportLibrary } from 'react-google-map-wrapper'
 
 const MapAutocomplete = () => {
-   const { address, setAddress } = useMapAddressStore()
-   const places = useImportLibrary('places')
+   const { address, setAddress, setLocation } = useMapStore()
+   const places: google.maps.PlacesLibrary | null = useImportLibrary('places')
    const inputRef = useRef<HTMLInputElement | null>(null)
 
    const handleGetUserAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,22 +16,17 @@ const MapAutocomplete = () => {
 
    useEffect(() => {
       if (!places || !inputRef.current) {
-         console.log('Google Places API hazir deyil')
          return
       }
 
-      const autocomplete = new places.Autocomplete(inputRef.current!)
+      const autocomplete: google.maps.places.Autocomplete = new places.Autocomplete(inputRef.current!)
 
       google.maps.event.addListener(autocomplete, 'place_changed', () => {
-         const place = autocomplete.getPlace()
-         console.log('Place changed:', place)
+         const place: google.maps.places.PlaceResult = autocomplete.getPlace()
 
-         if (!place.geometry || !place.formatted_address) {
-            console.log('Addres yoxdu')
-            return
-         }
+         if (!place.geometry || !place.formatted_address) return
 
-         console.log('Adres yenilenir:', place.formatted_address)
+         setLocation(place.geometry.location!.toJSON())
          setAddress(place.formatted_address)
       })
 
@@ -41,16 +36,14 @@ const MapAutocomplete = () => {
    }, [places])
 
    return (
-      <Label className={`z-20`}>
-         <Input
-            className="font-semibold text-blue-600"
-            type="text"
-            onChange={handleGetUserAddress}
-            ref={inputRef}
-            value={address}
-            placeholder="Addresi daxil edin"
-         />
-      </Label>
+      <Input
+         className="font-semibold text-blue-600 duration-300 placeholder:duration-300 focus-within:placeholder:text-opacity-0"
+         type="text"
+         onChange={handleGetUserAddress}
+         ref={inputRef}
+         value={address}
+         placeholder="Addresi daxil edin"
+      />
    )
 }
 

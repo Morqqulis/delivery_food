@@ -130,7 +130,9 @@ const ProfileForm = ({ userData }: { userData: IUser | null }): JSX.Element => {
                         </FormControl>
                         <FormMessage className={`text-tomato-200`} />
                      </FormItem>
-                     <Map />
+                     {/* <Btn text={'MAP'} className={`w-full`} type={'button'} ariaLabel={'Xerite'}>
+                        <Map />
+                     </Btn> */}
                   </>
                )}
             />

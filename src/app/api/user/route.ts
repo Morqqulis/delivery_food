@@ -21,7 +21,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
    try {
       if (!email) return
-      const user = await userGetByEmail(await email)
+      const user = await userGetByEmail(email)
 
       return NextResponse.json(await user)
    } catch (error) {
@@ -29,33 +29,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
       return NextResponse.json(null, { statusText: 'No data' })
    }
-
-   // const session = await getServerSession({
-   //    req,
-   //    secret: authConfig.secret,
-   // })
-
-   // return NextResponse.json(session)
-   // const data = await req.json()
-   // try {
-   //    const result = await req.json()
-   //    const user = await userGetByEmail(await result)
-
-   //    return NextResponse.json(await user)
-   // } catch (error) {
-   //    console.log('Error in api user route POST: ', error)
-   // }
-
-   // return NextResponse.json(null, { statusText: 'No data' })
 }
-
-// export async function PATCH(req: NextRequest, res: NextResponse) {
-//    getUserById('')
-// }
-
-// export async function DELETE(req: NextRequest, res: NextResponse) {
-//    getUserById('')
-// }
 
 export async function PUT(req: NextRequest, res: NextResponse) {
    try {
