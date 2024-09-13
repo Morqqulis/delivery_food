@@ -20,9 +20,11 @@ export const RegisterDefault = {
 export const AddProductDefault = {
    name: '',
    description: '',
-   price: 0,
+   price: '0',
    category: '',
-   image: '',
+   image: undefined,
+   colors: [],
+   size: [],
 }
 
 export const CheckoutDefault = {

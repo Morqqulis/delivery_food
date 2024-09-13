@@ -1,29 +1,35 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '#ui/select'
-import { IFilter } from '../FilteredPageSection'
-import { allSize } from './static'
+import { allSize } from '#static/filters'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '#ui/accordion'
+import { IFilter } from '#types/index'
 
-const SizeSelect: React.FC<{ setFilters: React.Dispatch<React.SetStateAction<IFilter>>}> = ({ setFilters }): JSX.Element => {
+const SizeSelect: React.FC<{ setFilters: React.Dispatch<React.SetStateAction<IFilter>>; filters: IFilter }> = ({
+   setFilters,
+   filters,
+}): JSX.Element => {
    return (
-      <Select  onValueChange={(value) =>
-         setFilters((prev) => ({
-            ...prev,
-            size: value,
-         }))}>
-         <SelectTrigger className="w-[180px] border-none bg-cake-200 outline-none">
-            <SelectValue placeholder="Size" className="" />
-         </SelectTrigger>
-         <SelectContent>
-            {allSize.map((size) => (
-               <SelectItem
-                  value={size}
-                  key={size}
-                  className="max-h-[250px] cursor-pointer focus:bg-cake-100 focus:text-cake-200"
-               >
-                  {size}
-               </SelectItem>
-            ))}
-         </SelectContent>
-      </Select>
+      <Accordion type="single" collapsible>
+         <AccordionItem value="Size">
+            <AccordionTrigger>
+               Size <p className="text-[13px] ml-2">{filters.size ? `/ ${filters.size}` : ''}</p>
+            </AccordionTrigger>
+            <AccordionContent>
+               <Accordion type="single" collapsible>
+                  {allSize.map((size) => (
+                     <AccordionItem key={size} value={size} className="border-none px-3 py-1">
+                        <p
+                           className={`cursor-pointer ${size === filters.size && 'font-bold text-blue-700'}`}
+                           onClick={() => {
+                              setFilters((prev) => ({ ...prev, size: size === 'All' ? '' : size }))
+                           }}
+                        >
+                           {size}
+                        </p>
+                     </AccordionItem>
+                  ))}
+               </Accordion>
+            </AccordionContent>
+         </AccordionItem>
+      </Accordion>
    )
 }
 

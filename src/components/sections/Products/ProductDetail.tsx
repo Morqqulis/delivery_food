@@ -12,13 +12,17 @@ import LikeHeart from '#ui/LikeHeart'
 import ProductsSlider from '#ui/Products/ProductsSlider'
 import { cookieUpdateRecently } from '#backend/actions/cookieRecently'
 import { ordersFindWithProduct } from '#backend/actions/orderAction'
-import { promoCreate } from '#backend/actions/promotionActions'
+import {
+   Breadcrumb,
+   BreadcrumbItem,
+   BreadcrumbLink,
+   BreadcrumbList,
+   BreadcrumbPage,
+   BreadcrumbSeparator,
+} from '#ui/breadcrumb'
+import Options from './Options'
 
-interface IProductPage {
-   id: string
-}
-
-const ProductDetail: React.FC<IProductPage> = ({ id }): JSX.Element => {
+const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
    const [product, setProduct] = useState<IProduct>()
    const [orderCount, setOrderCount] = useState(0)
    const [count, setCount] = useState(1)
@@ -33,19 +37,39 @@ const ProductDetail: React.FC<IProductPage> = ({ id }): JSX.Element => {
          setProduct(prod)
          setOrderCount(orders.length)
          await cookieUpdateRecently(id)
-         // console.log(await promoCreate())
       })()
    }, [])
-
    return (
       <section className={`py-20`}>
          <div className="container">
             {product ? (
                <>
+                  <Breadcrumb>
+                     <BreadcrumbList>
+                        <BreadcrumbItem className="text-white">
+                           <BreadcrumbLink href="/" className="hover:text-blue-700">
+                              Home
+                           </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                        <BreadcrumbItem className="text-white">
+                           <BreadcrumbLink className="hover:text-blue-700" href="/filtered">
+                              Categories
+                           </BreadcrumbLink>
+                        </BreadcrumbItem>
+
+                        <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                        <BreadcrumbItem className="text-white">{product?.attributes.category.main}</BreadcrumbItem>
+                        <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                        <BreadcrumbItem className="text-white">{product?.attributes?.category.sub}</BreadcrumbItem>
+                        <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                        <BreadcrumbItem className="text-white">{product?.attributes.category.child}</BreadcrumbItem>
+                     </BreadcrumbList>
+                  </Breadcrumb>
                   <div className="flex w-full items-center gap-3 p-5">
                      <div className="relative h-[500px] w-[50%] p-2">
                         <Image
-                           src={'/qazan.svg'}
+                           src={product?.image}
                            width={500}
                            height={500}
                            alt={'product image'}
@@ -68,6 +92,10 @@ const ProductDetail: React.FC<IProductPage> = ({ id }): JSX.Element => {
                               <StarRating rating={4.4} size="10" />
                            </div>
                            <p>{product?.seller?.secondName}</p>
+                        </div>
+                        <div className="flex gap-2 border-b-[0.3px] border-gray-400 py-4">
+                           <Options title="Colors" options={product.attributes.colors} />
+                           <Options title="Size" options={product.attributes.size} />
                         </div>
                         <div className="flex items-center gap-9 border-b-[0.3px] border-gray-400 py-2">
                            <p className="text-[10px]">Sold:&nbsp;{orderCount}</p>

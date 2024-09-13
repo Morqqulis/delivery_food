@@ -1,11 +1,11 @@
 import DefaultLayout from '#layouts/DefaultLayout'
-import ProductAdd from '#sections/Seller/Products/ProductAdd'
+import ProductAdd from '#sections/Seller/Products/Add/ProductAdd'
 
 interface Ipage {}
 
 const AddProduct: React.FC = (): JSX.Element => {
    return (
-      <DefaultLayout full={false}>
+      <DefaultLayout full={false} aside>
          <main>
             <ProductAdd />
          </main>

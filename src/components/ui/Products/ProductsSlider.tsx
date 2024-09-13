@@ -45,7 +45,7 @@ const ProductsSlider = ({ title, product }: { title: string; product?: IProduct 
          <div className="scrollbar-custom flex w-full items-center gap-7 overflow-x-auto">
             {products.length === 0 && <p>Loading...</p>}
             {products.length > 0 &&
-               products.map((product: IProduct) => <ProductCard key={product._id.toString()} product={product} />)}
+               products.map((product: IProduct) => <ProductCard key={product?._id?.toString()} product={product} />)}
          </div>
       </div>
    )

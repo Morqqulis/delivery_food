@@ -1,34 +1,38 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '#ui/select'
-import { IFilter } from '../FilteredPageSection'
-import { allColors } from './static'
+import { allColors } from '#static/filters'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '#ui/accordion'
+import { IFilter } from '#types/index'
 
-const ColorSelect: React.FC<{ setFilters: React.Dispatch<React.SetStateAction<IFilter>> }> = ({
+const ColorSelect: React.FC<{ setFilters: React.Dispatch<React.SetStateAction<IFilter>>; filters: IFilter }> = ({
    setFilters,
+   filters,
 }): JSX.Element => {
    return (
-      <Select
-         onValueChange={(value) =>
-            setFilters((prev) => ({
-               ...prev,
-               color: value,
-            }))
-         }
-      >
-         <SelectTrigger className="w-[180px] border-none bg-cake-200 outline-none">
-            <SelectValue placeholder="Color" className="" />
-         </SelectTrigger>
-         <SelectContent>
-            {allColors.map((color) => (
-               <SelectItem
-                  value={color}
-                  key={color}
-                  className={`max-h-[250px] cursor-pointer focus:bg-cake-100 focus:text-cake-200`}
-               >
-                  {color}
-               </SelectItem>
-            ))}
-         </SelectContent>
-      </Select>
+      <Accordion type="single" collapsible>
+         <AccordionItem value="Color">
+            <AccordionTrigger>
+               Color
+               <p className=" ml-2 text-[13px]">
+                  {filters.color ? `/ ${filters.color}` : ''}
+               </p>
+            </AccordionTrigger>
+            <AccordionContent>
+               <Accordion type="single" collapsible>
+                  {allColors.map((color) => (
+                     <AccordionItem key={color} value={color} className="border-none px-3 py-1">
+                        <p
+                           className={`cursor-pointer ${color === filters.color && 'font-bold text-blue-700'}`}
+                           onClick={() => {
+                              setFilters((prev) => ({ ...prev, color: color === 'All' ? '' : color }))
+                           }}
+                        >
+                           {color}
+                        </p>
+                     </AccordionItem>
+                  ))}
+               </Accordion>
+            </AccordionContent>
+         </AccordionItem>
+      </Accordion>
    )
 }
 

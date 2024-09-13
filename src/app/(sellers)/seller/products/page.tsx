@@ -5,7 +5,7 @@ interface Ipage {}
 
 const Products: React.FC = (): JSX.Element => {
    return (
-      <DefaultLayout full={false}>
+      <DefaultLayout full={false} aside={true}>
          <main>
             <SellerProducts />
          </main>

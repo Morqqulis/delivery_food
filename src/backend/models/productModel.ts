@@ -4,10 +4,6 @@ import seller from '#backend/models/sellerModel'
 
 const productSchema: Schema = new Schema<IProduct>(
    {
-      _id: {
-         type: Schema.Types.ObjectId,
-         required: true,
-      },
       name: {
          type: String,
          required: true,
@@ -22,19 +18,50 @@ const productSchema: Schema = new Schema<IProduct>(
       },
       comments: [
          {
-            name: String,
-            text: String,
-            rating: Number,
-            date: Date,
+            name: {
+               type: String,
+            },
+            text: {
+               type: String,
+            },
+            rating: {
+               type: Number,
+            },
+            date: {
+               type: Date,
+            },
          },
       ],
-      category: {
-         type: String,
-         required: true,
+      attributes: {
+         category: {
+            main: {
+               type: String,
+               required: true,
+            },
+            sub: {
+               type: String,
+               required: true,
+            },
+            child: {
+               type: String,
+               required: true,
+            },
+         },
+         size: [
+            {
+               type: String,
+            },
+         ],
+         colors: [
+            {
+               type: String,
+            },
+         ],
       },
+
       image: {
          type: String,
-         required: false,
+         required: true,
       },
 
       seller: {

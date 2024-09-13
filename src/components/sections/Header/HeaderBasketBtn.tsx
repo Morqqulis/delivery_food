@@ -14,9 +14,9 @@ const HeaderBasketBtn: React.FC = (): JSX.Element => {
    return (
       <Btn
          className={`px-11 py-2`}
-         text={`Orders (${basket.length})`}
+         text={`Basket (${basket?.length})`}
          type={'button'}
-         ariaLabel={'Orders Btn'}
+         ariaLabel={'Basket Btn'}
          href="/basket"
       />
    )
