@@ -7,7 +7,7 @@ const FilteredSection: React.FC<{ setFilters: React.Dispatch<React.SetStateActio
    setFilters,
 }): JSX.Element => {
    return (
-      <div className="flex w-[15%] flex-col gap-5 border-r-[1px]">
+      <div className="flex min-w-[25%] flex-col gap-5 border-r-[1px] p-2">
          <CategorySelect setFilters={setFilters} />
          <SizeSelect setFilters={setFilters} />
          <ColorSelect setFilters={setFilters} />

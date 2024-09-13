@@ -4,12 +4,12 @@ import FilteredSection from './FilteredSection'
 import ProductsSection from './ProductsSection'
 
 export interface IFilter {
-   size?: string
-   color?: string
-   category?: {
+   size: string
+   color: string
+   category: {
       parent: string
       current: string
-      children: string
+      childCategory: string
    }
 }
 const FilteredPageSection: React.FC = (): JSX.Element => {
@@ -19,7 +19,7 @@ const FilteredPageSection: React.FC = (): JSX.Element => {
       category: {
          parent: '',
          current: '',
-         children: '',
+         childCategory: '',
       },
    } as IFilter)
    console.log(filters)
