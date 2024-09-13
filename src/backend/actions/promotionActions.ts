@@ -2,7 +2,7 @@ import { connectDB } from '#backend/DB'
 import promoModel from '#backend/models/promotionModel'
 import { IPromotion } from '#types/index'
 
-export const promoCreate = async (promoData: IPromotion) => {
+export const promoCreate = async (promoData?: IPromotion) => {
    try {
       await connectDB()
       const data = {

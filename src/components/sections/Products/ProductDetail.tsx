@@ -33,7 +33,7 @@ const ProductDetail: React.FC<IProductPage> = ({ id }): JSX.Element => {
          setProduct(prod)
          setOrderCount(orders.length)
          await cookieUpdateRecently(id)
-
+         // console.log(await promoCreate())
       })()
    }, [])
 
