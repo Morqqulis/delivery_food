@@ -15,7 +15,7 @@ const PriceSelect: React.FC<{ setFilters: React.Dispatch<React.SetStateAction<IF
             placeholder="min"
             className="w-[100px] rounded-lg bg-gray-800 p-2 text-white"
             onChange={(e) =>
-               setFilters((prev: IFilter) => ({ ...prev, price: { ...prev.price, min: e.target.value } }))
+               setFilters((prev: IFilter) => ({ ...prev, price: { ...prev.price,  min: e.target.value } }))
             }
          />
          -

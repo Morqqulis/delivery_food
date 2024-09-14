@@ -154,13 +154,13 @@ export const productsGetByFilters = async (filters: IFilter) => {
          'attributes.category.main': filters.category?.main ? { $in: filters.category.main } : undefined,
          'attributes.category.sub': filters.category?.sub ? { $in: filters.category.sub } : undefined,
          'attributes.category.child': filters.category?.child ? { $in: filters.category.child } : undefined,
-         price: filters.price
-            ? Object.assign(
-                 {},
-                 filters.price.min && { $gte: filters.price.min },
-                 filters.price.max && { $lte: filters.price.max },
-              )
-            : undefined,
+         price:
+            filters?.price?.min || filters?.price?.max
+               ? {
+                    ...(filters.price.min && { $gte: filters.price.min }),
+                    ...(filters.price.max && { $lte: filters.price.max }),
+                 }
+               : undefined,
       }).reduce((acc, [key, value]) => {
          if (value !== undefined) acc[key] = value
          return acc
