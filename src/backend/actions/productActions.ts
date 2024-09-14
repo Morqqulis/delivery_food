@@ -154,6 +154,13 @@ export const productsGetByFilters = async (filters: IFilter) => {
          'attributes.category.main': filters.category?.main ? { $in: filters.category.main } : undefined,
          'attributes.category.sub': filters.category?.sub ? { $in: filters.category.sub } : undefined,
          'attributes.category.child': filters.category?.child ? { $in: filters.category.child } : undefined,
+         price: filters.price
+            ? Object.assign(
+                 {},
+                 filters.price.min && { $gte: filters.price.min },
+                 filters.price.max && { $lte: filters.price.max },
+              )
+            : undefined,
       }).reduce((acc, [key, value]) => {
          if (value !== undefined) acc[key] = value
          return acc
@@ -210,9 +217,9 @@ export const productRelatedNameAndCategory = async (currentProduct: IProduct) =>
             _id: { $ne: currentProduct._id },
             $or: [
                ...nameKeywords.map((keyword) => ({ name: { $regex: keyword, $options: 'i' } })),
-               { "attributes.category.main": currentProduct.attributes.category.main },
-               { "attributes.category.sub": currentProduct.attributes.category.sub },
-               { "attributes.category.child": currentProduct.attributes.category.child },
+               { 'attributes.category.main': currentProduct.attributes.category.main },
+               { 'attributes.category.sub': currentProduct.attributes.category.sub },
+               { 'attributes.category.child': currentProduct.attributes.category.child },
             ],
          })
          .limit(20)
