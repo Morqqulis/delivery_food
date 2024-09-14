@@ -37,6 +37,10 @@ export interface IComment {
    date: Date
 }
 export interface IFilter {
+   price: {
+      min: string
+      max: string
+   }
    size: string
    color: string
    category: {
@@ -69,7 +73,7 @@ export interface IProductCreate {
    name: string
    description: string
    price: number
-   seller:  Types.ObjectId
+   seller: Types.ObjectId
    image: string
    attributes: {
       category: {
