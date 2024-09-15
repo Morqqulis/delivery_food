@@ -13,6 +13,7 @@ export const connectDB = async () => {
          version: '1',
       },
       connectTimeoutMS: 1000 * 60 * 60 * 24,
+      
    })
 
    console.log('Connected to MongoDB')
