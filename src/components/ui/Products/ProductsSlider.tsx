@@ -47,35 +47,37 @@ const ProductsSlider = ({ title, product }: { title: string; product?: IProduct 
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       refetchOnMount: true,
+
+      staleTime: 1000 * 60 * 60,
    })
 
    // const res = await fetch('http://localhost:3000/api/products')
    // const products = await res.json()
 
-   useEffect(() => {
-      handleGetProducts()
-      // ;(async () => {
-      //    if (title === 'all') {
-      //       const res = await axios.get('http://localhost:3000/api/products')
-      //       setProducts(res.data)
-      //    }
-      //    if (title === 'liked') {
-      //       const idsLiked = await cookieGetLiked()
-      //       const res = await productsGetByIdsEtc(idsLiked)
-      //       setProducts(res)
-      //    }
-      //    if (title === 'recently') {
-      //       const idsRecently = await cookieGetRecently()
-      //       const res = await productsGetByIdsEtc(idsRecently)
-      //       setProducts(res)
-      //    }
-      //    if (title === 'related') {
-      //       if (!product) return
-      //       const res = await productRelatedNameAndCategory(product)
-      //       setProducts(res)
-      //    }
-      // })()
-   }, [])
+   // useEffect(() => {
+   //    handleGetProducts()
+   //    ;(async () => {
+   //       if (title === 'all') {
+   //          const res = await axios.get('http://localhost:3000/api/products')
+   //          setProducts(res.data)
+   //       }
+   //       if (title === 'liked') {
+   //          const idsLiked = await cookieGetLiked()
+   //          const res = await productsGetByIdsEtc(idsLiked)
+   //          setProducts(res)
+   //       }
+   //       if (title === 'recently') {
+   //          const idsRecently = await cookieGetRecently()
+   //          const res = await productsGetByIdsEtc(idsRecently)
+   //          setProducts(res)
+   //       }
+   //       if (title === 'related') {
+   //          if (!product) return
+   //          const res = await productRelatedNameAndCategory(product)
+   //          setProducts(res)
+   //       }
+   //    })()
+   // }, [])
 
    return (
       <div className="flex w-full flex-col gap-[26px]">

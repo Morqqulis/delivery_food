@@ -3,9 +3,6 @@ import HomeSection from '#sections/Home/HomeSection'
 import { Suspense } from 'react'
 
 const Home = async () => {
-   // const session = await getServerSession()
-
-   // console.log(session)
    return (
       <DefaultLayout full>
          <main>
