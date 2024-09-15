@@ -11,15 +11,25 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 // export const revalidate = 0
 
-const ProductsSlider = ({ title, product }: { title: string; product?: IProduct }) => {
-   const [products, setProducts] = useState<IProduct[] | []>([])
+const ProductsSlider = ({ title = 'all', product }: { title: string; product?: IProduct }) => {
+   // const [products, setProducts] = useState<IProduct[] | []>([])
 
-   const handleGetProducts = async (title: string = 'all') => {
+   const { data, isLoading, isError } = useQuery({
+      queryKey: ['get products'],
+      queryFn: () => handleGetProducts(title),
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: true,
+
+      staleTime: 1000 * 60 * 60, // 1 Saat
+   })
+
+   async function handleGetProducts(title: string = 'all') {
       let res
 
       switch (title.toLowerCase()) {
          case 'all':
-            res = await axios.get('http://localhost:3000/api/products')
+            res = await axios.get('/api/products')
             break
          case 'liked':
             res = await productsGetByIdsEtc(await cookieGetLiked())
@@ -31,31 +41,20 @@ const ProductsSlider = ({ title, product }: { title: string; product?: IProduct 
             if (!product) return
             res = await productRelatedNameAndCategory(product)
          default:
-            res = await axios.get('http://localhost:3000/api/products')
+            res = await axios.get('/api/products')
             break
       }
 
-      title.toLowerCase() !== 'all' ? setProducts(res) : setProducts(res.data)
+      // title.toLowerCase() !== 'all' ? setProducts(res) : setProducts(res.data)
 
-      return title.toLowerCase() !== 'all' ? res : res.data
+      return title.toLowerCase() !== 'all' ? res : (res.data as IProduct[])
    }
-
-   const query = useQuery({
-      queryKey: ['get products'],
-      queryFn: () => handleGetProducts(title),
-      initialData: products,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: true,
-
-      staleTime: 1000 * 60 * 60,
-   })
 
    // const res = await fetch('http://localhost:3000/api/products')
    // const products = await res.json()
 
    // useEffect(() => {
-   //    handleGetProducts()
+   // handleGetProducts()
    //    ;(async () => {
    //       if (title === 'all') {
    //          const res = await axios.get('http://localhost:3000/api/products')
@@ -82,9 +81,9 @@ const ProductsSlider = ({ title, product }: { title: string; product?: IProduct 
    return (
       <div className="flex w-full flex-col gap-[26px]">
          <div className="scrollbar-custom flex w-full items-center gap-7 overflow-x-auto">
-            {query.isError && <p>Error</p>}
-            {query.isLoading && <p>Loading...</p>}
-            {query.data?.map((product: IProduct) => <ProductCard key={product?._id?.toString()} product={product} />)}
+            {isError && <h2 className={`mt-20 text-center text-3xl text-tomato-200 w-full`}>Error</h2>}
+            {isLoading && <h2 className={`mt-20 text-center text-3xl text-tomato-200 w-full`}>Loading...</h2>}
+            {data?.map((product: IProduct) => <ProductCard key={product?._id?.toString()} product={product} />)}
          </div>
       </div>
    )

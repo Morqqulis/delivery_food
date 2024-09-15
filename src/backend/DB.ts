@@ -12,6 +12,9 @@ export const connectDB = async () => {
          deprecationErrors: true,
          version: '1',
       },
+      connectTimeoutMS: 1000 * 60 * 60 * 24,
+      localAddress: 'localhost',
+      localPort: 3000,
    })
 
    console.log('Connected to MongoDB')
