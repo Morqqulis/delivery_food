@@ -39,6 +39,17 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
          await cookieUpdateRecently(id)
       })()
    }, [])
+
+   const getPrice = () => {
+      const price = product?.promotions
+         ? product.promotions.discountType === 'percentage'
+            ? product.promotions.discountValue &&
+              product.price - (product.price * product.promotions.discountValue) / 100
+            : 0
+         : product?.price
+      return price ? (price * count).toFixed(2) : 0
+   }
+
    return (
       <section className={`py-20`}>
          <div className="container">
@@ -108,7 +119,7 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                         <Counter
                            count={count}
                            setCount={setCount}
-                           text={`ADD - $ ${product?.price ? (count * product?.price).toFixed(2) : 0}`}
+                           text={`ADD - $ ${getPrice()} (with ${product?.promotions?.discountValue}% discount)`}
                            id={id}
                            className="mt-6"
                         />

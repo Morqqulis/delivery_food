@@ -56,6 +56,7 @@ export interface IProduct {
    price: number
    viewed: number
    comments: IComment[]
+   promotions: IPromotion
    seller: ISeller
    image: string
    attributes: {
@@ -195,6 +196,7 @@ export interface IBasket {
    image: string
    name: string
    price: number
+   promotions: IPromotion
    seller: string
    updatedAt: Date
    quantity: number
@@ -239,15 +241,20 @@ export interface ISessionStore {
 }
 
 export interface IPromotion {
-   name: string
-   discountAmount: number
-   discountType: 'percentage' | 'fixed' | 'buy_x_get_y' | 'free_shipping'
-   buyX?: number
-   getY?: number
-   discountedProduct?: Types.ObjectId
-   applicableProducts?: Types.ObjectId[]
    seller: Types.ObjectId
+   description: string
+   name: string
+   discountType: string
+   discountValue?: number
+   applicableProducts: Types.ObjectId[]
+   // applicableCategories: string[]
+   // minimumOrderAmount: number
+   // buyX?: number
+   // getY?: number
+   // discountedProduct?: Types.ObjectId
+   // usageLimit?: number
+   // usageCount?: number
    startDate: Date
-   endDate: Date
+   // endDate: Date
    isActive?: boolean
 }

@@ -1,7 +1,7 @@
 import { IProduct } from '#types/index'
-import { model, models, Schema } from 'mongoose'
+import { model, models, Schema, Types } from 'mongoose'
 import seller from '#backend/models/sellerModel'
-
+import promotion from '#backend/models/promotionModel'
 const productSchema: Schema = new Schema<IProduct>(
    {
       name: {
@@ -32,6 +32,12 @@ const productSchema: Schema = new Schema<IProduct>(
             },
          },
       ],
+      promotions: 
+         {
+            type: Schema.Types.ObjectId,
+            ref: 'promotion',
+         },
+      
       attributes: {
          category: {
             main: {

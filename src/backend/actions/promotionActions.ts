@@ -1,24 +1,34 @@
+'use server'
+
 import { connectDB } from '#backend/DB'
+import productModel from '#backend/models/productModel'
 import promoModel from '#backend/models/promotionModel'
 import { IPromotion } from '#types/index'
+import { Types } from 'mongoose'
 
-export const promoCreate = async (promoData?: IPromotion) => {
+export const promoGetAll = async () => {
    try {
       await connectDB()
-      const data = {
-         name: 'test',
-         discountAmount: 10,
-         discountType: 'percentage',
-         discountedProduct: 'prod._id',
-         applicableProducts: 'prod._id',
-         seller: 'prod.seller._id',
-         startDate: new Date(),
-         endDate: new Date(),
+      const promos = await promoModel.find()
+      return await JSON.parse(JSON.stringify(promos))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+
+export const promoCreate = async (promoData: IPromotion) => {
+   try {
+      await connectDB()
+      const newPromo = await promoModel.create(promoData)
+      if (newPromo.applicableProducts.length > 0) {
+         // await productModel.updateMany({ _id: { $in: newPromo.applicableProducts } }, { $push: { promotions: newPromo._id } })
+         await productModel.updateMany(
+            { _id: { $in: newPromo.applicableProducts } },
+            { promotions: new Types.ObjectId(newPromo._id) },
+         )
       }
-      const newPromo = await promoModel.create(data)
       return JSON.parse(JSON.stringify(newPromo))
-   } catch (error) {
-      console.error('Promosiyanı yaratmaq zamanı xəta:', error)
-      return { success: false, message: 'Promosiyanı yaratmaq zamanı xəta baş verdi' }
+   } catch (err: Error | any) {
+      throw new Error(err)
    }
 }

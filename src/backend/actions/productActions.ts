@@ -10,6 +10,7 @@ export const productGetAll = async () => {
    try {
       await connectDB()
       const products = await productModel.find()
+
       return await JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
@@ -51,11 +52,26 @@ export const productGetByIdWithPopulate = async (id: string, selectProduct: stri
       const product = await productModel
          .findOne({ _id: id }, selectProduct)
          .populate({ path: 'seller', model: 'seller', select: selectSeller })
+         .populate({ path: 'promotions', model: 'promotion' })
       return JSON.parse(JSON.stringify(product))
    } catch (err: Error | any) {
       throw new Error(err)
    }
 }
+
+export const productGetByIdWithPromotion = async (id: string, selectProduct: string) => {
+   if (!id) return
+   try {
+      await connectDB()
+      const product = await productModel
+         .findOne({ _id: id }, selectProduct)
+         .populate({ path: 'promotions', model: 'promotion' })
+      return JSON.parse(JSON.stringify(product))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+
 type BasketItem = {
    product: string
    quantity: number
@@ -64,7 +80,9 @@ export const productsGetByIds = async (items: BasketItem[]) => {
    try {
       await connectDB()
       const productIds = items.map((product) => product.product)
-      const products = await productModel.find({ _id: { $in: productIds } })
+      const products = await productModel
+         .find({ _id: { $in: productIds } })
+         .populate({ path: 'promotions', model: 'promotion' })
       if (products.length === 0) return console.error('Products not found')
       const result = products.map((product) => {
          const item = items.find((item) => item.product === product._id.toString())
@@ -84,7 +102,9 @@ export const productsGetByIdsEtc = async (ids: string[]) => {
    if (!ids) return
    try {
       await connectDB()
-      const products = await productModel.find({ _id: { $in: ids } })
+      const products = await productModel
+         .find({ _id: { $in: ids } })
+         .populate({ path: 'promotions', model: 'promotion' })
       return JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
@@ -222,6 +242,7 @@ export const productRelatedNameAndCategory = async (currentProduct: IProduct) =>
                { 'attributes.category.child': currentProduct.attributes.category.child },
             ],
          })
+         .populate({ path: 'promotions', model: 'promotion' })
          .limit(20)
 
       return JSON.parse(JSON.stringify(products))

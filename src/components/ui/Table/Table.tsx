@@ -37,6 +37,11 @@ const Table: React.FC<ITable> = ({ headers, body, footer }): JSX.Element => {
                               <>
                                  {value.toString().slice(0, 2)}***{value.toString().slice(-2)}
                               </>
+                           ) : key.toLocaleLowerCase() === 'price' && value.toString().startsWith('$discount') ? (
+                              <>
+                                 <span className="line-through">${value.toString().split('/')[1]}</span>&nbsp;
+                                 <span className="font-bold">${value.toString().split('/')[2]}</span>
+                              </>
                            ) : (
                               <> {value} </>
                            )}

@@ -7,9 +7,10 @@ import { IProduct } from '#types/index'
 import { orderUpdateStatus } from '#backend/actions/orderAction'
 import { hoursSince } from '../../../../functions/helpers'
 import Table from '#ui/Table/Table'
+import { Types } from 'mongoose'
 
 interface Order {
-   _id: string
+   _id: Types.ObjectId
    products: { product: IProduct; quantity: number }[]
    sellerNote?: string
    createdAt: string
@@ -27,12 +28,12 @@ const SellerOrders: React.FC = () => {
       })()
    }, [])
 
-   const handleAcceptOrder = async (orderId: string) => {
+   const handleAcceptOrder = async (orderId: Types.ObjectId) => {
       await orderUpdateStatus(orderId, 'accepted')
       setOrders(orders.filter((order) => order._id != orderId))
    }
 
-   const handleRejectOrder = async (orderId: string) => {
+   const handleRejectOrder = async (orderId: Types.ObjectId) => {
       await orderUpdateStatus(orderId, 'rejected')
       setOrders(orders.filter((order) => order._id != orderId))
    }
