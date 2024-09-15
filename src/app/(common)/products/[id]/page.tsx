@@ -1,4 +1,5 @@
 import DefaultLayout from '#layouts/DefaultLayout'
+import QueryProvider from '#providers/QueryProvider'
 import ProductDetail from '#sections/Products/ProductDetail'
 import { IParamsID } from '#types/index'
 import { NextPage } from 'next'
@@ -9,7 +10,9 @@ const Product: NextPage<IParamsID> = async ({ params: { id } }: IParamsID): Prom
    return (
       <DefaultLayout full>
          <main>
-            <ProductDetail id={id} />
+            <QueryProvider>
+               <ProductDetail id={id} />
+            </QueryProvider>
          </main>
       </DefaultLayout>
    )

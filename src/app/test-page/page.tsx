@@ -1,4 +1,5 @@
 import DefaultLayout from '#layouts/DefaultLayout'
+import ProfileSection from '#sections/Profile/ProfileSection'
 import { IProduct } from '#types/index'
 import { AspectRatio } from '#ui/aspect-ratio'
 import Btn from '#ui/Btn/Btn'
@@ -10,6 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import Map from '#ui/Map/Map'
 import MapAutocomplete from '#ui/Map/MapAutocomplete'
 import MapDialog from '#ui/Map/MapDialog'
+import UserAside from '#ui/UserAdise/UserAside'
 import { SchemaTypes, Types } from 'mongoose'
 import { NextPage } from 'next'
 import Image from 'next/image'
@@ -79,9 +81,14 @@ const TestPage: NextPage = () => {
    return (
       <DefaultLayout full={false}>
          <main>
-            {/* <MapDialog /> */}
+            <MapDialog />
 
             <div className="container">
+               <div className={`grid grid-cols-[380px_1fr] items-start py-20`}>
+                  {/* <UserAside /> */}
+                  {/* <ProfileSection /> */}
+               </div>
+
                <Carousel className={``}>
                   <CarouselContent>
                      {products.map((product) => (

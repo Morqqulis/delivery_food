@@ -251,3 +251,10 @@ export interface IPromotion {
    endDate: Date
    isActive?: boolean
 }
+
+export interface IUserNav {
+   id: number
+   name: string
+   link: string
+   icon?: JSX.Element
+}

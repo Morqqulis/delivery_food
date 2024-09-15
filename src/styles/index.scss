@@ -4,6 +4,6 @@
 
 @layer base {
    main {
-      @apply h-full flex-[1_1_auto];
+      @apply grid flex-[1_1_auto];
    }
 }

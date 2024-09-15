@@ -7,6 +7,25 @@ const __dirname = path.dirname(__filename)
 /** @type {import('next').NextConfig} */
 const nextConfig = {
    reactStrictMode: false,
+   compress: true,
+   optimizeFonts: true,
+   // need ip 0.0.0.0 for mongo db
+   // rewrites: async () => {
+   //    return [
+   //       {
+   //          source: '/api/:path*',
+   //          destination: 'http://0.0.0.0:3000/api/:path*',
+   //       },
+   //       {
+   //          source: '/:path*',
+   //          destination: 'http://0.0.0.0:3000/:path*',
+   //       },
+   //       {
+   //          source: '/:path*',
+   //          destination: 'http://localhost:3000/:path*',
+   //       },
+   //    ]
+   // },
    images: {
       remotePatterns: [
          {

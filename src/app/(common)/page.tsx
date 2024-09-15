@@ -8,7 +8,7 @@ const Home = async () => {
    // console.log(session)
    return (
       <DefaultLayout full>
-         <main className={`h-full`}>
+         <main>
             <Suspense
                fallback={
                   <div className={`grid h-full place-items-center text-center text-4xl text-tomato-300`}>

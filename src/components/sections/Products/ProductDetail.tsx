@@ -21,28 +21,54 @@ import {
    BreadcrumbSeparator,
 } from '#ui/breadcrumb'
 import Options from './Options'
+import { useQuery } from '@tanstack/react-query'
 
 const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
-   const [product, setProduct] = useState<IProduct>()
-   const [orderCount, setOrderCount] = useState(0)
+   // const [product, setProduct] = useState<IProduct>()
+   // const [orderCount, setOrderCount] = useState(0)
    const [count, setCount] = useState(1)
 
-   useEffect(() => {
-      if (!id) return
-      ;(async () => {
+   const { isError, isLoading, data } = useQuery({
+      queryKey: ['get product details'],
+      queryFn: async () => {
+         if (!id) return
          const prod = await productGetByIdWithPopulate(id, '', 'name secondName')
          const orders = await ordersFindWithProduct(id)
          prod.viewed += 1
          await productUpdateById(id, { viewed: prod?.viewed })
-         setProduct(prod)
-         setOrderCount(orders.length)
+         // setProduct(prod)
+         // setOrderCount(orders.length)
          await cookieUpdateRecently(id)
-      })()
-   }, [])
+
+         return {
+            ...prod,
+            ordersCount: orders.length,
+         } as IProduct & { ordersCount: number }
+      },
+      enabled: !!id,
+      refetchOnWindowFocus: false,
+      refetchOnMount: true,
+   })
+
+   // useEffect(() => {
+   //    if (!id) return
+   //    ;(async () => {
+   //       const prod = await productGetByIdWithPopulate(id, '', 'name secondName')
+   //       const orders = await ordersFindWithProduct(id)
+   //       prod.viewed += 1
+   //       await productUpdateById(id, { viewed: prod?.viewed })
+   //       setProduct(prod)
+   //       setOrderCount(orders.length)
+   //       await cookieUpdateRecently(id)
+   //    })()
+   // }, [])
+
    return (
       <section className={`py-20`}>
          <div className="container">
-            {product ? (
+            {isLoading && <p>Loading...</p>}
+            {isError && <p>Error</p>}
+            {data && (
                <>
                   <Breadcrumb>
                      <BreadcrumbList>
@@ -59,17 +85,17 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                         </BreadcrumbItem>
 
                         <BreadcrumbSeparator>/</BreadcrumbSeparator>
-                        <BreadcrumbItem className="text-white">{product?.attributes.category.main}</BreadcrumbItem>
+                        <BreadcrumbItem className="text-white">{data?.attributes.category.main}</BreadcrumbItem>
                         <BreadcrumbSeparator>/</BreadcrumbSeparator>
-                        <BreadcrumbItem className="text-white">{product?.attributes?.category.sub}</BreadcrumbItem>
+                        <BreadcrumbItem className="text-white">{data?.attributes?.category.sub}</BreadcrumbItem>
                         <BreadcrumbSeparator>/</BreadcrumbSeparator>
-                        <BreadcrumbItem className="text-white">{product?.attributes.category.child}</BreadcrumbItem>
+                        <BreadcrumbItem className="text-white">{data?.attributes.category.child}</BreadcrumbItem>
                      </BreadcrumbList>
                   </Breadcrumb>
                   <div className="flex w-full items-center gap-3 p-5">
                      <div className="relative h-[500px] w-[50%] p-2">
                         <Image
-                           src={product?.image}
+                           src={data?.image}
                            width={500}
                            height={500}
                            alt={'product image'}
@@ -79,43 +105,43 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                      </div>
                      <div className="flex w-[50%] flex-col p-2">
                         <div className="border-b-[0.3px] border-gray-400 pb-4">
-                           <h1 className={`mb-1 text-5xl font-bold text-blue-700`}>{product?.name}</h1>
+                           <h1 className={`mb-1 text-5xl font-bold text-blue-700`}>{data.name}</h1>
                         </div>
                         <div className="border-b-[0.3px] border-gray-400 py-4">
-                           <p>{product?.description}</p>
+                           <p>{data?.description}</p>
                         </div>
                         <div className="border-b-[0.3px] border-gray-400 py-4">
                            <div className="flex gap-2">
-                              <Link href={`/store/${product?.seller?._id}`} className="font-bold">
-                                 {product?.seller?.name}
+                              <Link href={`/store/${data?.seller?._id}`} className="font-bold">
+                                 {data?.seller?.name}
                               </Link>
                               <StarRating rating={4.4} size="10" />
                            </div>
-                           <p>{product?.seller?.secondName}</p>
+                           <p>{data?.seller?.secondName}</p>
                         </div>
                         <div className="flex gap-2 border-b-[0.3px] border-gray-400 py-4">
-                           <Options title="Colors" options={product.attributes.colors} />
-                           <Options title="Size" options={product.attributes.size} />
+                           <Options title="Colors" options={data.attributes.colors} />
+                           <Options title="Size" options={data.attributes.size} />
                         </div>
                         <div className="flex items-center gap-9 border-b-[0.3px] border-gray-400 py-2">
-                           <p className="text-[10px]">Sold:&nbsp;{orderCount}</p>
-                           <p className="text-[10px]">Viewed:&nbsp;{product.viewed}</p>
+                           <p className="text-[10px]">Sold:&nbsp;{data.ordersCount}</p>
+                           <p className="text-[10px]">Viewed:&nbsp;{data.viewed}</p>
                            <div className="flex items-center gap-1 text-[10px]">
                               <p>Rating:</p>
-                              <StarRating rating={averageRating(product?.comments)} size="13" />
+                              <StarRating rating={averageRating(data?.comments)} size="13" />
                            </div>
                         </div>
                         <Counter
                            count={count}
                            setCount={setCount}
-                           text={`ADD - $ ${product?.price ? (count * product?.price).toFixed(2) : 0}`}
+                           text={`ADD - $ ${data?.price ? (count * data?.price).toFixed(2) : 0}`}
                            id={id}
                            className="mt-6"
                         />
                      </div>
                   </div>
                   <div className="mt-6 flex justify-center">
-                     <CommentsHero prodId={id} comments={product?.comments} />
+                     <CommentsHero prodId={id} comments={data?.comments} />
                   </div>
                   <div className="mt-6 flex flex-col items-center gap-5">
                      <div className="relative flex h-[50px] w-full items-center justify-center">
@@ -144,11 +170,9 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                            Related products
                         </div>
                      </div>
-                     <ProductsSlider title="related" product={product} />
+                     <ProductsSlider title="related" product={data} />
                   </div>
                </>
-            ) : (
-               'Loading...'
             )}
          </div>
       </section>
