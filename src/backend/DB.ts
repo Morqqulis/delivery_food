@@ -8,13 +8,11 @@ export const connectDB = async () => {
    await mongoose.connect(process.env.MONGODB_URI!, {
       dbName: 'DB',
       serverApi: {
-         strict: true,
+         strict: false,
          deprecationErrors: true,
          version: '1',
       },
       connectTimeoutMS: 1000 * 60 * 60 * 24,
-      localAddress: 'localhost',
-      localPort: 3000,
    })
 
    console.log('Connected to MongoDB')
