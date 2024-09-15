@@ -24,7 +24,7 @@ const Table: React.FC<ITable> = ({ headers, body, footer }): JSX.Element => {
                   ))}
                </tr>
             </thead>
-            <tbody className="text-sm font-medium uppercase tracking-wider text-gray-500">
+            <tbody className="text-sm font-medium  tracking-wider text-gray-500">
                {body?.map((row) => (
                   <tr key={Math.random() * 10000} className="border-b-2 text-center">
                      {Object.entries(row).map(([key, value]: any) => (

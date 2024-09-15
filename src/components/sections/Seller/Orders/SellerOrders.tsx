@@ -3,27 +3,18 @@ import React, { useEffect, useState } from 'react'
 import { Trash, Eye, Check } from 'lucide-react'
 import { sellerGetFilteredOrders } from '#backend/actions/sellerActions'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '#ui/dialog'
-import { IProduct } from '#types/index'
+import { IOrder, IProduct, ISelectedAttributes } from '#types/index'
 import { orderUpdateStatus } from '#backend/actions/orderAction'
 import { hoursSince } from '../../../../functions/helpers'
 import Table from '#ui/Table/Table'
 import { Types } from 'mongoose'
 
-interface Order {
-   _id: Types.ObjectId
-   products: { product: IProduct; quantity: number }[]
-   sellerNote?: string
-   createdAt: string
-}
-
 const SellerOrders: React.FC = () => {
-   const [orders, setOrders] = useState<Order[]>([])
+   const [orders, setOrders] = useState<IOrder[]>([])
 
    useEffect(() => {
       ;(async () => {
          const orders = await sellerGetFilteredOrders('66d02490d14d9bc8e4366bd1', 'pending')
-         console.log(orders)
-
          setOrders(orders)
       })()
    }, [])
@@ -42,9 +33,9 @@ const SellerOrders: React.FC = () => {
    const bodys: any[] = orders.map((order) => {
       return {
          name: order.products.map((product) => product?.product.name).join(', '),
-         total: `$${order.products.reduce((crr, product) => crr + product.product.price * product.quantity, 0)}`,
+         total: `$${order.products.reduce((crr, product) => crr + product.product.price * +product.quantity, 0)}`,
          note: order.sellerNote,
-         date: hoursSince(order.createdAt.toLocaleString()) + ' hours ago',
+         date: hoursSince(order?.createdAt?.toLocaleString() || '') + ' hours ago',
          actions: (
             <>
                <button
@@ -67,20 +58,26 @@ const SellerOrders: React.FC = () => {
                            The orders need to be handed over to the courier as soon as possible
                         </DialogDescription>
                         <Table
-                           headers={['Product Image', 'Product Name', 'Price', 'Quantity']}
+                           headers={['Product Image', 'Product Name', 'Price', 'Quantity', 'Attributes']}
                            body={order.products.map((product, index) => {
+                              console.log(product)
                               return {
                                  image: `/qazan.svg`,
                                  name: product.product.name,
                                  price: `$${product.product.price}`,
                                  quantity: product.quantity,
+                                 attributes: Object.entries(product.selectedAttributes || {})
+                                    .map(([key, value]) => {
+                                       return `${key}: ${value}`
+                                    })
+                                    .join(', '),
                               }
                            })}
                            footer={[
                               '',
                               '',
                               'Total Amount:',
-                              `$${order.products.reduce((crr, product) => crr + product.product.price * product.quantity, 0)}`,
+                              `$${order.products.reduce((crr, product) => crr + product.product.price * +product.quantity, 0)}`,
                            ]}
                         />
                      </DialogHeader>

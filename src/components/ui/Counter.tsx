@@ -1,6 +1,6 @@
 'use client'
 import { useBasketStore } from '#stores/basketStore'
-import { IChildren } from '#types/index'
+import { IChildren, ISelectedAttributes } from '#types/index'
 import Btn from '#ui/Btn/Btn'
 
 interface CounterProps {
@@ -9,13 +9,14 @@ interface CounterProps {
    text: string
    id: string
    className?: string
+   selectedAttributes: ISelectedAttributes
 }
 
-const Counter: React.FC<CounterProps> = ({ count, setCount, text, id, className }): JSX.Element => {
+const Counter: React.FC<CounterProps> = ({ count, setCount, text, id, className, selectedAttributes }): JSX.Element => {
    const addToBasket = useBasketStore((state) => state.addToBasket)
 
    const handleAddToBasket = async () => {
-      await addToBasket(id, count)
+      await addToBasket(id, count, selectedAttributes)
       setCount(1)
    }
 

@@ -2,7 +2,7 @@
 import { productGetById, productGetByIdWithPopulate, productUpdateById } from '#backend/actions/productActions'
 import CommentsHero from '#sections/Comments/CommentsHero'
 import StarRating from '#sections/Comments/StarRating'
-import { IProduct } from '#types/index'
+import { IProduct, ISelectedAttributes } from '#types/index'
 import Counter from '#ui/Counter'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -12,21 +12,14 @@ import LikeHeart from '#ui/LikeHeart'
 import ProductsSlider from '#ui/Products/ProductsSlider'
 import { cookieUpdateRecently } from '#backend/actions/cookieRecently'
 import { ordersFindWithProduct } from '#backend/actions/orderAction'
-import {
-   Breadcrumb,
-   BreadcrumbItem,
-   BreadcrumbLink,
-   BreadcrumbList,
-   BreadcrumbPage,
-   BreadcrumbSeparator,
-} from '#ui/breadcrumb'
+
 import Options from './Options'
 import { useQuery } from '@tanstack/react-query'
+import ProductBread from './ProductBread'
 
 const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
-   // const [product, setProduct] = useState<IProduct>()
-   // const [orderCount, setOrderCount] = useState(0)
    const [count, setCount] = useState(1)
+   const [selectedAttributes, setSelectedAttributes] = useState<ISelectedAttributes>({})
 
    const { isError, isLoading, data } = useQuery({
       queryKey: ['get product details'],
@@ -36,8 +29,6 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
          const orders = await ordersFindWithProduct(id)
          prod.viewed += 1
          await productUpdateById(id, { viewed: prod?.viewed })
-         // setProduct(prod)
-         // setOrderCount(orders.length)
          await cookieUpdateRecently(id)
 
          const price = getPrice(prod)
@@ -52,21 +43,6 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
       refetchOnWindowFocus: false,
       refetchOnMount: true,
    })
-   // useEffect(() => {
-   //    if (!id) return
-   //    ;(async () => {
-   //       const prod = await productGetByIdWithPopulate(id, '', 'name secondName')
-   //       const orders = await ordersFindWithProduct(id)
-   //       prod.viewed += 1
-   //       await productUpdateById(id, { viewed: prod?.viewed })
-   //       setProduct(prod)
-   //       setOrderCount(orders.length)
-   //       await cookieUpdateRecently(id)
-   //    })()
-   // }, [])
-
-   //    })()
-   // }, [])
 
    return (
       <section className={`py-20`}>
@@ -75,28 +51,7 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
             {isError && <p>Error</p>}
             {data && (
                <>
-                  <Breadcrumb>
-                     <BreadcrumbList>
-                        <BreadcrumbItem className="text-white">
-                           <BreadcrumbLink href="/" className="hover:text-blue-700">
-                              Home
-                           </BreadcrumbLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator>/</BreadcrumbSeparator>
-                        <BreadcrumbItem className="text-white">
-                           <BreadcrumbLink className="hover:text-blue-700" href="/filtered">
-                              Categories
-                           </BreadcrumbLink>
-                        </BreadcrumbItem>
-
-                        <BreadcrumbSeparator>/</BreadcrumbSeparator>
-                        <BreadcrumbItem className="text-white">{data?.attributes.category.main}</BreadcrumbItem>
-                        <BreadcrumbSeparator>/</BreadcrumbSeparator>
-                        <BreadcrumbItem className="text-white">{data?.attributes?.category.sub}</BreadcrumbItem>
-                        <BreadcrumbSeparator>/</BreadcrumbSeparator>
-                        <BreadcrumbItem className="text-white">{data?.attributes.category.child}</BreadcrumbItem>
-                     </BreadcrumbList>
-                  </Breadcrumb>
+                  <ProductBread data={data} />
                   <div className="flex w-full items-center gap-3 p-5">
                      <div className="relative h-[500px] w-[50%] p-2">
                         <Image
@@ -136,8 +91,16 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                            )}
                         </div>
                         <div className="flex gap-2 border-b-[0.3px] border-gray-400 py-4">
-                           <Options title="Colors" options={data.attributes.colors} />
-                           <Options title="Size" options={data.attributes.size} />
+                           <Options
+                              title="color"
+                              options={data.attributes.colors}
+                              setSelectedAttributes={setSelectedAttributes}
+                           />
+                           <Options
+                              title="size"
+                              options={data.attributes.size}
+                              setSelectedAttributes={setSelectedAttributes}
+                           />
                         </div>
 
                         <div className="flex items-center gap-9 border-b-[0.3px] border-gray-400 py-2">
@@ -151,6 +114,7 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                         <Counter
                            count={count}
                            setCount={setCount}
+                           selectedAttributes={selectedAttributes}
                            text={`ADD - $${data.price.toString().startsWith('discount') ? +data.price.toString().split('/')[2] * count : data.price * count}`}
                            id={id}
                            className="mt-6 w-[300px]"

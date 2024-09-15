@@ -13,7 +13,6 @@ import { calculateTotal, getPrice, getTotal } from '../../../functions/helpers'
 
 const BasketSection: React.FC = (): JSX.Element => {
    const { removeFromBasket, basket } = useBasketStore()
-
    // const namepromo = async () => {
    // const datas = {
    //    seller: new Types.ObjectId('66d02490d14d9bc8e4366bd1'),
