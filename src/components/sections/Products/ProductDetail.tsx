@@ -40,6 +40,7 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
          // setOrderCount(orders.length)
          await cookieUpdateRecently(id)
 
+         console.log(prod)
          return {
             ...prod,
             ordersCount: orders.length,
@@ -63,16 +64,16 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
    //    })()
    // }, [])
 
-      })()
-   }, [])
+   //    })()
+   // }, [])
 
    const getPrice = () => {
-      const price = product?.promotions
-         ? product.promotions.discountType === 'percentage'
-            ? product.promotions.discountValue &&
-              product.price - (product.price * product.promotions.discountValue) / 100
+      if (!data) return
+      const price = data?.promotions
+         ? data.promotions.discountType === 'percentage'
+            ? data.promotions.discountValue && data.price - (data.price * data.promotions.discountValue) / 100
             : 0
-         : product?.price
+         : data?.price
       return price ? (price * count).toFixed(2) : 0
    }
 
@@ -147,8 +148,7 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                         <Counter
                            count={count}
                            setCount={setCount}
-                           text={`ADD - $ ${data?.price ? (count * data?.price).toFixed(2) : 0}`}
-                           text={`ADD - $ ${getPrice()} (with ${product?.promotions?.discountValue}% discount)`}
+                           text={`ADD - $ ${data?.price ? (count * data?.price).toFixed(2) : 0}\nADD - $ ${getPrice()} (with ${data?.promotions?.discountValue}% discount)`}
                            id={id}
                            className="mt-6"
                         />

@@ -2,6 +2,7 @@
 
 import { connectDB } from '#backend/DB'
 import productModel from '#backend/models/productModel'
+import promoModel from '#backend/models/promotionModel'
 import sellerModel from '#backend/models/sellerModel'
 import { IBasket, IComment, IFilter, IProduct, IProductCreate } from '#types/index'
 import { Types } from 'mongoose'
@@ -52,7 +53,7 @@ export const productGetByIdWithPopulate = async (id: string, selectProduct: stri
       const product = await productModel
          .findOne({ _id: id }, selectProduct)
          .populate({ path: 'seller', model: 'seller', select: selectSeller })
-         .populate({ path: 'promotions', model: 'promotion' })
+         .populate({ path: 'promotions', model: promoModel })
       return JSON.parse(JSON.stringify(product))
    } catch (err: Error | any) {
       throw new Error(err)
@@ -65,7 +66,7 @@ export const productGetByIdWithPromotion = async (id: string, selectProduct: str
       await connectDB()
       const product = await productModel
          .findOne({ _id: id }, selectProduct)
-         .populate({ path: 'promotions', model: 'promotion' })
+         .populate({ path: 'promotions', model: promoModel })
       return JSON.parse(JSON.stringify(product))
    } catch (err: Error | any) {
       throw new Error(err)
@@ -82,7 +83,7 @@ export const productsGetByIds = async (items: BasketItem[]) => {
       const productIds = items.map((product) => product.product)
       const products = await productModel
          .find({ _id: { $in: productIds } })
-         .populate({ path: 'promotions', model: 'promotion' })
+         .populate({ path: 'promotions', model: promoModel })
       if (products.length === 0) return console.error('Products not found')
       const result = products.map((product) => {
          const item = items.find((item) => item.product === product._id.toString())
@@ -242,7 +243,7 @@ export const productRelatedNameAndCategory = async (currentProduct: IProduct) =>
                { 'attributes.category.child': currentProduct.attributes.category.child },
             ],
          })
-         .populate({ path: 'promotions', model: 'promotion' })
+         .populate({ path: 'promotions', model: promoModel })
          .limit(20)
 
       return JSON.parse(JSON.stringify(products))
