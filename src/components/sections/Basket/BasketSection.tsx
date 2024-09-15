@@ -29,7 +29,7 @@ const BasketSection: React.FC = (): JSX.Element => {
          isActive: true,
       }
       // const data = await promoCreate(datas)
-      const promos = await promoGetAll()
+      // const promos = await promoGetAll()
       const data = await productGetByIdWithPromotion('66e484c8431f6f8155b38243', '')
       console.log(data)
    }
