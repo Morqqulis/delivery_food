@@ -1,19 +1,13 @@
 'use client'
-import { userGetByEmail } from '#backend/actions/userActions'
-import { authConfig } from '#configs/authConfig'
 import { userProfileSchema } from '#schemes/scheme'
 import { IUser } from '#types/index'
 import Btn from '#ui/Btn/Btn'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '#ui/form'
 import { Input } from '#ui/input'
-import Map from '#ui/Map/Map'
 import { RadioGroup, RadioGroupItem } from '#ui/radio-group'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
-import { DefaultUser, getServerSession } from 'next-auth'
-import { getSession, useSession } from 'next-auth/react'
-import Link from 'next/link'
-import { Suspense, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -30,12 +24,7 @@ const ProfileForm = ({ userData }: { userData: IUser | null }): JSX.Element => {
       resolver: zodResolver(userProfileSchema),
    })
 
-   const submitForm = async (data: z.infer<typeof userProfileSchema>) => {
-      const res = await axios.put('/api/user', data)
-
-      console.log(data)
-      console.log(res.data)
-   }
+   const submitForm = async (data: z.infer<typeof userProfileSchema>) => await axios.put('/api/user', data)
 
    return (
       <Form {...form}>

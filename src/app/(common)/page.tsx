@@ -3,12 +3,9 @@ import HomeSection from '#sections/Home/HomeSection'
 import { Suspense } from 'react'
 
 const Home = async () => {
-   // const session = await getServerSession()
-
-   // console.log(session)
    return (
       <DefaultLayout full>
-         <main className={`h-full`}>
+         <main>
             <Suspense
                fallback={
                   <div className={`grid h-full place-items-center text-center text-4xl text-tomato-300`}>
