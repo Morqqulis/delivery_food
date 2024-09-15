@@ -2,6 +2,7 @@
 import { userProfileSchema } from '#schemes/scheme'
 import { IUser } from '#types/index'
 import Btn from '#ui/Btn/Btn'
+import 'react-phone-number-input/style.css'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '#ui/form'
 import { Input } from '#ui/input'
 import { RadioGroup, RadioGroupItem } from '#ui/radio-group'
@@ -9,8 +10,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
+import PhoneInput from 'react-phone-number-input'
 import { z } from 'zod'
-
 const ProfileForm = ({ userData }: { userData: IUser | null }): JSX.Element => {
    const form = useForm<z.infer<typeof userProfileSchema>>({
       defaultValues: {
@@ -57,7 +58,7 @@ const ProfileForm = ({ userData }: { userData: IUser | null }): JSX.Element => {
                      <FormLabel>Email</FormLabel>
                      <FormControl>
                         <Input
-                           className={`text-black focus-visible:ring-mini-100`}
+                           className={`!px-2 !py-2 text-black focus-visible:ring-mini-100`}
                            {...field}
                            placeholder={'Emailinizi daxil edin.'}
                         />
@@ -91,12 +92,19 @@ const ProfileForm = ({ userData }: { userData: IUser | null }): JSX.Element => {
                   <FormItem>
                      <FormLabel>Telefon nömrənisi</FormLabel>
                      <FormControl>
-                        <Input
+                        <PhoneInput
                            className={`!appearance-none text-black focus-visible:ring-mini-100`}
                            {...field}
                            type={'text'}
                            placeholder={'Telefon nömrənizi daxil edin.'}
+                           defaultCountry={'AZ'}
                         />
+                        {/* <Input
+                           className={`!appearance-none text-black focus-visible:ring-mini-100`}
+                           {...field}
+                           type={'text'}
+                           placeholder={'Telefon nömrənizi daxil edin.'}
+                        /> */}
                      </FormControl>
                      <FormMessage className={`text-tomato-200`} />
                   </FormItem>

@@ -74,6 +74,7 @@ export const checkoutSchema = z.object({
    deliveryNote: z.string().min(1, 'Delivery note is required'),
 })
 
+const phoneRegex = new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/)
 export const userProfileSchema = z.object({
    name: z.string().min(2, 'Adınızı daxil edin.'),
    email: z
@@ -90,7 +91,8 @@ export const userProfileSchema = z.object({
          required_error: 'Telefon nömrəsi mutləqdir.',
          message: 'Telefon nömrənizi daxil edin.',
       })
-      .min(9, 'Telefon nömrənizi daxil edin.'),
+      .min(9, 'Telefon nömrənizi daxil edin.')
+      .regex(phoneRegex, 'Telefon nömrəniz duzgun daxil edilməyib.'),
    password: z
       .string({
          required_error: 'Şifrənizi daxil edin.',

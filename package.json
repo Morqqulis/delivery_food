@@ -48,6 +48,7 @@
       "react-dom": "^19.0.0-rc-d48603a5-20240813",
       "react-google-map-wrapper": "^1.0.5",
       "react-hook-form": "^7.53.0",
+      "react-phone-number-input": "^3.4.5",
       "tailwind-merge": "^2.5.2",
       "tailwindcss-animate": "^1.0.7",
       "zod": "^3.23.8",
