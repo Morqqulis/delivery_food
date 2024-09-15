@@ -6,7 +6,7 @@ import { IProduct } from '#types/index'
 import Counter from '#ui/Counter'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { averageRating } from '../../../functions/helpers'
+import { averageRating, getPrice } from '../../../functions/helpers'
 import Link from 'next/link'
 import LikeHeart from '#ui/LikeHeart'
 import ProductsSlider from '#ui/Products/ProductsSlider'
@@ -40,9 +40,11 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
          // setOrderCount(orders.length)
          await cookieUpdateRecently(id)
 
-         console.log(prod)
+         const price = getPrice(prod)
+
          return {
             ...prod,
+            price,
             ordersCount: orders.length,
          } as IProduct & { ordersCount: number }
       },
@@ -50,7 +52,6 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
       refetchOnWindowFocus: false,
       refetchOnMount: true,
    })
-
    // useEffect(() => {
    //    if (!id) return
    //    ;(async () => {
@@ -66,16 +67,6 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
 
    //    })()
    // }, [])
-
-   const getPrice = () => {
-      if (!data) return
-      const price = data?.promotions
-         ? data.promotions.discountType === 'percentage'
-            ? data.promotions.discountValue && data.price - (data.price * data.promotions.discountValue) / 100
-            : 0
-         : data?.price
-      return price ? (price * count).toFixed(2) : 0
-   }
 
    return (
       <section className={`py-20`}>
@@ -133,10 +124,22 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                            </div>
                            <p>{data?.seller?.secondName}</p>
                         </div>
+                        <div className="flex items-center border-b-[0.3px] border-gray-400 py-3">
+                           Price:&nbsp;&nbsp;$&nbsp;
+                           {data.price.toString().startsWith('discount') ? (
+                              <div className="flex items-center gap-2">
+                                 <span className="text-[16px] line-through">{data.price.toString().split('/')[1]}</span>
+                                 <span className="text-[18px] font-bold">{data.price.toString().split('/')[2]}</span>
+                              </div>
+                           ) : (
+                              data.price
+                           )}
+                        </div>
                         <div className="flex gap-2 border-b-[0.3px] border-gray-400 py-4">
                            <Options title="Colors" options={data.attributes.colors} />
                            <Options title="Size" options={data.attributes.size} />
                         </div>
+
                         <div className="flex items-center gap-9 border-b-[0.3px] border-gray-400 py-2">
                            <p className="text-[10px]">Sold:&nbsp;{data.ordersCount}</p>
                            <p className="text-[10px]">Viewed:&nbsp;{data.viewed}</p>
@@ -148,9 +151,9 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                         <Counter
                            count={count}
                            setCount={setCount}
-                           text={`ADD - $ ${data?.price ? (count * data?.price).toFixed(2) : 0}\nADD - $ ${getPrice()} (with ${data?.promotions?.discountValue}% discount)`}
+                           text={`ADD - $${data.price.toString().startsWith('discount') ? +data.price.toString().split('/')[2] * count : data.price * count}`}
                            id={id}
-                           className="mt-6"
+                           className="mt-6 w-[300px]"
                         />
                      </div>
                   </div>

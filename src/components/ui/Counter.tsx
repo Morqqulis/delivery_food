@@ -1,5 +1,6 @@
 'use client'
 import { useBasketStore } from '#stores/basketStore'
+import { IChildren } from '#types/index'
 import Btn from '#ui/Btn/Btn'
 
 interface CounterProps {

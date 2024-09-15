@@ -81,8 +81,8 @@ const ProductsSlider = ({ title = 'all', product }: { title: string; product?: I
    return (
       <div className="flex w-full flex-col gap-[26px]">
          <div className="scrollbar-custom flex w-full items-center gap-7 overflow-x-auto">
-            {isError && <h2 className={`mt-20 text-center text-3xl text-tomato-200 w-full`}>Error</h2>}
-            {isLoading && <h2 className={`mt-20 text-center text-3xl text-tomato-200 w-full`}>Loading...</h2>}
+            {isError && <h2 className={`mt-20 w-full text-center text-3xl text-tomato-200`}>Error</h2>}
+            {isLoading && <h2 className={`mt-20 w-full text-center text-3xl text-tomato-200`}>Loading...</h2>}
             {data?.map((product: IProduct) => <ProductCard key={product?._id?.toString()} product={product} />)}
          </div>
       </div>

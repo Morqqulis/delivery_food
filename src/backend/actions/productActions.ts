@@ -10,7 +10,7 @@ import { Types } from 'mongoose'
 export const productGetAll = async () => {
    try {
       await connectDB()
-      const products = await productModel.find()
+      const products = await productModel.find().populate({ path: 'promotions', model: promoModel })
 
       return await JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
@@ -20,7 +20,7 @@ export const productGetAll = async () => {
 export const productGetAllPopulate = async () => {
    try {
       await connectDB()
-      const products = await productModel.find().populate({ path: 'seller', model: 'seller' })
+      const products = await productModel.find().populate({ path: 'seller', model: sellerModel })
       return await JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
@@ -29,7 +29,7 @@ export const productGetAllPopulate = async () => {
 export const productGetAllWithPopulateBySelect = async (select: string) => {
    try {
       await connectDB()
-      const products = await productModel.find().populate({ path: 'seller', model: 'seller', select })
+      const products = await productModel.find().populate({ path: 'seller', model: sellerModel, select })
       return JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
@@ -52,7 +52,7 @@ export const productGetByIdWithPopulate = async (id: string, selectProduct: stri
       await connectDB()
       const product = await productModel
          .findOne({ _id: id }, selectProduct)
-         .populate({ path: 'seller', model: 'seller', select: selectSeller })
+         .populate({ path: 'seller', model: sellerModel, select: selectSeller })
          .populate({ path: 'promotions', model: promoModel })
       return JSON.parse(JSON.stringify(product))
    } catch (err: Error | any) {
@@ -105,7 +105,7 @@ export const productsGetByIdsEtc = async (ids: string[]) => {
       await connectDB()
       const products = await productModel
          .find({ _id: { $in: ids } })
-         .populate({ path: 'promotions', model: 'promotion' })
+         .populate({ path: 'promotions', model: promoModel })
       return JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
@@ -187,7 +187,7 @@ export const productsGetByFilters = async (filters: IFilter) => {
          return acc
       }, {} as any)
 
-      const products = await productModel.find(query)
+      const products = await productModel.find(query).populate({ path: 'promotions', model: promoModel })
 
       return JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {

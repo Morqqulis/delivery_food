@@ -6,20 +6,11 @@ import { Eye, Heart, Star } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import { averageRating } from '../../../functions/helpers'
+import { averageRating, getPrice } from '../../../functions/helpers'
 
 const ProductCard: React.FC<{ product: IProduct }> = ({ product }): JSX.Element => {
    const [count, setCount] = useState(1)
-
-   const getPrice = () => {
-      const price = product.promotions
-         ? product.promotions.discountType === 'percentage'
-            ? product.promotions.discountValue &&
-              product.price - (product.price * product.promotions.discountValue) / 100
-            : 0
-         : product.price
-      return price
-   }
+   const price = getPrice(product)
 
    return (
       <div className="relative flex h-fit w-[250px] min-w-[250px] flex-col items-center justify-between gap-4 rounded-lg bg-[#00070A] p-6">
@@ -29,7 +20,17 @@ const ProductCard: React.FC<{ product: IProduct }> = ({ product }): JSX.Element 
             <p className="text-center">
                {product.description.length > 40 ? product.description.slice(0, 40) + '...' : product.description}
             </p>
-            <p className="text-3xl font-bold text-[#82F3FF]">$ {getPrice()}</p>
+            <p className="text-3xl font-bold text-[#82F3FF]">
+               $&nbsp;
+               {price?.toString().startsWith('discount') ? (
+                  <>
+                     <span className="line-through">{price.toString().split('/')[1]}</span>&nbsp;
+                     <span className="font-bold">{price.toString().split('/')[2]}</span>
+                  </>
+               ) : (
+                  price
+               )}
+            </p>
             <div className="flex w-full justify-between px-2">
                <div className="flex items-center gap-2 text-yellow-600">
                   <Star fill="yellow" size={18} />

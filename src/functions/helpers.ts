@@ -1,4 +1,4 @@
-import { IComment } from '#types/index'
+import { IBasket, IComment, IProduct } from '#types/index'
 
 export function createToken(str: string): string {
    const getRandomChars = (length: number) =>
@@ -34,4 +34,40 @@ export function hoursSince(dateString: string): number {
 
 export function averageRating(comments: IComment[] | undefined): number {
    return comments?.length ? comments.reduce((acc, comment) => acc + comment.rating, 0) / comments.length : 0
+}
+
+export function getPrice(product: IProduct | IBasket) {
+   if (!product) return
+
+   const price = product.promotions
+      ? product.promotions.discountType === 'percentage' && product.promotions.discountValue
+         ? `discount/${product.price}/${product.price - (product.price * product.promotions.discountValue) / 100}`
+         : 0
+      : product.price
+
+   return price
+}
+
+export function getTotal(product: IBasket) {
+   if (!product) return
+   const price = getPrice(product)
+
+   const priceNumber = price && price.toString().startsWith('discount') ? price.toString().split('/')[2] : product.price
+
+   const total = product.promotions
+      ? product.promotions.discountType === 'percentage' && product.promotions.discountValue
+         ? +priceNumber * product.quantity
+         : 0
+      : product.price * product.quantity
+
+   return total
+}
+
+export const calculateTotal = (basket: IBasket[]) => {
+   if (!basket) return
+
+   return basket.reduce((total: number, product: IBasket) => {
+      // @ts-ignore
+      return total + getTotal(product)
+   }, 0)
 }
