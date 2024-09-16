@@ -14,9 +14,10 @@ const SellerHistory: React.FC = () => {
       })()
    }, [])
 
-   const header = ['Products', 'Total', 'Status', 'Date']
+   const header = ['ID', 'Products', 'Total', 'Status', 'Date']
    const tableBody = orders.map((order) => {
       return {
+         id: '***' + order._id.toString().slice(order._id.toString().length - 5, order._id.toString().length),
          name: order.products.map((product) => product.product.name + '*' + product.quantity).join(', '),
          total: `$${order.products.reduce((crr, product) => crr + product.product.price * product.quantity, 0)}`,
          status: order.status,

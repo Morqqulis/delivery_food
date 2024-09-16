@@ -33,7 +33,18 @@ const ProductCard = ({ product }: { product: IProduct }): JSX.Element => {
                   <Star fill="yellow" size={18} />
                   {averageRating(product.comments)}
                </div>
-               <p className="text-3xl font-bold text-[#82F3FF]">$ {product.price}</p>
+
+               <p className="text-3xl font-bold text-[#82F3FF]">
+                  $&nbsp;
+                  {price?.toString().startsWith('discount') ? (
+                     <>
+                        <span className="text-2xl line-through">{price.toString().split('/')[1]}</span>&nbsp;
+                        <span className="text-3xl font-bold">{price.toString().split('/')[2]}</span>
+                     </>
+                  ) : (
+                     price
+                  )}
+               </p>
                <div className="flex items-center gap-2 text-[#38a0fa]">
                   <Eye size={18} />
                   {product.viewed}

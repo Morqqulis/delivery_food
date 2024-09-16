@@ -29,9 +29,10 @@ const SellerOrders: React.FC = () => {
       setOrders(orders.filter((order) => order._id != orderId))
    }
 
-   const tableHeader = ['Product Names', 'Total Amount', 'Customer Note', 'Created At', 'Actions']
-   const bodys: any[] = orders.map((order) => {
+   const tableHeader = ['ID', 'Product Names', 'Total Amount', 'Customer Note', 'Created At', 'Actions']
+   const bodys = orders.map((order: IOrder) => {
       return {
+         id: '***' + order._id.toString().slice(order._id.toString().length - 5, order._id.toString().length),
          name: order.products.map((product) => product?.product.name).join(', '),
          total: `$${order.products.reduce((crr, product) => crr + product.product.price * +product.quantity, 0)}`,
          note: order.sellerNote,

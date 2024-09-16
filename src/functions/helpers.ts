@@ -15,7 +15,11 @@ export function processToken(str: string) {
       .filter((_, i) => i % 25 === 0)
       .join('')
 }
+export function dateFormatter(date: Date | undefined) {
+   if (!date) return
 
+   return `${date.toString().slice(0, 10)} at ${date.toString().slice(11, 16)}`
+}
 export function daysSince(dateString: string): number {
    const now = new Date()
    const past = new Date(dateString)

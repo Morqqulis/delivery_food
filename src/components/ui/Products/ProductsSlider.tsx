@@ -9,11 +9,8 @@ import { GlowCapture } from '@codaworks/react-glow'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import '../../../styles/scrollbar.scss'
-// export const revalidate = 0
 
 const ProductsSlider = ({ title = 'all', product }: { title: string; product?: IProduct }) => {
-   // const [products, setProducts] = useState<IProduct[] | []>([])
-
    const { data, isLoading, isError } = useQuery({
       queryKey: ['get products'],
       queryFn: () => handleGetProducts(title),
@@ -45,38 +42,8 @@ const ProductsSlider = ({ title = 'all', product }: { title: string; product?: I
             break
       }
 
-      // title.toLowerCase() !== 'all' ? setProducts(res) : setProducts(res.data)
-
       return title.toLowerCase() !== 'all' ? res : (res.data as IProduct[])
    }
-
-   // const res = await fetch('http://localhost:3000/api/products')
-   // const products = await res.json()
-
-   // useEffect(() => {
-   // handleGetProducts()
-   //    ;(async () => {
-   //       if (title === 'all') {
-   //          const res = await axios.get('http://localhost:3000/api/products')
-   //          setProducts(res.data)
-   //       }
-   //       if (title === 'liked') {
-   //          const idsLiked = await cookieGetLiked()
-   //          const res = await productsGetByIdsEtc(idsLiked)
-   //          setProducts(res)
-   //       }
-   //       if (title === 'recently') {
-   //          const idsRecently = await cookieGetRecently()
-   //          const res = await productsGetByIdsEtc(idsRecently)
-   //          setProducts(res)
-   //       }
-   //       if (title === 'related') {
-   //          if (!product) return
-   //          const res = await productRelatedNameAndCategory(product)
-   //          setProducts(res)
-   //       }
-   //    })()
-   // }, [])
 
    return (
       <div className="container flex w-full flex-col gap-[26px]">
@@ -98,7 +65,6 @@ const ProductsSlider = ({ title = 'all', product }: { title: string; product?: I
                   <CarouselNext />
                </Carousel>
             )}
-            {/* {data?.map((product: IProduct) => <ProductCard key={product?._id?.toString()} product={product} />)} */}
          </div>
       </div>
    )
