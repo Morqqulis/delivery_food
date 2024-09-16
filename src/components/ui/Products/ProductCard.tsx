@@ -16,7 +16,7 @@ const ProductCard = ({ product }: { product: IProduct }): JSX.Element => {
    return (
       <Glow>
          <Link
-            className="relative flex h-[500px] min-h-[300px] flex-col items-center justify-between gap-4 rounded-lg border border-orange-500/20 bg-[#00070A] p-6 glow:border-purple-500 glow:bg-cyan-500/10"
+            className="relative flex h-[500px] flex-col items-center justify-between gap-4 rounded-lg border-orange-500/20 bg-[#00070A] p-6 glow:border glow:border-purple-500 glow:bg-cyan-500/20 glow:shadow glow:shadow-white"
             href={`/products/${product._id}`}
          >
             <Image src={`${product?.image}`} width={150} height={150} alt={'product image'} priority />
