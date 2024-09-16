@@ -1,26 +1,17 @@
 'use client'
-import { IBasket, IProduct } from '#types/index'
+import { IProduct } from '#types/index'
 import Counter from '#ui/Counter'
 import LikeHeart from '#ui/LikeHeart'
-import { Eye, Heart, Star } from 'lucide-react'
+import { Glow } from '@codaworks/react-glow'
+import { Eye, Star } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { averageRating } from '../../../functions/helpers'
-import { GlowCapture, Glow } from '@codaworks/react-glow'
 
 const ProductCard: React.FC<{ product: IProduct }> = ({ product }): JSX.Element => {
    const [count, setCount] = useState(1)
-
-   const getPrice = () => {
-      const price = product.promotions
-         ? product.promotions.discountType === 'percentage'
-            ? product.promotions.discountValue &&
-              product.price - (product.price * product.promotions.discountValue) / 100
-            : 0
-         : product.price
-      return price
-   }
+   const price = getPrice(product)
 
    return (
       <Glow>

@@ -69,6 +69,10 @@ export interface IProduct {
       colors: string[]
    }
 }
+export interface ISelectedAttributes {
+   size?: string
+   color?: string
+}
 
 export interface IProductCreate {
    name: string
@@ -155,6 +159,7 @@ export interface IOrderItem {
    quantity: Number
    accepted: Boolean
    point: Types.ObjectId
+   selectedAttributes?: ISelectedAttributes
 }
 export interface IOrder {
    _id: Types.ObjectId
@@ -201,10 +206,12 @@ export interface IBasket {
    updatedAt: Date
    quantity: number
    __v: number
+   selectedAttributes: ISelectedAttributes
 }
 export interface IBasketItem {
    product: string
    quantity: number
+   selectedAttributes: ISelectedAttributes
 }
 
 export interface IGroupedProductsOrders {
@@ -224,7 +231,7 @@ export interface IGoogleResponseUser {
 export interface IBasketStore {
    basket: IBasket[]
    fetchBasket: () => Promise<void>
-   addToBasket: (productId: string, quantity: number) => Promise<void>
+   addToBasket: (productId: string, quantity: number, selectedAttributes: ISelectedAttributes) => Promise<void>
    removeFromBasket: (productId: string) => Promise<void>
    clearBasket: () => void
 }

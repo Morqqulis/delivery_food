@@ -1,5 +1,6 @@
 'use client'
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface ITable {
    headers: string[]
@@ -23,7 +24,7 @@ const Table: React.FC<ITable> = ({ headers, body, footer }): JSX.Element => {
                   ))}
                </tr>
             </thead>
-            <tbody className="text-sm font-medium uppercase tracking-wider text-gray-500">
+            <tbody className="text-sm font-medium  tracking-wider text-gray-500">
                {body?.map((row) => (
                   <tr key={Math.random() * 10000} className="border-b-2 text-center">
                      {Object.entries(row).map(([key, value]: any) => (
@@ -42,6 +43,10 @@ const Table: React.FC<ITable> = ({ headers, body, footer }): JSX.Element => {
                                  <span className="line-through">${value.toString().split('/')[1]}</span>&nbsp;
                                  <span className="font-bold">${value.toString().split('/')[2]}</span>
                               </>
+                           ) : value.toString().startsWith('link') ? (
+                              <Link className="underline hover:font-bold" href={value.toString().split('*')[1]}>
+                                 {value.toString().split('*')[2]}
+                              </Link>
                            ) : (
                               <> {value} </>
                            )}

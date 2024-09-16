@@ -29,7 +29,12 @@ export const orderCreate = async (basket: IBasket[], session: { email: string; n
             const {
                seller: { point },
             } = await productGetByIdWithPopulate(product._id, 'seller', 'point')
-            return { product: product._id, quantity: product.quantity, point }
+            return {
+               product: product._id,
+               quantity: product.quantity,
+               point,
+               selectedAttributes: product.selectedAttributes,
+            }
          }),
       )
 

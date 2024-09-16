@@ -1,6 +1,6 @@
 'use server'
 
-import { IBasketItem } from '#types/index'
+import { IBasketItem, ISelectedAttributes } from '#types/index'
 import { cookies } from 'next/headers'
 
 export async function cookieGetBasket(): Promise<IBasketItem[]> {
@@ -28,14 +28,19 @@ export async function cookieSetBasket(basket: IBasketItem[]) {
    })
 }
 
-export async function cookieAddToBasket(productId: string, quantity: number = 1) {
+export async function cookieAddToBasket(
+   productId: string,
+   quantity: number = 1,
+   selectedAttributes: ISelectedAttributes,
+) {
    const basket = await cookieGetBasket()
    const existingItem = basket.find((item: IBasketItem) => item.product === productId)
 
    if (existingItem) {
       existingItem.quantity += quantity
+      existingItem.selectedAttributes = selectedAttributes
    } else {
-      basket.push({ product: productId, quantity })
+      basket.push({ product: productId, quantity, selectedAttributes })
    }
 
    cookieSetBasket(basket)
@@ -48,12 +53,13 @@ export async function coockieRemoveFromBasket(productId: string) {
    cookieSetBasket(updatedBasket)
 }
 
-export async function updateBasketItem(productId: string, quantity: number) {
+export async function updateBasketItem(productId: string, quantity: number, selectedAttributes: ISelectedAttributes) {
    const basket = await cookieGetBasket()
    const item = basket.find((item: IBasketItem) => item.product === productId)
 
    if (item) {
       item.quantity += quantity
+      item.selectedAttributes = selectedAttributes
       cookieSetBasket(basket)
    }
 }

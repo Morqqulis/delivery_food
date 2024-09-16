@@ -18,7 +18,6 @@ interface CheckoutFormProps {
 const CheckoutForm: React.FC<CheckoutFormProps> = ({ basket }) => {
    const session = useSession()
    const { clearBasket } = useBasketStore()
-   
    const { register, handleSubmit, reset } = useForm({
       resolver: zodResolver(checkoutSchema),
       defaultValues: CheckoutDefault,
@@ -29,9 +28,10 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ basket }) => {
          email: session?.data?.user?.email || '',
          name: session?.data?.user?.name || '',
       }
+
       await orderCreate(basket, user, form)
       reset()
-      clearBasket()      
+      clearBasket()
    }
 
    if (session.status !== 'authenticated') {

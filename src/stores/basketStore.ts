@@ -6,7 +6,7 @@ import {
    updateBasketItem,
 } from '#backend/actions/cookieBasketActions'
 import { productGetById, productsGetByIds } from '#backend/actions/productActions'
-import { IBasketStore } from '#types/index'
+import { IBasket, IBasketStore, IProduct, ISelectedAttributes } from '#types/index'
 import { create } from 'zustand'
 
 export const useBasketStore = create<IBasketStore>((set) => ({
@@ -15,7 +15,11 @@ export const useBasketStore = create<IBasketStore>((set) => ({
       const basketCookie = await cookieGetBasket()
       try {
          if (basketCookie.length > 0) {
-            const products = await productsGetByIds(basketCookie)
+            const products = (await productsGetByIds(basketCookie)).map((prod: IProduct) => {
+               const newProd = basketCookie.find((product) => product.product.toString() === prod._id.toString())
+               return { ...prod, selectedAttributes: newProd?.selectedAttributes }
+            })
+
             set({ basket: products })
          }
       } catch (error) {
@@ -23,21 +27,23 @@ export const useBasketStore = create<IBasketStore>((set) => ({
       }
    },
 
-   addToBasket: async (productId: string, quantity: number) => {
+   addToBasket: async (productId: string, quantity: number, selectedAttributes: ISelectedAttributes) => {
       try {
          const cookieBasket = await cookieGetBasket()
          const currentCookieItem = cookieBasket.some((product) => product.product === productId)
          if (currentCookieItem) {
-            await updateBasketItem(productId, quantity)
+            await updateBasketItem(productId, quantity, selectedAttributes)
             set((state) => ({
                basket: state.basket.map((product) =>
-                  product._id === productId ? { ...product, quantity: product.quantity + quantity } : product,
+                  product._id === productId
+                     ? { ...product, quantity: product.quantity + quantity, selectedAttributes }
+                     : product,
                ),
             }))
          } else {
-            await cookieAddToBasket(productId, quantity)
+            await cookieAddToBasket(productId, quantity, selectedAttributes)
             const newProduct = await productGetById(productId, '')
-            set((state) => ({ basket: [...state.basket, { ...newProduct, quantity }] }))
+            set((state) => ({ basket: [...state.basket, { ...newProduct, quantity, selectedAttributes }] }))
          }
       } catch (error) {
          console.log('Error in addToBasket at useBasketStore: ', error)

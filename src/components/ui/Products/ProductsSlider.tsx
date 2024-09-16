@@ -1,15 +1,14 @@
 'use client'
-import { IProduct } from '#types/index'
-import axios, { AxiosResponse } from 'axios'
-import { useEffect, useState } from 'react'
-import '../../../styles/scrollbar.scss'
-import ProductCard from '#ui/Products/ProductCard'
 import { cookieGetLiked } from '#backend/actions/cookieLiked'
-import { productRelatedNameAndCategory, productsGetByIdsEtc } from '#backend/actions/productActions'
 import { cookieGetRecently } from '#backend/actions/cookieRecently'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { productRelatedNameAndCategory, productsGetByIdsEtc } from '#backend/actions/productActions'
+import { IProduct } from '#types/index'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '#ui/carousel'
-import { GlowCapture, Glow } from '@codaworks/react-glow'
+import ProductCard from '#ui/Products/ProductCard'
+import { GlowCapture } from '@codaworks/react-glow'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
+import '../../../styles/scrollbar.scss'
 // export const revalidate = 0
 
 const ProductsSlider = ({ title = 'all', product }: { title: string; product?: IProduct }) => {

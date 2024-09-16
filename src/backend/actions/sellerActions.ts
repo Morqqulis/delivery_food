@@ -1,6 +1,7 @@
 'use server'
 import { connectDB } from '#backend/DB'
 import orderModel from '#backend/models/orderModel'
+import promoModel from '#backend/models/promotionModel'
 import sellerModel from '#backend/models/sellerModel'
 import { ISeller } from '#types/index'
 import { Types } from 'mongoose'
@@ -96,7 +97,7 @@ export const sellerGetFilteredOrders = async (sellerId: string, status: string) 
    try {
       await connectDB()
 
-      const orders = await orderModel.aggregate([
+      let orders = await orderModel.aggregate([
          { $match: { status: status } },
          { $unwind: '$products' },
          {
@@ -123,6 +124,7 @@ export const sellerGetFilteredOrders = async (sellerId: string, status: string) 
                   $push: {
                      product: '$productDetails',
                      quantity: '$products.quantity',
+                     selectedAttributes: '$products.selectedAttributes',
                   },
                },
             },
@@ -138,6 +140,7 @@ export const sellerGetFilteredOrders = async (sellerId: string, status: string) 
          },
       ])
 
+      orders = await orderModel.populate(orders, { path: 'products.product.promotions', model: promoModel })
       return JSON.parse(JSON.stringify(orders))
    } catch (error: any) {
       throw new Error('Error retrieving orders by seller: ' + error.message)

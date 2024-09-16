@@ -52,6 +52,16 @@ const orderSchema = new Schema<IOrder>(
                type: Boolean,
                default: false,
             },
+            selectedAttributes: {
+               size: {
+                  type: String,
+               },
+
+               color: {
+                  type: String,
+               },
+            },
+
             point: {
                type: Schema.Types.ObjectId,
                ref: 'point',
