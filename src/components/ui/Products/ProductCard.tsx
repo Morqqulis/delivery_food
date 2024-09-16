@@ -1,13 +1,13 @@
 'use client'
-import { IProduct } from '#types/index'
+import { IBasket, IProduct } from '#types/index'
 import Counter from '#ui/Counter'
 import LikeHeart from '#ui/LikeHeart'
-import { Glow } from '@codaworks/react-glow'
-import { Eye, Star } from 'lucide-react'
+import { Eye, Heart, Star } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import { averageRating } from '../../../functions/helpers'
+import { averageRating, getPrice } from '../../../functions/helpers'
+import { GlowCapture, Glow } from '@codaworks/react-glow'
 
 const ProductCard: React.FC<{ product: IProduct }> = ({ product }): JSX.Element => {
    const [count, setCount] = useState(1)
@@ -45,7 +45,7 @@ const ProductCard: React.FC<{ product: IProduct }> = ({ product }): JSX.Element 
                setCount={setCount}
                text="ADD"
                id={product._id.toString()}
-               className="w-full flex-col gap-5 relative z-[1]"
+               className="relative z-[1] w-full flex-col gap-5"
             />
             <LikeHeart id={product._id.toString()} />
          </Link>
