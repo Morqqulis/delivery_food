@@ -1,22 +1,22 @@
 'use client'
-import { IBasket, IProduct } from '#types/index'
+import { IProduct } from '#types/index'
 import Counter from '#ui/Counter'
 import LikeHeart from '#ui/LikeHeart'
-import { Eye, Heart, Star } from 'lucide-react'
+import { Glow } from '@codaworks/react-glow'
+import { Eye, Star } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { averageRating, getPrice } from '../../../functions/helpers'
-import { GlowCapture, Glow } from '@codaworks/react-glow'
 
-const ProductCard: React.FC<{ product: IProduct }> = ({ product }): JSX.Element => {
+const ProductCard = ({ product }: { product: IProduct }): JSX.Element => {
    const [count, setCount] = useState(1)
    const price = getPrice(product)
 
    return (
       <Glow>
          <Link
-            className="glow:border-purple-500 glow:bg-cyan-500/10 relative flex h-[500px] min-h-[300px] flex-col items-center justify-between gap-4 rounded-lg border border-orange-500/20 bg-[#00070A]/10 p-6"
+            className="relative flex h-[500px] min-h-[300px] flex-col items-center justify-between gap-4 rounded-lg border border-orange-500/20 bg-[#00070A] p-6 glow:border-purple-500 glow:bg-cyan-500/10"
             href={`/products/${product._id}`}
          >
             <Image src={`${product?.image}`} width={150} height={150} alt={'product image'} priority />
@@ -33,7 +33,7 @@ const ProductCard: React.FC<{ product: IProduct }> = ({ product }): JSX.Element 
                   <Star fill="yellow" size={18} />
                   {averageRating(product.comments)}
                </div>
-               <p className="text-3xl font-bold text-[#82F3FF]">$ {getPrice()}</p>
+               <p className="text-3xl font-bold text-[#82F3FF]">$ {product.price}</p>
                <div className="flex items-center gap-2 text-[#38a0fa]">
                   <Eye size={18} />
                   {product.viewed}
@@ -41,6 +41,10 @@ const ProductCard: React.FC<{ product: IProduct }> = ({ product }): JSX.Element 
             </div>
 
             <Counter
+               selectedAttributes={{
+                  color: product.attributes.colors[0],
+                  size: product.attributes.size[0],
+               }}
                count={count}
                setCount={setCount}
                text="ADD"
