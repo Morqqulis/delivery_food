@@ -85,7 +85,7 @@ const config = {
          },
       },
    },
-   plugins: [require('tailwindcss-animate')],
+   plugins: [require('@codaworks/react-glow/tailwind'), require('tailwindcss-animate')],
 } satisfies Config
 
 export default config

@@ -8,7 +8,8 @@ import { cookieGetLiked } from '#backend/actions/cookieLiked'
 import { productRelatedNameAndCategory, productsGetByIdsEtc } from '#backend/actions/productActions'
 import { cookieGetRecently } from '#backend/actions/cookieRecently'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '#ui/carousel'
+import { GlowCapture, Glow } from '@codaworks/react-glow'
 // export const revalidate = 0
 
 const ProductsSlider = ({ title = 'all', product }: { title: string; product?: IProduct }) => {
@@ -79,11 +80,26 @@ const ProductsSlider = ({ title = 'all', product }: { title: string; product?: I
    // }, [])
 
    return (
-      <div className="flex w-full flex-col gap-[26px]">
-         <div className="scrollbar-custom flex w-full items-center gap-7 overflow-x-auto">
-            {isError && <h2 className={`mt-20 text-center text-3xl text-tomato-200 w-full`}>Error</h2>}
-            {isLoading && <h2 className={`mt-20 text-center text-3xl text-tomato-200 w-full`}>Loading...</h2>}
-            {data?.map((product: IProduct) => <ProductCard key={product?._id?.toString()} product={product} />)}
+      <div className="container flex w-full flex-col gap-[26px]">
+         <div className="scrollbar-custom flex w-full items-center gap-7">
+            {isError && <h2 className={`mt-20 w-full text-center text-3xl text-tomato-200`}>Error</h2>}
+            {isLoading && <h2 className={`mt-20 w-full text-center text-3xl text-tomato-200`}>Loading...</h2>}
+            {data?.length > 0 && (
+               <Carousel className={`mx-auto w-full max-w-[1200px]`} color={'red'}>
+                  <CarouselContent className={``}>
+                     {data?.map((product: IProduct) => (
+                        <CarouselItem className={`basis-1/4`} key={product?._id?.toString()}>
+                           <GlowCapture>
+                              <ProductCard product={product} />
+                           </GlowCapture>
+                        </CarouselItem>
+                     ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+               </Carousel>
+            )}
+            {/* {data?.map((product: IProduct) => <ProductCard key={product?._id?.toString()} product={product} />)} */}
          </div>
       </div>
    )

@@ -12,6 +12,7 @@
    },
    "dependencies": {
       "@auth/mongodb-adapter": "^3.4.2",
+      "@codaworks/react-glow": "^1.0.6",
       "@hookform/resolvers": "^3.9.0",
       "@radix-ui/react-accordion": "^1.2.0",
       "@radix-ui/react-aspect-ratio": "^1.1.0",
