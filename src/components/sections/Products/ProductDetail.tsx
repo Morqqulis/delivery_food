@@ -3,19 +3,21 @@ import { productGetById, productGetByIdWithPopulate, productUpdateById } from '#
 import CommentsHero from '#sections/Comments/CommentsHero'
 import StarRating from '#sections/Comments/StarRating'
 import { IProduct, ISelectedAttributes } from '#types/index'
-import Counter from '#ui/Counter'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { averageRating, getPrice } from '../../../functions/helpers'
 import Link from 'next/link'
 import LikeHeart from '#ui/LikeHeart'
-import ProductsSlider from '#ui/Products/ProductsSlider'
 import { cookieUpdateRecently } from '#backend/actions/cookieRecently'
 import { ordersFindWithProduct } from '#backend/actions/orderAction'
 
 import Options from './Options'
 import { useQuery } from '@tanstack/react-query'
 import ProductBread from './ProductBread'
+import Counter from '#ui/Counter/Counter'
+import Btn from '#ui/Btn/Btn'
+import { useBasketStore } from '#stores/basketStore'
+import SliderContainer from './SliderContainer'
 
 const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
    const [count, setCount] = useState(1)
@@ -44,6 +46,11 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
       refetchOnMount: true,
    })
 
+   const addToBasket = useBasketStore((state) => state.addToBasket)
+   const handleAddToBasket = async () => {
+      await addToBasket(id, count, selectedAttributes)
+      setCount(1)
+   }
    return (
       <section className={`py-20`}>
          <div className="container">
@@ -111,48 +118,23 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                               <StarRating rating={averageRating(data?.comments)} size="13" />
                            </div>
                         </div>
-                        <Counter
-                           count={count}
-                           setCount={setCount}
-                           selectedAttributes={selectedAttributes}
-                           text={`ADD - $${data.price.toString().startsWith('discount') ? +data.price.toString().split('/')[2] * count : data.price * count}`}
-                           id={id}
-                           className="mt-6 w-[300px]"
-                        />
+                        <div className={`mt-6 flex w-full items-center gap-5`}>
+                           <Counter count={count} setCount={setCount} />
+                           <Btn
+                              text={`ADD - $${data.price.toString().startsWith('discount') ? +data.price.toString().split('/')[2] * count : data.price * count}`}
+                              ariaLabel="Add Btn"
+                              className="w-[300px]"
+                              onClick={handleAddToBasket}
+                           />
+                        </div>
                      </div>
                   </div>
                   <div className="mt-6 flex justify-center">
                      <CommentsHero prodId={id} comments={data?.comments} />
                   </div>
-                  <div className="mt-6 flex flex-col items-center gap-5">
-                     <div className="relative flex h-[50px] w-full items-center justify-center">
-                        <div className="h-1 w-full bg-white"></div>
-                        <div className="absolute left-[50%] translate-x-[-50%] bg-dark-400 px-5 text-center text-5xl">
-                           Your liked products
-                        </div>
-                     </div>
-                     <ProductsSlider title="liked" />
-                  </div>
-
-                  <div className="mt-6 flex flex-col items-center gap-5">
-                     <div className="relative flex h-[50px] w-full items-center justify-center">
-                        <div className="h-1 w-full bg-white"></div>
-                        <div className="absolute left-[50%] translate-x-[-50%] bg-dark-400 px-5 text-center text-5xl">
-                           Recently products
-                        </div>
-                     </div>
-                     <ProductsSlider title="recently" />
-                  </div>
-
-                  <div className="mt-6 flex flex-col items-center gap-5">
-                     <div className="relative flex h-[50px] w-full items-center justify-center">
-                        <div className="h-1 w-full bg-white"></div>
-                        <div className="absolute left-[50%] translate-x-[-50%] bg-dark-400 px-5 text-center text-5xl">
-                           Related products
-                        </div>
-                     </div>
-                     <ProductsSlider title="related" product={data} />
-                  </div>
+                  <SliderContainer title="liked" text="Your liked  products" />
+                  <SliderContainer title="recently" text="Recently products" />
+                  <SliderContainer title="related" text="Related products" data={data} />
                </>
             )}
          </div>

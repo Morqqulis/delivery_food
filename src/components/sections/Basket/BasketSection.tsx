@@ -10,9 +10,11 @@ import { X } from 'lucide-react'
 import { Types } from 'mongoose'
 import { useEffect } from 'react'
 import { calculateTotal, getPrice, getTotal } from '../../../functions/helpers'
+import Count from '#ui/Btn/Count'
+import { updateBasketItem } from '#backend/actions/cookieBasketActions'
 
 const BasketSection: React.FC = (): JSX.Element => {
-   const { removeFromBasket, basket } = useBasketStore()
+   const { removeFromBasket, basket, updateBasketStore } = useBasketStore()
    // const namepromo = async () => {
    // const datas = {
    //    seller: new Types.ObjectId('66d02490d14d9bc8e4366bd1'),
@@ -40,7 +42,15 @@ const BasketSection: React.FC = (): JSX.Element => {
          image: '/qazan.svg',
          name: `link*/products/${item._id}*${item.name}`,
          description: item.description,
-         count: item.quantity,
+         count: (
+            <Count
+               count={item.quantity}
+               setCount={(but) => {
+                  updateBasketStore(item._id, but - item.quantity, item.selectedAttributes)
+               }}
+               className='items-center justify-center'
+            />
+         ),
          price: `$${getPrice(item)}`,
          total: `$${getTotal(item)}`,
          actions: (

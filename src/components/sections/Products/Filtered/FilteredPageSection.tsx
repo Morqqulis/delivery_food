@@ -7,6 +7,7 @@ import QueryProvider from '#providers/QueryProvider'
 
 const FilteredPageSection: React.FC = (): JSX.Element => {
    const [filters, setFilters] = useState({} as IFilter)
+   console.log(filters)
    return (
       <div className="container flex gap-1 py-3">
          <QueryProvider>

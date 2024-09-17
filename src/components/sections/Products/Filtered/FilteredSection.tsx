@@ -3,6 +3,7 @@ import ColorSelect from '#sections/Products/Filtered/Filters/ColorsSelect'
 import SizeSelect from '#sections/Products/Filtered/Filters/SizeSelect'
 import { IFilter } from '#types/index'
 import PriceSelect from './Filters/PriceSelect'
+import PromotionSelect from './Filters/PromotionSelect'
 
 const FilteredSection: React.FC<{ setFilters: React.Dispatch<React.SetStateAction<IFilter>>; filters: IFilter }> = ({
    setFilters,
@@ -15,6 +16,7 @@ const FilteredSection: React.FC<{ setFilters: React.Dispatch<React.SetStateActio
          <CategorySelect setFilters={setFilters} filters={filters} />
          <SizeSelect setFilters={setFilters} filters={filters} />
          <ColorSelect setFilters={setFilters} filters={filters} />
+         <PromotionSelect setFilters={setFilters} filters={filters} />
       </div>
    )
 }

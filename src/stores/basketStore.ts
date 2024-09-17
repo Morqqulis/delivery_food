@@ -27,6 +27,21 @@ export const useBasketStore = create<IBasketStore>((set) => ({
       }
    },
 
+   updateBasketStore: async (productId: string, quantity: number, selectedAttributes: ISelectedAttributes) => {
+      try {
+         await updateBasketItem(productId, quantity, selectedAttributes)
+         set((state) => ({
+            basket: state.basket.map((product) =>
+               product._id === productId
+                  ? { ...product, quantity: product.quantity + quantity, selectedAttributes }
+                  : product,
+            ),
+         }))
+      } catch (error) {
+         console.log('Error in updateBasketItem at useBasketStore: ', error)
+      }
+   },
+
    addToBasket: async (productId: string, quantity: number, selectedAttributes: ISelectedAttributes) => {
       try {
          const cookieBasket = await cookieGetBasket()
