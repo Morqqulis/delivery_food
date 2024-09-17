@@ -34,7 +34,7 @@ const ProductsSection: React.FC<{ filters: IFilter }> = ({ filters }): JSX.Eleme
    return (
       <div className={`flex flex-col gap-4`}>
          <p className="text-md ml-2">
-            Categories{' '}
+            Categories {' '}
             {filters?.category?.child
                ? `/ ${filters.category.main} / ${filters.category.sub} / ${filters.category.child}`
                : filters?.category?.sub
