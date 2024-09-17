@@ -13,7 +13,7 @@ const PromotionSelect: React.FC<IPromotionSelect> = ({ setFilters, filters }): J
             type="checkbox"
             onChange={(e) => setFilters((prev: IFilter) => ({ ...prev, promotion: e.target.checked }))}
             checked={filters.promotion || false}
-         />{' '}
+         />
          Promotion
       </Label>
    )
