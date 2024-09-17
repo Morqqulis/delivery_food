@@ -1,6 +1,7 @@
 'use server'
 import { connectDB } from '#backend/DB'
 import orderModel from '#backend/models/orderModel'
+import productModel from '#backend/models/productModel'
 import promoModel from '#backend/models/promotionModel'
 import sellerModel from '#backend/models/sellerModel'
 import { ISeller } from '#types/index'
@@ -53,7 +54,7 @@ export const sellerGetByIdPopulateProducts = async (id: string) => {
    if (!id) return
    try {
       await connectDB()
-      const seller = await sellerModel.findOne({ _id: id }).populate({ path: 'products', model: 'product' })
+      const seller = await sellerModel.findOne({ _id: id }).populate({ path: 'products', model: productModel })
       return JSON.parse(JSON.stringify(seller))
    } catch (err: Error | any) {
       throw new Error(err)

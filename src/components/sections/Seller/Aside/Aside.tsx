@@ -14,6 +14,7 @@ const Aside: React.FC = ({}): JSX.Element => {
       { id: 3, name: 'Add Product', icon: <CirclePlus />, route: '/seller/products/add' },
       { id: 4, name: 'Active Orders', icon: <Bolt />, route: '/seller/orders' },
       { id: 5, name: 'History', icon: <ListOrdered />, route: '/seller/history' },
+      { id: 6, name: 'Create Promotion', icon: <CirclePlus />, route: '/seller/createPromotion' },
    ]
 
    return (

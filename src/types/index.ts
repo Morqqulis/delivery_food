@@ -113,7 +113,7 @@ export interface ISeller {
    password: string
    image?: string
    createdAt?: Date
-   products?: IProduct[]
+   products: IProduct[]
    order?: []
 }
 export interface IFormValues {
@@ -248,6 +248,7 @@ export interface ISessionStore {
    session: any
    checkSession: () => void
 }
+export type IPromoType = 'percentage' | 'fixed' | 'buyXgetY' | 'freeShipping';
 
 export interface IPromotion {
    seller: Types.ObjectId
@@ -258,8 +259,8 @@ export interface IPromotion {
    applicableProducts: Types.ObjectId[]
    // applicableCategories: string[]
    // minimumOrderAmount: number
-   // buyX?: number
-   // getY?: number
+   buyX?: number
+   getY?: number
    // discountedProduct?: Types.ObjectId
    // usageLimit?: number
    // usageCount?: number

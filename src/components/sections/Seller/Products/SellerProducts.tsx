@@ -8,7 +8,6 @@ import { sellerGetProductsWithSelect } from '#backend/actions/sellerActions'
 
 const ProductPage: React.FC = () => {
    const [seller, setSeller] = useState<ISeller>()
-   console.log(seller)
    useEffect(() => {
       ;(async () => {
          await productGetAll()

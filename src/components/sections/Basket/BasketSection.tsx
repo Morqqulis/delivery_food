@@ -1,40 +1,14 @@
 'use client'
-
-import { productGetByIdWithPromotion } from '#backend/actions/productActions'
-import { promoCreate, promoGetAll } from '#backend/actions/promotionActions'
 import CheckoutForm from '#sections/Basket/CheckoutForm'
 import { useBasketStore } from '#stores/basketStore'
-import { IBasket, IBasketItem, IProduct } from '#types/index'
 import Table from '#ui/Table/Table'
 import { X } from 'lucide-react'
-import { Types } from 'mongoose'
-import { useEffect } from 'react'
 import { calculateTotal, getPrice, getTotal } from '../../../functions/helpers'
 import Count from '#ui/Btn/Count'
-import { updateBasketItem } from '#backend/actions/cookieBasketActions'
 
 const BasketSection: React.FC = (): JSX.Element => {
    const { removeFromBasket, basket, updateBasketStore } = useBasketStore()
-   // const namepromo = async () => {
-   // const datas = {
-   //    seller: new Types.ObjectId('66d02490d14d9bc8e4366bd1'),
-   //    description: 'test',
-   //    name: 'test',
-   //    discountType: 'percentage',
-   //    discountValue: 10,
-   //    applicableProducts: [
-   //       new Types.ObjectId('66e4822d10d3f91e7d2c2420'),
-   //       new Types.ObjectId('66e484c8431f6f8155b38243'),
-   //    ],
-   //    startDate: new Date(),
-   //    // endsDate: new Date(),
-   //    isActive: true,
-   // }
-   // const data = await promoCreate(datas)
-   // const promos = await promoGetAll()
-   // const data = await productGetByIdWithPromotion('66e484c8431f6f8155b38243', '')
-   // console.log(getPrice(data))
-   // }
+   
 
    const tableHeader = ['Image', 'Name', 'Description', 'Count', 'Price', 'Total', '']
    const tableBody = basket.map((item) => {
@@ -67,7 +41,6 @@ const BasketSection: React.FC = (): JSX.Element => {
       <section className={`py-20`}>
          <div className="container">
             <h1 className={`mb-10 text-center text-5xl`}>Basket</h1>
-            {/* <button onClick={() => namepromo()}>namepromo</button> */}
             {basket.length > 0 ? (
                <div className="flex flex-col gap-6">
                   <Table headers={tableHeader} body={tableBody} footer={tableFooter} />
