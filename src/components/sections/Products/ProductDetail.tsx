@@ -46,7 +46,6 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
       refetchOnWindowFocus: false,
       refetchOnMount: true,
    })
-   console.log(data)
    const addToBasket = useBasketStore((state) => state.addToBasket)
    const handleAddToBasket = async () => {
       await addToBasket(id, count, selectedAttributes)
@@ -99,7 +98,7 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                            )}
                         </div>
                         {data.promotions && <PromotionSection promotions={data.promotions} />}
-                        
+
                         <div className="flex gap-2 border-b-[0.3px] border-gray-400 py-4">
                            <Options
                               title="color"
@@ -123,6 +122,12 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                         </div>
                         <div className={`mt-6 flex w-full items-center gap-5`}>
                            <Counter count={count} setCount={setCount} />
+                           {data.promotions?.discountType === 'buyXgetY' &&
+                              data.promotions.isActive &&
+                              data.promotions?.buyX &&
+                              data.promotions?.getY &&
+                              count >= data.promotions?.buyX &&
+                              `(+${data.promotions?.getY} free)`}
                            <Btn
                               text={`ADD - $${data.price.toString().startsWith('discount') ? +data.price.toString().split('/')[2] * count : data.price * count}`}
                               ariaLabel="Add Btn"

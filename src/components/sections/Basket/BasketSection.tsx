@@ -4,11 +4,10 @@ import { useBasketStore } from '#stores/basketStore'
 import Table from '#ui/Table/Table'
 import { X } from 'lucide-react'
 import { calculateTotal, getPrice, getTotal } from '../../../functions/helpers'
-import Count from '#ui/Btn/Count'
+import Counter from '#ui/Counter/Counter'
 
 const BasketSection: React.FC = (): JSX.Element => {
    const { removeFromBasket, basket, updateBasketStore } = useBasketStore()
-   
 
    const tableHeader = ['Image', 'Name', 'Description', 'Count', 'Price', 'Total', '']
    const tableBody = basket.map((item) => {
@@ -17,13 +16,21 @@ const BasketSection: React.FC = (): JSX.Element => {
          name: `link*/products/${item._id}*${item.name}`,
          description: item.description,
          count: (
-            <Count
-               count={item.quantity}
-               setCount={(but) => {
-                  updateBasketStore(item._id, but - item.quantity, item.selectedAttributes)
-               }}
-               className='items-center justify-center'
-            />
+            <p className="flex flex-col gap-2">
+               <Counter
+                  count={item.quantity}
+                  setCount={(prev) => {
+                     updateBasketStore(item._id, prev - item.quantity, item.selectedAttributes)
+                  }}
+                  className="items-center justify-center"
+               />
+               {item.promotions?.discountType === 'buyXgetY' &&
+                  item.promotions.isActive &&
+                  item.promotions?.buyX &&
+                  item.promotions?.getY &&
+                  item.quantity >= item.promotions?.buyX &&
+                  `(+${item.promotions?.getY} free)`}
+            </p>
          ),
          price: `$${getPrice(item)}`,
          total: `$${getTotal(item)}`,

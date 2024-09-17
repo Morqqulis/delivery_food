@@ -4,7 +4,7 @@ interface CounterProps {
    className?: string
 }
 
-const Count: React.FC<CounterProps> = ({ count, setCount, className }): JSX.Element => {
+const Counter: React.FC<CounterProps> = ({ count, setCount, className }): JSX.Element => {
    return (
       <div className={`${className} flex gap-2 text-xl`}>
          <button
@@ -28,4 +28,4 @@ const Count: React.FC<CounterProps> = ({ count, setCount, className }): JSX.Elem
    )
 }
 
-export default Count
+export default Counter

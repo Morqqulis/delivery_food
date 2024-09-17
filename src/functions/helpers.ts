@@ -45,7 +45,9 @@ export function getPrice(product: IProduct | IBasket) {
    if (!product) return
 
    const price =
-      product.promotions?.discountType === 'percentage' && product.promotions.discountValue
+      product.promotions?.discountType === 'percentage' &&
+      product.promotions.isActive &&
+      product.promotions.discountValue
          ? `discount/${product.price}/${product.price - (product.price * product.promotions.discountValue) / 100}`
          : product.price
 
@@ -59,7 +61,9 @@ export function getTotal(product: IBasket) {
    const priceNumber = price && price.toString().startsWith('discount') ? price.toString().split('/')[2] : product.price
 
    const total =
-      product.promotions?.discountType === 'percentage' && product.promotions.discountValue
+      product.promotions?.discountType === 'percentage' &&
+      product.promotions.isActive &&
+      product.promotions.discountValue
          ? +priceNumber * product.quantity
          : product.price * product.quantity
 
