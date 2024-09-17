@@ -9,9 +9,8 @@ const FilteredSection: React.FC<{ setFilters: React.Dispatch<React.SetStateActio
    setFilters,
    filters,
 }): JSX.Element => {
-   
    return (
-      <div className="flex min-w-[25%] flex-col gap-5 border-r-[1px] p-2">
+      <div className="grid gap-2.5">
          <PriceSelect setFilters={setFilters} filters={filters} />
          <CategorySelect setFilters={setFilters} filters={filters} />
          <SizeSelect setFilters={setFilters} filters={filters} />

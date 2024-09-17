@@ -9,19 +9,8 @@ const CategorySelect: React.FC<{ setFilters: React.Dispatch<React.SetStateAction
    return (
       <Accordion type="single" collapsible>
          <AccordionItem value="All">
-            <AccordionTrigger>
-               Categories
-               <p className="ml-2 text-[13px]">
-                  {filters?.category?.child
-                     ? `/ ${filters.category.main} / ${filters.category.sub} / ${filters.category.child}`
-                     : filters?.category?.sub
-                       ? `/ ${filters.category.main} / ${filters.category.sub}`
-                       : filters?.category?.main
-                         ? `/ ${filters.category.main}`
-                         : ''}
-               </p>
-            </AccordionTrigger>
-            <AccordionContent className="px-3">
+            <AccordionTrigger className={`flex items-center`}>Categories</AccordionTrigger>
+            <AccordionContent className="pl-3">
                <Accordion type="single" collapsible>
                   <AccordionItem
                      value=""
@@ -39,8 +28,8 @@ const CategorySelect: React.FC<{ setFilters: React.Dispatch<React.SetStateAction
                         </AccordionTrigger>
                         <AccordionContent>
                            {Object.entries(subcategories).map(([sub, items]) => (
-                              <Accordion className={`px-3`} key={sub} type="single" collapsible>
-                                 <AccordionItem value={sub} className="">
+                              <Accordion className={`pl-3`} key={sub} type="single" collapsible>
+                                 <AccordionItem value={sub} className="border-dark-900">
                                     <AccordionTrigger
                                        onClick={() =>
                                           setFilters((prev) => ({
@@ -60,7 +49,7 @@ const CategorySelect: React.FC<{ setFilters: React.Dispatch<React.SetStateAction
                                                    category: { ...prev.category, child },
                                                 }))
                                              }
-                                             className={`cursor-pointer px-3 py-1`}
+                                             className={`cursor-pointer py-1 pl-3`}
                                              key={child}
                                           >
                                              {child}

@@ -55,9 +55,9 @@ const ProductsSlider = ({ title = 'all', product }: { title: string; product?: I
                   <CarouselContent className={``}>
                      {data?.map((product: IProduct) => (
                         <CarouselItem className={`basis-1/4`} key={product?._id?.toString()}>
-                           <GlowCapture>
+                           
                               <ProductCard product={product} />
-                           </GlowCapture>
+                           
                         </CarouselItem>
                      ))}
                   </CarouselContent>

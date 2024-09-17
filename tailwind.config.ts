@@ -7,7 +7,14 @@ const config = {
    theme: {
       container: {
          center: true,
-         padding: '2rem',
+         padding: '15px',
+         screens: {
+            // mxs: '400px',
+            // msm: '566.99px',
+            // mmd: '767.99px',
+            // mlg: '991.99px',
+            mpc: '1149.99px',
+         },
       },
       extend: {
          screens: {

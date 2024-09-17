@@ -1,5 +1,8 @@
 import { productsGetByFilters } from '#backend/actions/productActions'
 import { IFilter, IProduct } from '#types/index'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '#ui/breadcrumb'
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '#ui/carousel'
+import Loading from '#ui/Loading'
 import ProductCard from '#ui/Products/ProductCard'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -29,10 +32,22 @@ const ProductsSection: React.FC<{ filters: IFilter }> = ({ filters }): JSX.Eleme
    // }, [filters])
 
    return (
-      <div className="flex w-[73%] flex-wrap gap-5">
-         {isLoading && <div>Loading...</div>}
-         {isError && <div>Error</div>}
-         {data && data.map((product: IProduct) => <ProductCard key={product._id.toString()} product={product} />)}
+      <div className={`flex flex-col gap-4`}>
+         <p className="text-md ml-2">
+            Categories {' '}
+            {filters?.category?.child
+               ? `/ ${filters.category.main} / ${filters.category.sub} / ${filters.category.child}`
+               : filters?.category?.sub
+                 ? `/ ${filters.category.main} / ${filters.category.sub}`
+                 : filters?.category?.main
+                   ? `/ ${filters.category.main}`
+                   : ''}
+         </p>
+         <div className={`grid w-full grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-2.5`}>
+            {isLoading && <Loading />}
+            {isError && <div>Error</div>}
+            {data && data.map((product: IProduct) => <ProductCard key={product._id.toString()} product={product} />)}
+         </div>
       </div>
    )
 }
