@@ -132,3 +132,13 @@ export const percentageSchema = z.object({
    name: z.string().min(1, 'Name is required'),
    applicableProducts: z.array(z.string()),
 })
+
+
+export const buyXgetYSchema = z.object({
+   description: z.string().min(1, 'Description is required'),
+   name: z.string().min(1, 'Name is required'),
+   applicableProducts: z.array(z.string()),
+   buyX: z.string().min(1, 'Buy X is required'),
+   getY: z.string().min(1, 'Get Y is required'),
+
+})

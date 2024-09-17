@@ -3,42 +3,41 @@ import { promoCreate } from '#backend/actions/promotionActions'
 import { ISeller } from '#types/index'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { percentageSchema } from '#schemes/scheme'
+import { buyXgetYSchema } from '#schemes/scheme'
 import ProductsPopover from './ProductsPopover'
 import Btn from '#ui/Btn/Btn'
 import { Types } from 'mongoose'
 
-interface IPercentage {}
-
-const PercentageForm: React.FC<{ seller: ISeller }> = ({ seller }): JSX.Element => {
+const BuyXGetYForm: React.FC<{ seller: ISeller }> = ({ seller }): JSX.Element => {
    const { products } = seller
+
    const { register, handleSubmit, reset, setValue } = useForm({
-      resolver: zodResolver(percentageSchema),
+      resolver: zodResolver(buyXgetYSchema),
       defaultValues: {
-         discountValue: 0,
          description: '',
          name: '',
          applicableProducts: [],
+         buyX: 1,
+         getY: 1,
       },
    })
 
    const onSubmit = async (formValue: any) => {
-      const { discountValue, name, description, applicableProducts } = formValue
+      const { buyX, getY, name, description, applicableProducts } = formValue
       console.log(formValue)
-      if (discountValue <= 0 || discountValue > 100 || applicableProducts.length === 0) return
-
+      if (buyX <= 0 || getY <= 0 || applicableProducts.length === 0) return
       const promo = await promoCreate({
          seller: seller._id as Types.ObjectId,
          description,
          name,
-         discountType: 'percentage',
-         discountValue,
+         buyX,
+         getY,
+         discountType: 'buyXgetY',
          applicableProducts,
          startDate: new Date(),
          // endsDate: new Date(),
          isActive: true,
       })
-      console.log(promo)
       if (promo) {
          reset()
       }
@@ -57,9 +56,8 @@ const PercentageForm: React.FC<{ seller: ISeller }> = ({ seller }): JSX.Element 
          </div>
          <div className="flex gap-3">
             <label htmlFor="name" className="flex w-[100px] items-center">
-               Promotion Name{' '}
+               Promotion Name:
             </label>
-
             <input
                id="name"
                type="text"
@@ -68,25 +66,35 @@ const PercentageForm: React.FC<{ seller: ISeller }> = ({ seller }): JSX.Element 
             />
          </div>
          <div className="flex gap-3">
-            <label htmlFor="discountValue" className="flex w-[100px] items-center">
-               Percentage Value
+            <label htmlFor="buyX" className="flex w-[100px] items-center">
+               Bux X:
+            </label>
+            <input
+               id="buyX"
+               type="number"
+               {...register('buyX')}
+               className="w-[300px] rounded-lg p-2 text-black outline-none"
+            />
+         </div>
+         <div className="flex gap-3">
+            <label htmlFor="getY" className="flex w-[100px] items-center">
+               Get Y:
             </label>
 
             <input
-               id="discountValue"
+               id="getY"
                type="number"
-               {...register('discountValue')}
+               {...register('getY')}
                className="w-[300px] rounded-lg p-2 text-black outline-none"
             />
          </div>
          <div className="flex gap-3">
             <label htmlFor="description" className="flex w-[100px] items-center">
-               Promotion Description
+               Promotion Description:
             </label>
-
             <textarea
-               rows={4}
                id="description"
+               rows={4}
                {...register('description')}
                className="w-[300px] rounded-lg p-2 text-black outline-none"
             />
@@ -96,4 +104,4 @@ const PercentageForm: React.FC<{ seller: ISeller }> = ({ seller }): JSX.Element 
    )
 }
 
-export default PercentageForm
+export default BuyXGetYForm

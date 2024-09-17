@@ -15,6 +15,7 @@ export function processToken(str: string) {
       .filter((_, i) => i % 25 === 0)
       .join('')
 }
+
 export function dateFormatter(date: Date | undefined) {
    if (!date) return
 
@@ -43,11 +44,10 @@ export function averageRating(comments: IComment[] | undefined): number {
 export function getPrice(product: IProduct | IBasket) {
    if (!product) return
 
-   const price = product.promotions
-      ? product.promotions.discountType === 'percentage' && product.promotions.discountValue
+   const price =
+      product.promotions?.discountType === 'percentage' && product.promotions.discountValue
          ? `discount/${product.price}/${product.price - (product.price * product.promotions.discountValue) / 100}`
-         : 0
-      : product.price
+         : product.price
 
    return price
 }
@@ -58,11 +58,10 @@ export function getTotal(product: IBasket) {
 
    const priceNumber = price && price.toString().startsWith('discount') ? price.toString().split('/')[2] : product.price
 
-   const total = product.promotions
-      ? product.promotions.discountType === 'percentage' && product.promotions.discountValue
+   const total =
+      product.promotions?.discountType === 'percentage' && product.promotions.discountValue
          ? +priceNumber * product.quantity
-         : 0
-      : product.price * product.quantity
+         : product.price * product.quantity
 
    return total
 }

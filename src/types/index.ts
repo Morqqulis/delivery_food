@@ -259,8 +259,8 @@ export interface IPromotion {
    applicableProducts: Types.ObjectId[]
    // applicableCategories: string[]
    // minimumOrderAmount: number
-   // buyX?: number
-   // getY?: number
+   buyX?: number
+   getY?: number
    // discountedProduct?: Types.ObjectId
    // usageLimit?: number
    // usageCount?: number

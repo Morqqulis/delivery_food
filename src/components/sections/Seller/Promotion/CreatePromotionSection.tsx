@@ -4,6 +4,7 @@ import SelectPromotion from './SelectPromotion'
 import { IPromoType, ISeller } from '#types/index'
 import PercentageForm from './PromotionForms/PercentageForm'
 import { sellerGetByIdPopulateProducts, sellerGetProductsWithSelect } from '#backend/actions/sellerActions'
+import BuyXGetYForm from './PromotionForms/BuyXGetYForm'
 
 const CreatePromotionSection: React.FC = (): JSX.Element => {
    const [promoType, setPromoType] = useState<IPromoType>()
@@ -21,16 +22,18 @@ const CreatePromotionSection: React.FC = (): JSX.Element => {
    return (
       <div className="flex h-screen w-full justify-center bg-gray-900 p-14">
          <div className="flex h-full w-full flex-col gap-2">
-            <SelectPromotion setValue={setPromoType} />
-            {promoType && seller && promoType === 'percentage' ? (
-               <PercentageForm seller={seller} />
-            ) : promoType === 'fixed' ? (
-               <div>Fixed</div>
-            ) : promoType === 'buyXgetY' ? (
-               <div>Buy X get Y</div>
-            ) : (
-               promoType === 'freeShipping' && <div>Free Shipping</div>
-            )}
+            {seller ? <SelectPromotion setValue={setPromoType} /> : 'Loading...'}
+            {promoType &&
+               seller &&
+               (promoType === 'percentage' ? (
+                  <PercentageForm seller={seller} />
+               ) : promoType === 'buyXgetY' ? (
+                  <BuyXGetYForm seller={seller} />
+               ) : promoType === 'fixed' ? (
+                  <div>Fixed</div>
+               ) : (
+                  promoType === 'freeShipping' && <div>Free Shipping</div>
+               ))}
          </div>
       </div>
    )

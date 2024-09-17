@@ -9,7 +9,7 @@ const promoSchema = new Schema<IPromotion>(
       description: { type: String },
       name: { type: String, required: true },
 
-      discountType: { type: String, enum: ['percentage', 'fixed', 'buyXgetY', 'freeShipping'], required: true },
+      discountType: { type: String, enum: ['percentage', 'buyXgetY', 'fixed', 'freeShipping'], required: true },
 
       discountValue: {
          type: Number,
@@ -24,7 +24,20 @@ const promoSchema = new Schema<IPromotion>(
             ref: 'product',
          },
       ],
-
+      buyX: {
+         type: Number,
+         default: 0,
+         required: function () {
+            return this.discountType === 'buyXgetY'
+         },
+      },
+      getY: {
+         type: Number,
+         default: 0,
+         required: function () {
+            return this.discountType === 'buyXgetY'
+         },
+      },
       startDate: { type: Date, required: true },
       // endDate: { type: Date, required: true,
       //    index: { expires: '60s' }
@@ -51,8 +64,6 @@ const promoSchema = new Schema<IPromotion>(
 //          required: false, // Müəyyən məbləğdən yuxarı sifarişlər üçün promosiyalar
 //       },
 
-//       buyX: { type: Number, default: 0 }, // "2 al 1 ödə" promosiyası üçün alınan məhsul sayı
-//       getY: { type: Number, default: 0 }, // "2 al 1 ödə" promosiyası üçün ödənilən məhsul sayı
 //       discountedProduct: { type: Schema.Types.ObjectId, ref: 'product' }, // Endirimli ikinci məhsul (bir alana digəri endirimlə)
 
 //       startDate: { type: Date, required: true }, // Promosiyanın başlanğıc tarixi
