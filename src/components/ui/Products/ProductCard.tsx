@@ -1,6 +1,5 @@
 'use client'
 import { IProduct } from '#types/index'
-import Counter from '#ui/Counter'
 import LikeHeart from '#ui/LikeHeart'
 import { Glow } from '@codaworks/react-glow'
 import { Eye, Star } from 'lucide-react'
@@ -8,10 +7,23 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { averageRating, getPrice } from '../../../functions/helpers'
+import Counter from '#ui/Counter/Counter'
+import Btn from '#ui/Btn/Btn'
+import { useBasketStore } from '#stores/basketStore'
 
 const ProductCard = ({ product }: { product: IProduct }): JSX.Element => {
    const [count, setCount] = useState(1)
    const price = getPrice(product)
+
+   const addToBasket = useBasketStore((state) => state.addToBasket)
+   
+   const handleAddToBasket = async () => {
+      await addToBasket(product._id.toString(), count, {
+         color: product.attributes.colors[0],
+         size: product.attributes.size[0],
+      })
+      setCount(1)
+   }
 
    return (
       <Glow>
@@ -33,24 +45,28 @@ const ProductCard = ({ product }: { product: IProduct }): JSX.Element => {
                   <Star fill="yellow" size={18} />
                   {averageRating(product.comments)}
                </div>
-               <p className="text-3xl font-bold text-[#82F3FF]">$ {product.price}</p>
+
+               <p className="text-3xl font-bold text-[#82F3FF]">
+                  $&nbsp;
+                  {price?.toString().startsWith('discount') ? (
+                     <>
+                        <span className="text-2xl line-through">{price.toString().split('/')[1]}</span>&nbsp;
+                        <span className="text-3xl font-bold">{price.toString().split('/')[2]}</span>
+                     </>
+                  ) : (
+                     price
+                  )}
+               </p>
                <div className="flex items-center gap-2 text-[#38a0fa]">
                   <Eye size={18} />
                   {product.viewed}
                </div>
             </div>
 
-            <Counter
-               selectedAttributes={{
-                  color: product.attributes.colors[0],
-                  size: product.attributes.size[0],
-               }}
-               count={count}
-               setCount={setCount}
-               text="ADD"
-               id={product._id.toString()}
-               className="relative z-[1] w-full flex-col gap-5"
-            />
+            <div className={`relative z-[1] flex w-full flex-col items-center justify-between gap-5`}>
+               <Counter count={count} setCount={setCount} />
+               <Btn text={'ADD'} ariaLabel="Add Btn" className="w-full px-5 py-3" onClick={handleAddToBasket} />
+            </div>
             <LikeHeart id={product._id.toString()} />
          </Link>
       </Glow>

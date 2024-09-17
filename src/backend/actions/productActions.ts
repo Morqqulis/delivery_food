@@ -170,6 +170,7 @@ export const productsGetByFilters = async (filters: IFilter) => {
       await connectDB()
 
       const query = Object.entries({
+         promotions: filters.promotion ? { $ne: null } : undefined,
          'attributes.size': filters.size ? { $in: filters.size } : undefined,
          'attributes.colors': filters.color ? { $in: filters.color } : undefined,
          'attributes.category.main': filters.category?.main ? { $in: filters.category.main } : undefined,

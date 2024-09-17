@@ -26,11 +26,11 @@ export const userGetById = async (id: string) => {
    }
 }
 
-export const userGetByEmail = async (email: string) => {
+export const userGetByEmail = async (email: string, selected: string) => {
    if (!email) return
    try {
       await connectDB()
-      const user = await userModel.findOne({ email: email })
+      const user = await userModel.findOne({ email: email }, selected)
 
       return JSON.parse(JSON.stringify(user))
    } catch (err: Error | any) {

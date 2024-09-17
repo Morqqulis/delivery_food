@@ -48,6 +48,7 @@ export interface IFilter {
       sub: string
       child: string
    }
+   promotion: boolean
 }
 export interface IProduct {
    _id: Types.ObjectId
@@ -234,6 +235,7 @@ export interface IBasketStore {
    addToBasket: (productId: string, quantity: number, selectedAttributes: ISelectedAttributes) => Promise<void>
    removeFromBasket: (productId: string) => Promise<void>
    clearBasket: () => void
+   updateBasketStore: (productId: string, quantity: number, selectedAttributes: ISelectedAttributes) => void
 }
 
 export interface IDeliveryStore {

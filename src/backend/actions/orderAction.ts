@@ -88,6 +88,17 @@ export const orderGet = async (id: string) => {
    }
 }
 
+export const orderGetWithUserId = async (userId: string) => {
+   if (!userId) return
+   try {
+      await connectDB()
+      const order = await orderModel.find({ customer: userId }).populate('products.product')
+      return JSON.parse(JSON.stringify(order))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
+
 export const orderGetAll = async () => {
    try {
       await connectDB()

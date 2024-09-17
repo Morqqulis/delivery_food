@@ -41,7 +41,7 @@ export const authConfig: NextAuthOptions = {
          authorize: async (credentials) => {
             if (!credentials?.email) return null
 
-            const currentUser = await userGetByEmail(credentials.email)
+            const currentUser = await userGetByEmail(credentials.email, '')
 
             if (!currentUser || currentUser.password !== credentials.password) return null
 

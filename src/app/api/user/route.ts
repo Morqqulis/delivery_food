@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
 
    try {
       if (email && emailShema.safeParse(email).success) {
-         const user = await userGetByEmail(email)
+         const user = await userGetByEmail(email, '')
          if (user) {
             return NextResponse.json(user, { status: 200 })
          }
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
          return NextResponse.json({ error: 'Invalid email' }, { status: 400 })
       }
 
-      const user = await userGetByEmail(email)
+      const user = await userGetByEmail(email, '')
 
       if (user) {
          return NextResponse.json(user, { status: 200 })
@@ -65,7 +65,7 @@ export async function PUT(req: NextRequest) {
          return NextResponse.json({ error: 'Invalid email' }, { status: 400 })
       }
 
-      const dbUser = await userGetByEmail(email)
+      const dbUser = await userGetByEmail(email, '')
 
       if (dbUser) {
          const updatedUser = { email, ...rest }

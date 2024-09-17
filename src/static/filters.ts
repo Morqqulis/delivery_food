@@ -107,3 +107,305 @@ export const allCategories = {
       Fish: ['Aquariums', 'Fish Food', 'Water Conditioners', 'Filters'],
    },
 }
+
+
+export const allCategoriesFilters = {
+   Fashion: {
+      Men: {
+         Clothing: {
+            filters: ['size', 'color', 'brand', 'material', 'fit', 'pattern', 'sleeveLength', 'occasion', 'collarType'],
+         },
+         Shoes: {
+            filters: ['size', 'color', 'brand', 'heelType', 'toeShape', 'gender', 'material', 'occasion', 'soleMaterial', 'closureType'],
+         },
+         Watches: {
+            filters: ['brand', 'strapMaterial', 'waterResistance', 'caseMaterial', 'dialColor', 'movementType'],
+         },
+         Accessories: {
+            filters: ['brand', 'material', 'color', 'occasion', 'gender'],
+         },
+      },
+      Women: {
+         Clothing: {
+            filters: ['size', 'color', 'brand', 'material', 'fit', 'pattern', 'neckline', 'sleeveLength', 'occasion'],
+         },
+         Shoes: {
+            filters: ['size', 'color', 'brand', 'heelType', 'toeShape', 'material', 'occasion', 'soleMaterial', 'closureType'],
+         },
+         Jewelry: {
+            filters: ['type', 'metal', 'gemstone', 'brand', 'occasion', 'gender'],
+         },
+         Bags: {
+            filters: ['size', 'brand', 'material', 'style', 'color', 'closureType', 'strapType'],
+         },
+         Accessories: {
+            filters: ['brand', 'material', 'color', 'occasion', 'gender'],
+         },
+      },
+      Kids: {
+         Clothing: {
+            filters: ['size', 'color', 'brand', 'material', 'fit', 'pattern', 'sleeveLength', 'occasion'],
+         },
+         Shoes: {
+            filters: ['size', 'color', 'brand', 'material', 'soleMaterial', 'closureType', 'gender'],
+         },
+         Accessories: {
+            filters: ['brand', 'material', 'color', 'occasion', 'gender'],
+         },
+      },
+      Accessories: {
+         Sunglasses: {
+            filters: ['brand', 'frameMaterial', 'lensColor', 'lensMaterial', 'frameShape', 'polarized'],
+         },
+         Bags: {
+            filters: ['size', 'brand', 'material', 'style', 'color', 'closureType', 'strapType'],
+         },
+         Belts: {
+            filters: ['size', 'material', 'brand', 'buckleType', 'color'],
+         },
+         Hats: {
+            filters: ['size', 'material', 'brand', 'color', 'style', 'occasion'],
+         },
+         Jewelry: {
+            filters: ['type', 'metal', 'gemstone', 'brand', 'occasion', 'gender'],
+         },
+      },
+   },
+   Electronics: {
+      'Mobile Phones': {
+         Smartphones: {
+            filters: ['brand', 'screenSize', 'batteryCapacity', 'RAM', 'storage', 'cameraResolution', 'operatingSystem', 'color'],
+         },
+         'Basic Phones': {
+            filters: ['brand', 'screenSize', 'batteryCapacity', 'color'],
+         },
+         'Phone Accessories': {
+            filters: ['type', 'brand', 'compatibility', 'color'],
+         },
+      },
+      Laptops: {
+         Ultrabooks: {
+            filters: ['brand', 'screenSize', 'RAM', 'storage', 'processor', 'graphicsCard', 'operatingSystem', 'batteryLife'],
+         },
+         'Gaming Laptops': {
+            filters: ['brand', 'screenSize', 'RAM', 'storage', 'processor', 'graphicsCard', 'refreshRate', 'coolingSystem'],
+         },
+         'Business Laptops': {
+            filters: ['brand', 'screenSize', 'RAM', 'storage', 'processor', 'operatingSystem', 'batteryLife'],
+         },
+         'Laptop Accessories': {
+            filters: ['type', 'brand', 'compatibility', 'color'],
+         },
+      },
+      Cameras: {
+         DSLR: {
+            filters: ['brand', 'megapixels', 'sensorType', 'lensType', 'screenSize', 'batteryLife', 'ISORange', 'videoResolution'],
+         },
+         Mirrorless: {
+            filters: ['brand', 'megapixels', 'sensorType', 'lensType', 'screenSize', 'batteryLife', 'ISORange', 'videoResolution'],
+         },
+         'Point & Shoot': {
+            filters: ['brand', 'megapixels', 'sensorType', 'opticalZoom', 'screenSize', 'batteryLife'],
+         },
+         'Camera Accessories': {
+            filters: ['type', 'brand', 'compatibility'],
+         },
+      },
+      'Television & Audio': {
+         'LED TVs': {
+            filters: ['brand', 'screenSize', 'resolution', 'refreshRate', 'smartTV', 'HDMIports'],
+         },
+         'Smart TVs': {
+            filters: ['brand', 'screenSize', 'resolution', 'refreshRate', 'operatingSystem', 'HDMIports'],
+         },
+         'Sound Systems': {
+            filters: ['brand', 'channelConfiguration', 'connectivity', 'powerOutput', 'subwoofer'],
+         },
+         Headphones: {
+            filters: ['brand', 'type', 'connectivity', 'noiseCancellation', 'batteryLife', 'color'],
+         },
+      },
+      'Wearable Technology': {
+         Smartwatches: {
+            filters: ['brand', 'screenSize', 'batteryLife', 'connectivity', 'operatingSystem', 'color'],
+         },
+         'Fitness Trackers': {
+            filters: ['brand', 'batteryLife', 'waterResistance', 'heartRateMonitor', 'connectivity', 'color'],
+         },
+         'VR Headsets': {
+            filters: ['brand', 'resolution', 'fieldOfView', 'connectivity', 'compatibility'],
+         },
+      },
+      'Home Appliances': {
+         Refrigerators: {
+            filters: ['brand', 'capacity', 'energyRating', 'type', 'color'],
+         },
+         'Washing Machines': {
+            filters: ['brand', 'capacity', 'energyRating', 'loadType', 'color'],
+         },
+         Microwaves: {
+            filters: ['brand', 'capacity', 'type', 'color'],
+         },
+         'Vacuum Cleaners': {
+            filters: ['brand', 'type', 'capacity', 'powerOutput', 'weight'],
+         },
+      },
+   },
+   'Home & Kitchen': {
+      Furniture: {
+         'Living Room Furniture': {
+            filters: ['material', 'brand', 'color', 'size', 'style', 'weightCapacity'],
+         },
+         'Bedroom Furniture': {
+            filters: ['material', 'brand', 'color', 'size', 'style'],
+         },
+         'Office Furniture': {
+            filters: ['material', 'brand', 'color', 'size', 'adjustability'],
+         },
+      },
+      'Kitchen Appliances': {
+         filters: ['brand', 'capacity', 'powerOutput', 'color', 'material'],
+      },
+      'Home Decor': {
+         filters: ['type', 'material', 'color', 'style', 'size', 'brand'],
+      },
+      Bedding: {
+         filters: ['size', 'material', 'brand', 'color', 'threadCount'],
+      },
+      'Tools & DIY': {
+         filters: ['type', 'brand', 'powerSource', 'material'],
+      },
+   },
+   'Beauty & Personal Care': {
+      Skincare: {
+         filters: ['skinType', 'brand', 'ingredient', 'formulation', 'SPF', 'concerns'],
+      },
+      'Hair Care': {
+         filters: ['hairType', 'brand', 'ingredient', 'concerns', 'formulation'],
+      },
+      Fragrances: {
+         filters: ['brand', 'type', 'notes', 'size', 'gender'],
+      },
+      Makeup: {
+         filters: ['brand', 'shade', 'formulation', 'finish', 'skinType'],
+      },
+   },
+   'Sports & Outdoors': {
+      'Fitness Equipment': {
+         filters: ['type', 'brand', 'material', 'weight', 'capacity'],
+      },
+      'Outdoor Gear': {
+         filters: ['type', 'brand', 'material', 'size', 'weight', 'color'],
+      },
+      Sportswear: {
+         filters: ['size', 'brand', 'material', 'fit', 'gender', 'color'],
+      },
+      'Camping & Hiking': {
+         filters: ['type', 'brand', 'material', 'size', 'weight', 'weatherResistance'],
+      },
+   },
+   Books: {
+      Fiction: {
+         filters: ['genre', 'author', 'language', 'binding', 'publicationYear'],
+      },
+      'Non-fiction': {
+         filters: ['genre', 'author', 'language', 'binding', 'publicationYear'],
+      },
+      "Children's Books": {
+         filters: ['ageGroup', 'author', 'language', 'binding', 'illustrations'],
+      },
+      Textbooks: {
+         filters: ['subject', 'author', 'educationLevel', 'language'],
+      },
+      'E-books': {
+         filters: ['genre', 'author', 'language', 'format'],
+      },
+   },
+   'Toys & Games': {
+      'Action Figures': {
+         filters: ['type', 'brand', 'material', 'ageGroup', 'gender'],
+      },
+      Puzzles: {
+         filters: ['type', 'brand', 'pieces', 'material', 'ageGroup'],
+      },
+      'Board Games': {
+         filters: ['type', 'brand', 'players', 'ageGroup'],
+      },
+      Dolls: {
+         filters: ['type', 'brand', 'material', 'ageGroup', 'gender'],
+      },
+      'Outdoor Toys': {
+         filters: ['type', 'brand', 'material', 'ageGroup', 'weightCapacity'],
+      },
+   },
+   Automotive: {
+      'Car Accessories': {
+         filters: ['type', 'brand', 'material', 'compatibility'],
+      },
+      'Motorcycle Gear': {
+         filters: ['type', 'brand', 'material', 'size', 'gender'],
+      },
+      'Tools & Equipment': {
+         filters: ['type', 'brand', 'material', 'powerSource'],
+      },
+      'Car Care': {
+         filters: ['type', 'brand', 'size', 'formulation'],
+      },
+   },
+   Health: {
+      Supplements: {
+         filters: ['type', 'brand', 'ingredients', 'formulation', 'purpose'],
+      },
+      'Medical Equipment': {
+         filters: ['type', 'brand', 'compatibility', 'batteryLife'],
+      },
+      Fitness: {
+         filters: ['type', 'brand', 'material', 'capacity', 'powerOutput'],
+      },
+      'Personal Hygiene': {
+         filters: ['type', 'brand', 'ingredients', 'formulation'],
+      },
+   },
+   Jewelry: {
+      Rings: {
+         filters: ['material', 'gemstone', 'brand', 'size', 'occasion'],
+      },
+      Necklaces: {
+         filters: ['material', 'gemstone', 'brand', 'length', 'occasion'],
+      },
+      Bracelets: {
+         filters: ['material', 'gemstone', 'brand', 'size', 'occasion'],
+      },
+      Earrings: {
+         filters: ['material', 'gemstone', 'brand', 'style', 'occasion'],
+      },
+   },
+   'Office Supplies': {
+      'Office Electronics': {
+         filters: ['type', 'brand', 'compatibility', 'powerSource'],
+      },
+      Stationery: {
+         filters: ['type', 'brand', 'material', 'size', 'color'],
+      },
+      'Office Furniture': {
+         filters: ['material', 'brand', 'size', 'adjustability', 'color'],
+      },
+      'Paper Products': {
+         filters: ['type', 'brand', 'size', 'color'],
+      },
+   },
+   'Pet Supplies': {
+      Dogs: {
+         filters: ['type', 'brand', 'size', 'flavor', 'material'],
+      },
+      Cats: {
+         filters: ['type', 'brand', 'size', 'flavor', 'material'],
+      },
+      Birds: {
+         filters: ['type', 'brand', 'size', 'material'],
+      },
+      Fish: {
+         filters: ['type', 'brand', 'size', 'material'],
+      },
+   },
+};
