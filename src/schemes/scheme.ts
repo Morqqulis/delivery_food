@@ -121,3 +121,14 @@ export const addCommentSchema = z.object({
       })
       .min(5, 'Rəyinizi  daxil edin'),
 })
+
+export const percentageSchema = z.object({
+   discountValue: z
+      .string({
+         required_error: 'Discount value is required',
+      })
+      .min(1, 'Discount value must be greater than 0'),
+   description: z.string().min(1, 'Description is required'),
+   name: z.string().min(1, 'Name is required'),
+   applicableProducts: z.array(z.string()),
+})

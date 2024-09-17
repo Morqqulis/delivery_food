@@ -23,11 +23,11 @@ const promoSchema = new Schema<IPromotion>(
             type: Schema.Types.ObjectId,
             ref: 'product',
          },
-      ], 
+      ],
 
       startDate: { type: Date, required: true },
-      // endDate: { type: Date, required: true, 
-      //    index: { expires: '60s' } 
+      // endDate: { type: Date, required: true,
+      //    index: { expires: '60s' }
       // },
       isActive: { type: Boolean, default: true },
    },
