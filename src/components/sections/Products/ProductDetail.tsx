@@ -18,6 +18,7 @@ import Counter from '#ui/Counter/Counter'
 import Btn from '#ui/Btn/Btn'
 import { useBasketStore } from '#stores/basketStore'
 import SliderContainer from './SliderContainer'
+import PromotionSection from './PromotionSection'
 
 const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
    const [count, setCount] = useState(1)
@@ -45,7 +46,7 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
       refetchOnWindowFocus: false,
       refetchOnMount: true,
    })
-
+   console.log(data)
    const addToBasket = useBasketStore((state) => state.addToBasket)
    const handleAddToBasket = async () => {
       await addToBasket(id, count, selectedAttributes)
@@ -97,6 +98,8 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                               data.price
                            )}
                         </div>
+                        {data.promotions && <PromotionSection promotions={data.promotions} />}
+                        
                         <div className="flex gap-2 border-b-[0.3px] border-gray-400 py-4">
                            <Options
                               title="color"
