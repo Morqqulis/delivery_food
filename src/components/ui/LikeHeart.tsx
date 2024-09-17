@@ -19,7 +19,7 @@ const LikeHeart: React.FC<{ id: string }> = ({ id }): JSX.Element => {
 
    return (
       <Heart
-         className={`cursor-pointer ${like ? 'fill-red-500 text-red-500' : 'fill-transparent'} absolute right-2 top-2`}
+         className={`cursor-pointer ${like ? 'fill-red-500 text-red-500' : 'fill-transparent'}`}
          onClick={handleClick}
       />
    )
