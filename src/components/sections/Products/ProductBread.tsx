@@ -1,4 +1,4 @@
-import { IProduct } from '#types/index'
+import { IFilter, IProduct } from '#types/index'
 import {
    Breadcrumb,
    BreadcrumbItem,
@@ -10,7 +10,13 @@ import {
 
 interface IProductBread {}
 
-const ProductBread: React.FC<{ data: IProduct & { ordersCount: number } }> = ({ data }): JSX.Element => {
+const ProductBread: React.FC<{
+   category: {
+      main: string
+      sub: string
+      child: string
+   }
+}> = ({ category }): JSX.Element => {
    return (
       <Breadcrumb>
          <BreadcrumbList>
@@ -25,13 +31,42 @@ const ProductBread: React.FC<{ data: IProduct & { ordersCount: number } }> = ({ 
                   Categories
                </BreadcrumbLink>
             </BreadcrumbItem>
-
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem className="text-white">{data?.attributes.category.main}</BreadcrumbItem>
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem className="text-white">{data?.attributes?.category.sub}</BreadcrumbItem>
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem className="text-white">{data?.attributes.category.child}</BreadcrumbItem>
+            {category?.main && (
+               <>
+                  <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                  <BreadcrumbItem className="text-white">
+                     <BreadcrumbLink className="hover:text-blue-700" href={`/filtered/${category.main}`}>
+                        {category.main}
+                     </BreadcrumbLink>
+                  </BreadcrumbItem>
+               </>
+            )}
+            {category?.main && category?.sub && (
+               <>
+                  <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                  <BreadcrumbItem className="text-white">
+                     <BreadcrumbLink
+                        className="hover:text-blue-700"
+                        href={`/filtered/${category.main}-${category.sub}`}
+                     >
+                        {category.sub}
+                     </BreadcrumbLink>
+                  </BreadcrumbItem>
+               </>
+            )}
+            {category?.main && category?.sub && category?.child && (
+               <>
+                  <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                  <BreadcrumbItem className="text-white">
+                     <BreadcrumbLink
+                        className="hover:text-blue-700"
+                        href={`/filtered/${category.main}-${category.sub}-${category.child}`}
+                     >
+                        {category.child}
+                     </BreadcrumbLink>
+                  </BreadcrumbItem>
+               </>
+            )}
          </BreadcrumbList>
       </Breadcrumb>
    )

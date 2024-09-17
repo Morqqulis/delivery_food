@@ -1,16 +1,17 @@
+'use client'
+
 import DefaultLayout from '#layouts/DefaultLayout'
 import FilteredPageSection from '#sections/Products/Filtered/FilteredPageSection'
-import { IParamsID } from '#types/index'
-import { NextPage } from 'next'
-const FilterPage: NextPage = (): JSX.Element => {
 
+
+const FilteredCategoryPage = ({ params: { filter } }: { params: { filter: string } }) => {
    return (
       <DefaultLayout full={true}>
          <main>
-            <FilteredPageSection  />
+            <FilteredPageSection title={filter} />
          </main>
       </DefaultLayout>
    )
 }
 
-export default FilterPage
+export default FilteredCategoryPage

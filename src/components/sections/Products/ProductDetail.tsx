@@ -58,7 +58,7 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
             {isError && <p>Error</p>}
             {data && (
                <>
-                  <ProductBread data={data} />
+                  <ProductBread category={data.attributes.category} />
                   <div className="flex w-full items-center gap-3 p-5">
                      <div className="relative h-[500px] w-[50%] p-2">
                         <Image

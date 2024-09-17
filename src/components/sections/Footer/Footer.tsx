@@ -17,7 +17,7 @@ const Footer = () => {
                   <Link href={'/delivery'} className={`leading-[1.6] text-light-400`}>
                      Delivery
                   </Link>
-                  <Link href={'/filtered'} className={`leading-[1.6] text-light-400`}>
+                  <Link href={'/filtered/Fashion'} className={`leading-[1.6] text-light-400`}>
                      filter page
                   </Link>
                   <Link href={'/test-page'} className={`leading-[1.6] text-light-400`}>
