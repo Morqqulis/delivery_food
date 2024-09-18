@@ -25,7 +25,7 @@ const ProductsSection: React.FC<{ filters: IFilter }> = ({ filters }): JSX.Eleme
          <div className="text-md ml-2">
             <ProductBread category={filters.category} />
          </div>
-         <div className={`grid w-full grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-2.5`}>
+         <div className={`grid w-full grid-cols-[repeat(auto-fit,minmax(240px,400px))] gap-2.5`}>
             {isLoading && <Loading />}
             {isError && <div>Error</div>}
             {data && data.map((product: IProduct) => <ProductCard key={product._id.toString()} product={product} />)}
