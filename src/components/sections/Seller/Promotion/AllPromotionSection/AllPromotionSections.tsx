@@ -54,52 +54,17 @@ const AllPromotionSections: React.FC = (): JSX.Element => {
                      <PromotionItem title="Name" value={selected?.name} />
                      <PromotionItem title="Description" value={selected?.description} />
                      <PromotionItem title="Type" value={selected?.discountType} />
-                     {/* <PromotionItem title="Products" value={selected?.applicableProducts} /> */}
                      <PromotionItem title="Active" value={selected?.isActive ? 'Active' : 'Passiv'} />
-                     {/* <PromotionItem title="Start Date" value={dateFormatter(selected?.startDate).toString()} /> */}
-                     {selected?.discountValue && selected?.discountValue > 0 ? (
-                        <div className="flex gap-3">
-                           <p className="flex w-[100px] items-center">Value: </p>
-
-                           <p> {selected?.discountValue}</p>
-                        </div>
-                     ) : (
-                        ''
-                     )}
-                     {selected?.minimumOrderCount && selected?.minimumOrderCount > 0 ? (
-                        <div className="flex gap-3">
-                           <p className="flex w-[100px] items-center">Minimum Count: </p>
-
-                           <p> {selected?.minimumOrderCount}</p>
-                        </div>
-                     ) : (
-                        ''
-                     )}
-                     {selected?.getY && selected?.getY > 0 ? (
-                        <div className="flex gap-3">
-                           <p className="flex w-[100px] items-center">Get Y: </p>
-                           <p> {selected?.getY}</p>
-                        </div>
-                     ) : (
-                        ''
-                     )}
-                     {selected?.buyX && selected?.buyX > 0 ? (
-                        <div className="flex gap-3">
-                           <p className="flex w-[100px] items-center">Buy X: </p>
-                           <p> {selected?.buyX}</p>
-                        </div>
-                     ) : (
-                        ''
-                     )}
-                     {selected?.applicableProducts?.length > 0 ? (
-                        <div className="flex gap-3">
-                           <p className="flex w-[100px] items-center">Products: </p>
-                           {/* @ts-ignore */}
-                           <p> {selected?.applicableProducts.map((product) => product.name).join(', ')}</p>
-                        </div>
-                     ) : (
-                        ''
-                     )}
+                     <PromotionItem title="Start Date" value={dateFormatter(selected?.startDate)} />
+                     <PromotionItem title="Value" value={selected?.discountValue} />
+                     <PromotionItem title="Minimum Count" value={selected?.minimumOrderCount} />
+                     <PromotionItem title="Get Y" value={selected?.getY} />
+                     <PromotionItem title="Buy X" value={selected?.buyX} />
+                     <PromotionItem
+                        title="Products"
+                        // @ts-ignore
+                        value={selected?.applicableProducts.map((product) => product.name).join(', ')}
+                     />
                   </div>
                   <div className="flex w-full gap-2">
                      <Btn
@@ -112,12 +77,6 @@ const AllPromotionSections: React.FC = (): JSX.Element => {
                </div>
             )}
 
-            {/* <p>{selected?.applicableProducts}</p>
-            <p>{selected?.applicableCategories}</p>
-            <p>{selected?.endDate}</p>
-            <p>{selected?.createdAt}</p>
-            <p>{selected?.updatedAt}</p>
-            <p>{selected?._id}</p> */}
          </div>
       </div>
    )
