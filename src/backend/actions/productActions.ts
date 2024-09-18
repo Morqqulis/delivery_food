@@ -10,9 +10,9 @@ import { Types } from 'mongoose'
 export const productGetAll = async () => {
    try {
       await connectDB()
-      const products = await productModel.find().populate({ path: 'promotions', model: promoModel })
+      const products = await productModel.find({ isActive: true }).populate({ path: 'promotions', model: promoModel })
 
-      return await JSON.parse(JSON.stringify(products))
+      return  JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -21,7 +21,7 @@ export const productGetAllPopulate = async () => {
    try {
       await connectDB()
       const products = await productModel.find().populate({ path: 'seller', model: sellerModel })
-      return await JSON.parse(JSON.stringify(products))
+      return  JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -40,7 +40,7 @@ export const productGetById = async (id: string, select?: string) => {
    if (!id) return
    try {
       await connectDB()
-      const product = await productModel.findOne({ _id: id }, select)
+      const product = await productModel.findOne({ isActive: true }, select)
       return JSON.parse(JSON.stringify(product))
    } catch (err: Error | any) {
       throw new Error(err)

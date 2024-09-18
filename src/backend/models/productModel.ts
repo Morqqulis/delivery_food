@@ -32,12 +32,16 @@ const productSchema: Schema = new Schema<IProduct>(
             },
          },
       ],
-      promotions: 
-         {
-            type: Schema.Types.ObjectId,
-            ref: 'promotion',
-         },
-      
+      isActive: {
+         type: Boolean,
+         required: false,
+         default: true,
+      },
+      promotions: {
+         type: Schema.Types.ObjectId,
+         ref: 'promotion',
+      },
+
       attributes: {
          category: {
             main: {

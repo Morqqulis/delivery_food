@@ -60,6 +60,7 @@ export interface IProduct {
    promotions: IPromotion
    seller: ISeller
    image: string
+   isActive?: boolean
    attributes: {
       category: {
          main: string

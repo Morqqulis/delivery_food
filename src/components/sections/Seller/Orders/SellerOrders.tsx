@@ -8,6 +8,8 @@ import { orderUpdateStatus } from '#backend/actions/orderAction'
 import { hoursSince } from '../../../../functions/helpers'
 import Table from '#ui/Table/Table'
 import { Types } from 'mongoose'
+import { productGetAll, productGetById, productUpdateById } from '#backend/actions/productActions'
+import productModel from '#backend/models/productModel'
 
 const SellerOrders: React.FC = () => {
    const [orders, setOrders] = useState<IOrder[]>([])
