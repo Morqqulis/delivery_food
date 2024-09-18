@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react'
 import SelectPromotion from './SelectPromotion'
 import { IPromoType, ISeller } from '#types/index'
 import PercentageForm from './PromotionForms/PercentageForm'
-import { sellerGetByIdPopulateProducts, sellerGetProductsWithSelect } from '#backend/actions/sellerActions'
+import { sellerGetByIdPopulateProducts } from '#backend/actions/sellerActions'
 import BuyXGetYForm from './PromotionForms/BuyXGetYForm'
+import CountAndPercentageForm from './PromotionForms/CountAndPercent'
 
 const CreatePromotionSection: React.FC = (): JSX.Element => {
    const [promoType, setPromoType] = useState<IPromoType>()
@@ -20,9 +21,11 @@ const CreatePromotionSection: React.FC = (): JSX.Element => {
    }, [])
 
    return (
-      <div className="flex h-screen w-full justify-center bg-gray-900 p-14">
-         <div className="flex h-full w-full flex-col gap-2">
-            {seller ? <SelectPromotion setValue={setPromoType} /> : 'Loading...'}
+      <div className="flex h-full w-full gap-2 p-14">
+         <div className="w-[35%]">
+            {seller ? <SelectPromotion setValue={setPromoType} placeholder="Select promotion type" /> : 'Loading...'}
+         </div>
+         <div className="w-[60%]">
             {promoType &&
                seller &&
                (promoType === 'percentage' ? (
@@ -31,6 +34,8 @@ const CreatePromotionSection: React.FC = (): JSX.Element => {
                   <BuyXGetYForm seller={seller} />
                ) : promoType === 'fixed' ? (
                   <div>Fixed</div>
+               ) : promoType === 'count&percentage' ? (
+                  <CountAndPercentageForm seller={seller} />
                ) : (
                   promoType === 'freeShipping' && <div>Free Shipping</div>
                ))}

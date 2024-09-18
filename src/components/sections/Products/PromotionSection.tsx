@@ -11,7 +11,7 @@ const PromotionSection: React.FC<{ promotions: IPromotion }> = ({ promotions }):
                   Buy {promotions.buyX} for free {promotions.getY} on this product!
                </p>
             )}
-            {/* {promotions.discountType === 'fixed' && <p>Get ${promotions?.discountValue} off on this product!</p>} */}
+            {promotions.discountType === 'count&percentage' && <p>Buy More, Save More!</p>}
             <p>{promotions.description}</p>
          </div>
       </div>

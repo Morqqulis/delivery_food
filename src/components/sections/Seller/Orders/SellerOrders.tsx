@@ -61,7 +61,6 @@ const SellerOrders: React.FC = () => {
                         <Table
                            headers={['Product Image', 'Product Name', 'Price', 'Quantity', 'Attributes']}
                            body={order.products.map((product, index) => {
-                              console.log(product)
                               return {
                                  image: `/qazan.svg`,
                                  name: product.product.name,

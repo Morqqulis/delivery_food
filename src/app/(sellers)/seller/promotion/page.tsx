@@ -1,11 +1,11 @@
 import DefaultLayout from '#layouts/DefaultLayout'
-import CreatePromotionSection from '#sections/Seller/Promotion/CreatePromotionSection'
+import PromotionSection from '#sections/Seller/Promotion/PromotionSection'
 
 const CreatePromotion: React.FC = (): JSX.Element => {
    return (
       <DefaultLayout full={false} aside>
          <main>
-            <CreatePromotionSection />
+            <PromotionSection />
          </main>
       </DefaultLayout>
    )

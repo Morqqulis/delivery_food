@@ -9,12 +9,22 @@ const promoSchema = new Schema<IPromotion>(
       description: { type: String },
       name: { type: String, required: true },
 
-      discountType: { type: String, enum: ['percentage', 'buyXgetY', 'fixed', 'freeShipping'], required: true },
+      discountType: {
+         type: String,
+         enum: ['percentage', 'buyXgetY', 'count&percentage', 'fixed', 'freeShipping'],
+         required: true,
+      },
 
       discountValue: {
          type: Number,
          required: function () {
-            return this.discountType === 'percentage' || this.discountType === 'fixed'
+            return this.discountType === 'percentage' || this.discountType === 'count&percentage'
+         },
+      },
+      minimumOrderCount: {
+         type: Number,
+         required: function () {
+            return this.discountType === 'count&percentage'
          },
       },
 

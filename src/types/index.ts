@@ -248,24 +248,20 @@ export interface ISessionStore {
    session: any
    checkSession: () => void
 }
-export type IPromoType = 'percentage' | 'fixed' | 'buyXgetY' | 'freeShipping';
+export type IPromoType = 'percentage' | 'fixed' | 'buyXgetY' | 'freeShipping' | 'count&percentage'
 
 export interface IPromotion {
+   _id?: Types.ObjectId
    seller: Types.ObjectId
    description: string
    name: string
    discountType: string
    discountValue?: number
    applicableProducts: Types.ObjectId[]
-   // applicableCategories: string[]
-   // minimumOrderAmount: number
+   minimumOrderCount?: number
    buyX?: number
    getY?: number
-   // discountedProduct?: Types.ObjectId
-   // usageLimit?: number
-   // usageCount?: number
    startDate: Date
-   // endDate: Date
    isActive?: boolean
 }
 

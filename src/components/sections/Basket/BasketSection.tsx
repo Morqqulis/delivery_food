@@ -16,7 +16,7 @@ const BasketSection: React.FC = (): JSX.Element => {
          name: `link*/products/${item._id}*${item.name}`,
          description: item.description,
          count: (
-            <p className="flex flex-col gap-2">
+            <span className="flex flex-col gap-2">
                <Counter
                   count={item.quantity}
                   setCount={(prev) => {
@@ -24,13 +24,19 @@ const BasketSection: React.FC = (): JSX.Element => {
                   }}
                   className="items-center justify-center"
                />
-               {item.promotions?.discountType === 'buyXgetY' &&
-                  item.promotions.isActive &&
-                  item.promotions?.buyX &&
-                  item.promotions?.getY &&
-                  item.quantity >= item.promotions?.buyX &&
-                  `(+${item.promotions?.getY} free)`}
-            </p>
+               {item?.promotions?.isActive
+                  ? item.promotions?.discountType === 'buyXgetY' &&
+                    item.promotions?.buyX &&
+                    item.promotions?.getY &&
+                    item.quantity >= item.promotions?.buyX
+                     ? `(+${item.promotions?.getY} free)`
+                     : item.promotions?.discountType === 'count&percentage' &&
+                       item.promotions.discountValue &&
+                       item.promotions.minimumOrderCount &&
+                       item.promotions.minimumOrderCount <= item.quantity &&
+                       `(-${item.promotions?.discountValue}% discount)`
+                  : ''}
+            </span>
          ),
          price: `$${getPrice(item)}`,
          total: `$${getTotal(item)}`,

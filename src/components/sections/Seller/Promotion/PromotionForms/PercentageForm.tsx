@@ -24,7 +24,6 @@ const PercentageForm: React.FC<{ seller: ISeller }> = ({ seller }): JSX.Element 
 
    const onSubmit = async (formValue: any) => {
       const { discountValue, name, description, applicableProducts } = formValue
-      console.log(formValue)
       if (discountValue <= 0 || discountValue > 100 || applicableProducts.length === 0) return
 
       const promo = await promoCreate({
@@ -38,7 +37,6 @@ const PercentageForm: React.FC<{ seller: ISeller }> = ({ seller }): JSX.Element 
          // endsDate: new Date(),
          isActive: true,
       })
-      console.log(promo)
       if (promo) {
          reset()
       }

@@ -51,6 +51,7 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
       await addToBasket(id, count, selectedAttributes)
       setCount(1)
    }
+
    return (
       <section className={`py-20`}>
          <div className="container">
@@ -99,18 +100,26 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                         </div>
                         {data.promotions && <PromotionSection promotions={data.promotions} />}
 
-                        <div className="flex gap-2 border-b-[0.3px] border-gray-400 py-4">
-                           <Options
-                              title="color"
-                              options={data.attributes.colors}
-                              setSelectedAttributes={setSelectedAttributes}
-                           />
-                           <Options
-                              title="size"
-                              options={data.attributes.size}
-                              setSelectedAttributes={setSelectedAttributes}
-                           />
-                        </div>
+                        {Object.entries(data?.attributes || {}).filter(
+                           ([key, value]) => key !== 'category' && Array.isArray(value) && value?.length > 0,
+                        ).length > 0 && (
+                           <div className="flex gap-2 border-b-[0.3px] border-gray-400 py-4">
+                              {data?.attributes?.colors?.length && (
+                                 <Options
+                                    title="color"
+                                    options={data.attributes.colors}
+                                    setSelectedAttributes={setSelectedAttributes}
+                                 />
+                              )}
+                              {data?.attributes?.size?.length && (
+                                 <Options
+                                    title="size"
+                                    options={data.attributes.size}
+                                    setSelectedAttributes={setSelectedAttributes}
+                                 />
+                              )}
+                           </div>
+                        )}
 
                         <div className="flex items-center gap-9 border-b-[0.3px] border-gray-400 py-2">
                            <p className="text-[10px]">Sold:&nbsp;{data.ordersCount}</p>
