@@ -1,26 +1,31 @@
 'use client'
-import { IOrder, IOrderItem } from '#types/index'
+import { IOrder, IOrderItem, IOrderItemProducts, IProduct } from '#types/index'
 import DeliveryAside from '../Aside/DeliveryAside'
 import Table from '#ui/Table/Table'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '#ui/dialog'
 import { Check } from 'lucide-react'
 import { useDeliveryStore } from '#stores/deliveryStore'
 import Btn from '#ui/Btn/Btn'
+import { pointGetAllOrders } from '#backend/actions/pointActions'
+import { useEffect } from 'react'
+import { Types } from 'mongoose'
 
 const HomeDelivery: React.FC = (): JSX.Element => {
    const { point, updateProductAcceptStatus, updateOrderStatus } = useDeliveryStore()
-   const body = point?.orders?.map((item: IOrder) => {
+   
+   const body = point?.orders?.map((item: IOrder & { products: { accepted: boolean }[] }) => {
       const { adress, createdAt, products, customer, deliveryNote, deliveryType, status, _id } = item
-      const dialogBody = products.map((product: IOrderItem) => {
+      const dialogBody = products.map((prod: any) => {
+         const { product, quantity, accepted } = prod
          return {
-            name: product.product.name,
-            count: product.quantity,
-            accept: product.accepted ? (
+            name: product.name,
+            count: quantity,
+            accept: accepted ? (
                'Accepted'
             ) : (
                <Check
                   className="cursor-pointer text-green-700"
-                  onClick={() => updateProductAcceptStatus(_id, product.product._id)}
+                  onClick={() => updateProductAcceptStatus(_id, product._id)}
                />
             ),
          }
@@ -38,9 +43,13 @@ const HomeDelivery: React.FC = (): JSX.Element => {
          customer: customer?.name,
          action: (
             <Dialog>
-               <DialogTrigger className="font-bold text-green-700">
-                  {acceptedProducts ? 'Check order status' : 'Check product status'}
-               </DialogTrigger>
+               {status !== 'accepted' ? (
+                  <DialogTrigger className="font-bold text-green-700">
+                     {acceptedProducts ? 'Check order status' : 'Check product status'}
+                  </DialogTrigger>
+               ) : (
+                  'Order Accepted'
+               )}
                <DialogContent className="min-w-[80%] bg-gray-800">
                   <DialogHeader>
                      <DialogTitle></DialogTitle>

@@ -1,9 +1,11 @@
 'use server'
 
 import { connectDB } from '#backend/DB'
+import orderModel from '#backend/models/orderModel'
 import pointModel from '#backend/models/pointModel'
 import product from '#backend/models/productModel'
 import { IOrder, IOrderItem, IPoint } from '#types/index'
+import { Types } from 'mongoose'
 
 export const pointCreate = async (data: IPoint) => {
    try {
@@ -24,33 +26,111 @@ export const pointGetOne = async (id: string, select: string) => {
       throw new Error(err)
    }
 }
-export const pointGetByIdWithPopulate = async (id: string) => {
-   if (!id) return
+
+export const pointGetAllOrders = async (pointId: string) => {
+   if (!pointId) return
    try {
       await connectDB()
-      const point = JSON.parse(
-         JSON.stringify(
-            await pointModel.findOne({ _id: id }).populate({
-               path: 'orders',
-               populate: {
-                  path: 'products.product customer',
+
+      const point = await pointModel.findById(pointId)
+      if (!point) return
+
+      const orders = await orderModel.aggregate([
+         {
+            $addFields: {
+               sellers: {
+                  $filter: {
+                     input: '$sellers',
+                     as: 'seller',
+                     cond: { $eq: ['$$seller.point', new Types.ObjectId(pointId)] },
+                  },
                },
-            }),
-         ),
-      )
+            },
+         },
 
-      // yuxarıda pointə uyğun orderi götürürük aşağıda isə orderə aid olan  məhsulları filter edib pointə aid olan məhsulları qaytarırıq. amma mongoose methodu ilə serverdə bu işi görən funksiya yazmalıyıq.
+         {
+            $match: {
+               'sellers.0': { $exists: true },
+            },
+         },
 
-      const filteredPointData = {
-         ...point,
-         orders: point.orders.map((order: IOrder) => ({
-            ...order,
-            products: order.products.filter((product) => product.point.toString() === id.toString()),
-         })),
-      }
+         {
+            $addFields: {
+               products: {
+                  $filter: {
+                     input: '$products',
+                     as: 'product',
+                     cond: {
+                        $eq: ['$$product.point', new Types.ObjectId(pointId)],
+                     },
+                  },
+               },
+            },
+         },
+         {
+            $match: {
+               'products.0': { $exists: true },
+            },
+         },
+         {
+            $lookup: {
+               from: 'products', 
+               localField: 'products.product',
+               foreignField: '_id',
+               as: 'productDetails',
+            },
+         },         
+         {
+            $addFields: {
+               products: {
+                  $map: {
+                     input: '$products',
+                     as: 'p',
+                     in: {
+                        product: {
+                           $arrayElemAt: [
+                              {
+                                 $filter: {
+                                    input: '$productDetails',
+                                    as: 'detail',
+                                    cond: { $eq: ['$$detail._id', '$$p.product'] },
+                                 },
+                              },
+                              0,
+                           ],
+                        },
 
-      return filteredPointData
-   } catch (err: Error | any) {
-      throw new Error(err)
+                        quantity: '$$p.quantity',
+                        price: '$$p.price',
+                        promotions: '$$p.promotions',
+                        accepted: '$$p.accepted',
+                        point: '$$p.point',
+                        selectedAttributes: '$$p.selectedAttributes',
+                     },
+                  },
+               },
+            },
+         },
+
+         {
+            $group: {
+               _id: '$_id',
+               adress: { $first: '$adress' },
+               deliveryNote: { $first: '$deliveryNote' },
+               deliveryType: { $first: '$deliveryType' },
+               createdAt: { $first: '$createdAt' },
+               updatedAt: { $first: '$updatedAt' },
+               customer: { $first: '$customerDetails' },
+               sellerNote: { $first: '$sellerNote' },
+               status: { $first: '$status' },
+               sellers: { $first: '$sellers' },
+               products: { $first: '$products' },
+            },
+         },
+      ])
+
+      return { ...JSON.parse(JSON.stringify(point)), orders: JSON.parse(JSON.stringify(orders)) }
+   } catch (error: any) {
+      throw new Error('Error retrieving orders by point: ' + error.message)
    }
 }

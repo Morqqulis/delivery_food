@@ -1,10 +1,11 @@
-import { IOrder } from '#types/index'
+import { IOrder, IOrderItem } from '#types/index'
 import { model, models, Schema, Types } from 'mongoose'
 import product from './productModel'
 import user from './userModel'
 import point from './pointModel'
-
-const orderSchema = new Schema<IOrder>(
+import seller from './sellerModel'
+import promotion from './promotionModel'
+const orderSchema = new Schema<IOrder & { products: IOrderItem }>(
    {
       _id: {
          type: Schema.Types.ObjectId,
@@ -36,6 +37,28 @@ const orderSchema = new Schema<IOrder>(
          type: String,
          required: true,
       },
+      sellers: [
+         {
+            seller: {
+               type: Schema.Types.ObjectId,
+               ref: 'seller',
+               required: true,
+            },
+            point: {
+               type: Schema.Types.ObjectId,
+               ref: 'point',
+               required: true,
+            },
+            amount: {
+               type: Number,
+               required: true,
+            },
+            payment: {
+               type: Boolean,
+               default: false,
+            },
+         },
+      ],
       products: [
          {
             product: {
@@ -60,6 +83,14 @@ const orderSchema = new Schema<IOrder>(
                color: {
                   type: String,
                },
+            },
+            price: {
+               type: Number,
+               required: true,
+            },
+            promotions: {
+               type: Schema.Types.ObjectId,
+               ref: 'promotion',
             },
 
             point: {

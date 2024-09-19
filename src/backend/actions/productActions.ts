@@ -12,7 +12,7 @@ export const productGetAll = async () => {
       await connectDB()
       const products = await productModel.find({ isActive: true }).populate({ path: 'promotions', model: promoModel })
 
-      return  JSON.parse(JSON.stringify(products))
+      return JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -21,7 +21,7 @@ export const productGetAllPopulate = async () => {
    try {
       await connectDB()
       const products = await productModel.find().populate({ path: 'seller', model: sellerModel })
-      return  JSON.parse(JSON.stringify(products))
+      return JSON.parse(JSON.stringify(products))
    } catch (err: Error | any) {
       throw new Error(err)
    }
@@ -84,6 +84,7 @@ export const productsGetByIds = async (items: BasketItem[]) => {
       const products = await productModel
          .find({ _id: { $in: productIds } })
          .populate({ path: 'promotions', model: promoModel })
+         .populate({ path: 'seller', model: sellerModel })
       if (products.length === 0) return console.error('Products not found')
       const result = products.map((product) => {
          const item = items.find((item) => item.product === product._id.toString())

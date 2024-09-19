@@ -1,6 +1,6 @@
 import Btn from '#ui/Btn/Btn'
 import Logo from '#ui/Logo'
-import { AlignEndVertical, Bolt, CirclePlus, House, ListOrdered } from 'lucide-react'
+import { AlignEndVertical, Bolt, CircleDollarSign, CirclePlus, House, ListOrdered } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
@@ -15,6 +15,7 @@ const Aside: React.FC = ({}): JSX.Element => {
       { id: 4, name: 'Active Orders', icon: <Bolt />, route: '/seller/orders' },
       { id: 5, name: 'History', icon: <ListOrdered />, route: '/seller/history' },
       { id: 6, name: 'Promotions', icon: <CirclePlus />, route: '/seller/promotion' },
+      { id: 7, name: 'Balance', icon: <CircleDollarSign />, route: '/seller/balance' },
    ]
 
    return (

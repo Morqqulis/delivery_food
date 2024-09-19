@@ -105,7 +105,7 @@ export interface IAddProduct {
 
 export interface ISeller {
    _id?: Types.ObjectId
-   point: string
+   point: Types.ObjectId
    name: string
    secondName: string
    address: string
@@ -115,7 +115,6 @@ export interface ISeller {
    image?: string
    createdAt?: Date
    products: IProduct[]
-   order?: []
 }
 export interface IFormValues {
    email: string
@@ -156,24 +155,43 @@ export interface ICheckoutForm {
    deliveryNote?: string
 }
 
-export interface IOrderItem {
-   product: IProduct
-   quantity: Number
-   accepted: Boolean
+export interface I0rderSeller {
+   seller: Types.ObjectId
+   payment: boolean
+   point: Types.ObjectId
+   amount: number
+}
+
+export interface IOrderItemProducts extends IProduct {
+   quantity: number
+   price: number
+   promotion: Types.ObjectId
+   accepted: boolean
    point: Types.ObjectId
    selectedAttributes?: ISelectedAttributes
 }
+
+export interface IOrderItem {
+   product: Types.ObjectId
+   quantity: number
+   price: number
+   promotions: Types.ObjectId
+   accepted: boolean
+   point: Types.ObjectId
+   selectedAttributes?: ISelectedAttributes
+}
+
 export interface IOrder {
    _id: Types.ObjectId
    status: string
    customer: IUser
    city: string
-   products: IOrderItem[]
    sellerNote?: string
    createdAt?: Date
    deliveryType: string
    adress: string
    deliveryNote?: string
+   sellers: I0rderSeller[]
 }
 
 export interface IPoint {
@@ -181,10 +199,10 @@ export interface IPoint {
    name: string
    address: string
    phone: string
-   orders: IOrder[]
-
+   orders: (IOrder & { products: { product: IProduct; accepted: boolean }[] })[]
    createdAt?: Date
 }
+
 
 export interface IOrderHistory {
    _id: string
@@ -204,7 +222,7 @@ export interface IBasket {
    name: string
    price: number
    promotions: IPromotion
-   seller: string
+   seller: ISeller
    updatedAt: Date
    quantity: number
    __v: number
@@ -252,7 +270,7 @@ export interface ISessionStore {
 export type IPromoType = 'percentage' | 'fixed' | 'buyXgetY' | 'freeShipping' | 'count&percentage'
 
 export interface IPromotion {
-   _id?: Types.ObjectId
+   _id: Types.ObjectId
    seller: Types.ObjectId
    description: string
    name: string

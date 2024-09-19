@@ -4,6 +4,7 @@ import orderModel from '#backend/models/orderModel'
 import productModel from '#backend/models/productModel'
 import promoModel from '#backend/models/promotionModel'
 import sellerModel from '#backend/models/sellerModel'
+import ProductDetail from '#sections/Products/ProductDetail'
 import { ISeller } from '#types/index'
 import { Types } from 'mongoose'
 
@@ -94,67 +95,32 @@ export const sellerUpdate = async (id: string, data: any) => {
    }
 }
 
-export const sellerGetFilteredOrders = async (sellerId: string, status: string) => {
-   try {
-      await connectDB()
+// { $ne: status }
 
-      let orders = await orderModel.aggregate([
-         { $match: { status: status } },
-         { $unwind: '$products' },
-         {
-            $lookup: {
-               from: 'products',
-               localField: 'products.product',
-               foreignField: '_id',
-               as: 'productDetails',
-            },
-         },
-         { $unwind: '$productDetails' },
-         {
-            $match: {
-               'productDetails.seller': new Types.ObjectId(sellerId),
-            },
-         },
-         {
-            $group: {
-               _id: '$_id',
-               status: { $first: '$status' },
-               sellerNote: { $first: '$sellerNote' },
-               createdAt: { $first: '$createdAt' },
-               products: {
-                  $push: {
-                     product: '$productDetails',
-                     quantity: '$products.quantity',
-                     selectedAttributes: '$products.selectedAttributes',
-                  },
-               },
-            },
-         },
-         {
-            $project: {
-               _id: 1,
-               status: 1,
-               sellerNote: 1,
-               createdAt: 1,
-               products: 1,
-            },
-         },
-      ])
-
-      orders = await orderModel.populate(orders, { path: 'products.product.promotions', model: promoModel })
-      return JSON.parse(JSON.stringify(orders))
-   } catch (error: any) {
-      throw new Error('Error retrieving orders by seller: ' + error.message)
-   }
-}
-
-export const sellerOrdersNotIncludes = async (sellerId: string, status: string) => {
+export const sellerGetAllOrders = async (sellerId: string, status: string) => {
+   if (!sellerId) return
    try {
       await connectDB()
 
       const orders = await orderModel.aggregate([
-         { $match: { status: { $ne: status } } },
-         { $unwind: '$products' },
+         { $match: { status: status } },
+         { $unwind: '$sellers' },
+         {
+            $lookup: {
+               from: 'sellers',
+               localField: 'sellers.seller',
+               foreignField: '_id',
+               as: 'sellerDetails',
+            },
+         },
+         { $unwind: '$sellerDetails' },
+
+         {
+            $match: {
+               'sellerDetails._id': new Types.ObjectId(sellerId),
+            },
+         },
+
          {
             $lookup: {
                from: 'products',
@@ -163,41 +129,80 @@ export const sellerOrdersNotIncludes = async (sellerId: string, status: string) 
                as: 'productDetails',
             },
          },
-         { $unwind: '$productDetails' },
          {
-            $match: {
-               'productDetails.seller': new Types.ObjectId(sellerId),
+            $lookup: {
+               from: 'promotions',
+               localField: 'productDetails.promotions',
+               foreignField: '_id',
+               as: 'promotionDetails',
             },
          },
+
          {
-            $group: {
-               _id: '$_id',
-               payment: { $first: '$payment' },
-               status: { $first: '$status' },
-               customerNote: { $first: '$customerNote' },
-               createdAt: { $first: '$createdAt' },
+            $addFields: {
                products: {
-                  $push: {
-                     product: '$productDetails',
-                     quantity: '$products.quantity',
+                  $map: {
+                     input: '$products',
+                     as: 'product',
+                     in: {
+                        $mergeObjects: [
+                           '$$product',
+                           {
+                              $arrayElemAt: [
+                                 {
+                                    $filter: {
+                                       input: '$productDetails',
+                                       as: 'detail',
+                                       cond: {
+                                          $eq: ['$$detail._id', '$$product.product'],
+                                       },
+                                    },
+                                 },
+                                 0,
+                              ],
+                           },
+                           {
+                              promotions: {
+                                 $cond: {
+                                    if: { $gt: [{ $size: '$promotionDetails' }, 0] },
+                                    then: { $arrayElemAt: ['$promotionDetails', 0] },
+                                    else: null,
+                                 },
+                              },
+                           },
+                        ],
+                     },
                   },
                },
             },
          },
+
+         { $unwind: '$products' },
+
          {
-            $project: {
-               _id: 1,
-               payment: 1,
-               status: 1,
-               customerNote: 1,
-               createdAt: 1,
-               products: 1,
+            $match: {
+               'products.seller': new Types.ObjectId(sellerId),
+            },
+         },
+
+         {
+            $group: {
+               adress: { $first: '$adress' },
+               deliveryNote: { $first: '$deliveryNote' },
+               deliveryType: { $first: '$deliveryType' },
+               createdAt: { $first: '$createdAt' },
+               updatedAt: { $first: '$updatedAt' },
+               customer: { $first: '$customer' },
+               sellerNote: { $first: '$sellerNote' },
+               _id: '$_id',
+               status: { $first: '$status' },
+               sellers: { $first: '$sellers' },
+               products: { $push: '$products' },
+               sellerDetails: { $first: '$sellerDetails' },
             },
          },
       ])
-
-      // return JSON.parse(JSON.stringify(orders))
-      return orders
+      return JSON.parse(JSON.stringify(orders))
    } catch (error: any) {
       throw new Error('Error retrieving orders by seller: ' + error.message)
    }

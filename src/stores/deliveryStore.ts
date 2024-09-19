@@ -1,5 +1,5 @@
 import { orderGetAll, orderUpdateStatus, updateProductAcceptedStatus } from '#backend/actions/orderAction'
-import { pointGetByIdWithPopulate } from '#backend/actions/pointActions'
+import { pointGetAllOrders } from '#backend/actions/pointActions'
 import { IDeliveryStore, IPoint } from '#types/index'
 import { Types } from 'mongoose'
 import { create } from 'zustand'
@@ -8,8 +8,7 @@ export const useDeliveryStore = create<IDeliveryStore>((set) => ({
    point: {} as IPoint,
    fetchPoint: async () => {
       try {
-         await orderGetAll()
-         const pointdata = await pointGetByIdWithPopulate('66dab6c6a3465f7246890205')
+         const pointdata = await pointGetAllOrders('66dab6c6a3465f7246890205')
          set({ point: pointdata })
       } catch (error) {
          console.log('Error in fetchPoint at useDeliveryStore: ', error)

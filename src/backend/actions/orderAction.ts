@@ -6,10 +6,11 @@ import pointModel from '#backend/models/pointModel'
 import productModel from '#backend/models/productModel'
 import sellerModel from '#backend/models/sellerModel'
 import userModel from '#backend/models/userModel'
-import { IBasket, IBasketItem, ICheckoutForm } from '#types/index'
+import { I0rderSeller, IBasket, IBasketItem, ICheckoutForm } from '#types/index'
 import mongoose, { Types } from 'mongoose'
 import { sellerGetByIdWithSelect } from './sellerActions'
 import { productGetByIdWithPopulate } from './productActions'
+import { calculateTotal, getPrice } from '../../functions/helpers'
 
 export const orderCreate = async (basket: IBasket[], session: { email: string; name: string }, form: ICheckoutForm) => {
    if (!basket || !session || !form) return
@@ -26,17 +27,31 @@ export const orderCreate = async (basket: IBasket[], session: { email: string; n
 
       const products = await Promise.all(
          basket.map(async (product) => {
-            const {
-               seller: { point },
-            } = await productGetByIdWithPopulate(product._id, 'seller', 'point')
+            const price = getPrice(product)
             return {
                product: product._id,
+               price: price?.toString().startsWith('discount') ? +price?.toString().split('/')[2] : price,
+               promotions: product?.promotions?._id || null,
                quantity: product.quantity,
-               point,
+               point: product.seller.point,
                selectedAttributes: product.selectedAttributes,
             }
          }),
       )
+      const sellers = basket.reduce((acc, item) => {
+         const existingSeller = acc.find((seller) => seller.seller === item.seller._id)
+         if (!existingSeller) {
+            acc.push({
+               // @ts-ignore
+               seller: item.seller._id,
+               point: item.seller.point,
+               payment: false,
+               amount: calculateTotal(basket.filter((i) => i.seller === item.seller)) || 0,
+            })
+         }
+
+         return acc
+      }, [] as I0rderSeller[])
 
       const order = await orderModel.create({
          phone,
@@ -47,29 +62,26 @@ export const orderCreate = async (basket: IBasket[], session: { email: string; n
          status: 'pending',
          customer: user._id,
          products,
+         sellers,
       })
 
-      // satıcılara sifarişlər haqqında məlumat verilməsi
-      const sellers = Array.from(new Set(basket.map((item) => item.seller)))
-      await sellerModel.updateMany({ _id: { $in: sellers } }, { $push: { order: order._id } })
+      // // cəmləşmə nöqtələrinə sifarişlər haqqında məlumat verilməsi
+      // const pointsSet = new Set() // Pointlərin siyahısını tutmaq üçün Set
+      // order.products.forEach((prod: { product: string; quantity: number; point: Types.ObjectId }) => {
+      //    pointsSet.add(prod.point.toString())
+      // })
 
-      // cəmləşmə nöqtələrinə sifarişlər haqqında məlumat verilməsi
-      const pointsSet = new Set() // Pointlərin siyahısını tutmaq üçün Set
-      order.products.forEach((prod: { product: string; quantity: number; point: Types.ObjectId }) => {
-         pointsSet.add(prod.point.toString())
-      })
-
-      // Hər bir point üçün tapırıq və orders arrayına order id əlavə edirik
-      await Promise.all(
-         Array.from(pointsSet).map(async (pointId) => {
-            await pointModel.updateOne(
-               { _id: pointId },
-               {
-                  $addToSet: { orders: order._id },
-               },
-            )
-         }),
-      )
+      // // Hər bir point üçün tapırıq və orders arrayına order id əlavə edirik
+      // await Promise.all(
+      //    Array.from(pointsSet).map(async (pointId) => {
+      //       await pointModel.updateOne(
+      //          { _id: pointId },
+      //          {
+      //             $addToSet: { orders: order._id },
+      //          },
+      //       )
+      //    }),
+      // )
 
       return JSON.parse(JSON.stringify(order))
    } catch (err: Error | any) {

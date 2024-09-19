@@ -9,6 +9,8 @@ import Counter from '#ui/Counter/Counter'
 const BasketSection: React.FC = (): JSX.Element => {
    const { removeFromBasket, basket, updateBasketStore } = useBasketStore()
 
+
+
    const tableHeader = ['Image', 'Name', 'Description', 'Count', 'Price', 'Total', '']
    const tableBody = basket.map((item) => {
       return {

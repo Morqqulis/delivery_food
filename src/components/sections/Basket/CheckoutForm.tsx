@@ -3,13 +3,17 @@ import { orderCreate } from '#backend/actions/orderAction'
 import { checkoutSchema } from '#schemes/scheme'
 import { CheckoutDefault } from '#settings/defaultValues'
 import { useBasketStore } from '#stores/basketStore'
-import { IBasket, ICheckoutForm } from '#types/index'
+import { I0rderSeller, IBasket, ICheckoutForm } from '#types/index'
 import Btn from '#ui/Btn/Btn'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '#ui/sheet'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
+import { calculateTotal, getPrice } from '../../../functions/helpers'
+import { productGetByIdWithPopulate } from '#backend/actions/productActions'
+import { useEffect } from 'react'
+import { sellerGetAll, sellerGetAllOrders } from '#backend/actions/sellerActions'
 
 interface CheckoutFormProps {
    basket: IBasket[]
@@ -22,7 +26,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ basket }) => {
       resolver: zodResolver(checkoutSchema),
       defaultValues: CheckoutDefault,
    })
-
+   
    const onSubmit = async (form: ICheckoutForm) => {
       const user = {
          email: session?.data?.user?.email || '',
@@ -31,7 +35,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ basket }) => {
 
       await orderCreate(basket, user, form)
       reset()
-      clearBasket()
+      // clearBasket()
    }
 
    if (session.status !== 'authenticated') {

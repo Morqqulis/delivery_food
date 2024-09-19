@@ -1,4 +1,4 @@
-import { IBasket, IComment, IOrder, IOrderItem, IProduct } from '#types/index'
+import { IBasket, IComment, IOrder, IOrderItem, IOrderItemProducts, IProduct } from '#types/index'
 
 export function createToken(str: string): string {
    const getRandomChars = (length: number) =>
@@ -72,10 +72,10 @@ export function getTotal(product: IBasket) {
          ? +priceNumber * product.quantity
          : product.price * product.quantity
 
-   return total
+   return +total.toFixed(2)
 }
 
-export const calculateTotal = (basket: IBasket[] | IProduct[]) => {
+export const calculateTotal = (basket: IBasket[] | IProduct[] | IOrderItemProducts[]) => {
    if (!basket) return
 
    return basket.reduce((total: number, product: IBasket | IProduct) => {

@@ -18,7 +18,7 @@ const sellerSchema = new Schema<ISeller>(
          required: true,
       },
       point: {
-         type: String,
+         type: Schema.Types.ObjectId,
          ref: 'point',
       },
       address: {
@@ -42,12 +42,6 @@ const sellerSchema = new Schema<ISeller>(
          {
             type: Schema.Types.ObjectId,
             ref: 'product',
-         },
-      ],
-      order: [
-         {
-            type: Schema.Types.ObjectId,
-            ref: 'order',
          },
       ],
       image: {

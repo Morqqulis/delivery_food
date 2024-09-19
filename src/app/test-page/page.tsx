@@ -1,109 +1,72 @@
-import DefaultLayout from '#layouts/DefaultLayout'
-import ProfileSection from '#sections/Profile/ProfileSection'
-import { IProduct } from '#types/index'
-import { AspectRatio } from '#ui/aspect-ratio'
-import Btn from '#ui/Btn/Btn'
+'use client'
+import axios from 'axios'
+import React, { useState } from 'react'
 
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '#ui/carousel'
-import CustomCard from '#ui/CustomCard/CustomCard'
-import CustomDialog from '#ui/CustomDialog/CustomDialog'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '#ui/dialog'
-import Map from '#ui/Map/Map'
-import MapAutocomplete from '#ui/Map/MapAutocomplete'
-import MapDialog from '#ui/Map/MapDialog'
-import UserAside from '#ui/UserAdise/UserAside'
-import { SchemaTypes, Types } from 'mongoose'
-import { NextPage } from 'next'
-import Image from 'next/image'
-import Link from 'next/link'
+const ImageUploader = () => {
+   const [images, setImages] = useState<File[]>([])
+   const [uploadProgress, setUploadProgress] = useState<number[]>([])
+   const [imageUrls, setImageUrls] = useState<string[]>([])
 
-export interface ITestProduct {
-   id: string
-   name: string
-   description: string
-   price: number
-   image: string
-}
+   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const selectedImages = e.target.files
+      if (selectedImages) {
+         setImages(Array.from(selectedImages))
+         setUploadProgress(Array(selectedImages.length).fill(0))
+      }
+   }
 
-const TestPage: NextPage = () => {
-   const products: ITestProduct[] = [
-      {
-         id: Math.floor(Math.random() * 10000).toString(),
-         name: 'Lorem Ipsum',
-         description:
-            'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis delectus consectetur tempora enim, vel impedit illum omnis eaque atque excepturi!',
-         price: 1000,
-         image: 'qazan.svg',
-      },
+   const toBase64 = (image: File): Promise<string> =>
+      new Promise((resolve, reject) => {
+         const reader = new FileReader()
+         reader.readAsDataURL(image)
+         reader.onload = () => resolve(reader.result as string)
+         reader.onerror = (error) => reject(error)
+      })
 
-      {
-         id: Math.floor(Math.random() * 10000).toString(),
-         name: 'Lorem Ipsum',
-         description:
-            'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis delectus consectetur tempora enim, vel impedit illum omnis eaque atque excepturi!',
-         price: 1000,
-         image: 'qazan.svg',
-      },
-      {
-         id: Math.floor(Math.random() * 10000).toString(),
-         name: 'Lorem Ipsum',
-         description:
-            'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis delectus consectetur tempora enim, vel impedit illum omnis eaque atque excepturi!',
-         price: 1000,
-         image: 'qazan.svg',
-      },
-      {
-         id: Math.floor(Math.random() * 10000).toString(),
-         name: 'Lorem Ipsum',
-         description:
-            'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis delectus consectetur tempora enim, vel impedit illum omnis eaque atque excepturi!',
-         price: 1000,
-         image: 'qazan.svg',
-      },
-      {
-         id: Math.floor(Math.random() * 10000).toString(),
-         name: 'Lorem Ipsum',
-         description:
-            'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis delectus consectetur tempora enim, vel impedit illum omnis eaque atque excepturi!',
-         price: 1000,
-         image: 'qazan.svg',
-      },
-      {
-         id: Math.floor(Math.random() * 10000).toString(),
-         name: 'Lorem Ipsum',
-         description:
-            'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis delectus consectetur tempora enim, vel impedit illum omnis eaque atque excepturi!',
-         price: 1000,
-         image: 'qazan.svg',
-      },
-   ]
+   const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault()
+      if (images.length === 0) return
 
+      // Преобразуем все изображения в base64
+      const base64Images = await Promise.all(images.map((image) => toBase64(image)))
+
+      try {
+         const res = await axios.post('/api/upload', { images: base64Images })
+
+         const { urls } = res.data
+
+         // Устанавливаем URL изображений
+         setImageUrls(urls)
+
+         // Обновляем прогресс загрузки
+         setUploadProgress(base64Images.map(() => 100))
+      } catch (error) {
+         console.error('Error uploading images:', error)
+      }
+   }
+   console.log(imageUrls)
    return (
-      <DefaultLayout full={false}>
-         <main>
-            <MapDialog />
+      <form
+         className="mx-auto flex max-w-lg flex-col items-center justify-center gap-5 border py-20"
+         onSubmit={handleSubmit}
+      >
+         <input name="file" id="file" type="file" onChange={handleChange} multiple />
+         <button type="submit">Submit</button>
 
-            <div className="container">
-               <div className={`grid grid-cols-[380px_1fr] items-start py-20`}>
-                  {/* <UserAside /> */}
-                  {/* <ProfileSection /> */}
-               </div>
-
-               <Carousel className={``}>
-                  <CarouselContent>
-                     {products.map((product) => (
-                        <CarouselItem className={`basis-1/3`} key={product.id}>
-                           <CustomCard product={product} />
-                        </CarouselItem>
-                     ))}
-                  </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
-               </Carousel>
+         {images.length > 0 && (
+            <div>
+               {images.map((image, index) => (
+                  <div key={index}>
+                     <span>{image.name}</span>
+                     <progress value={uploadProgress[index] || 0} max="100">
+                        {uploadProgress[index] || 0}%
+                     </progress>
+                  </div>
+               ))}
             </div>
-         </main>
-      </DefaultLayout>
+         )}
+      </form>
    )
 }
 
-export default TestPage
+export default ImageUploader

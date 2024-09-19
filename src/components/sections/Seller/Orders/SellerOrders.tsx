@@ -1,47 +1,51 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { Trash, Eye, Check } from 'lucide-react'
-import { sellerGetFilteredOrders } from '#backend/actions/sellerActions'
+import { sellerGetAllOrders } from '#backend/actions/sellerActions'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '#ui/dialog'
-import { IOrder, IProduct, ISelectedAttributes } from '#types/index'
+import { IOrder, IOrderItem, IOrderItemProducts, IProduct, ISelectedAttributes } from '#types/index'
 import { orderUpdateStatus } from '#backend/actions/orderAction'
-import { hoursSince } from '../../../../functions/helpers'
+import { calculateTotal, getPrice, getTotal, hoursSince } from '../../../../functions/helpers'
 import Table from '#ui/Table/Table'
 import { Types } from 'mongoose'
 import { productGetAll, productGetById, productUpdateById } from '#backend/actions/productActions'
 import productModel from '#backend/models/productModel'
 
+interface ICurrentOrder extends IOrder {
+   products: IOrderItemProducts[]
+}
+
 const SellerOrders: React.FC = () => {
-   const [orders, setOrders] = useState<IOrder[]>([])
+   const [orders, setOrders] = useState<ICurrentOrder[]>([])
 
    useEffect(() => {
       ;(async () => {
-         const orders = await sellerGetFilteredOrders('66d02490d14d9bc8e4366bd1', 'pending')
+         const orders = await sellerGetAllOrders('66d02490d14d9bc8e4366bd1', 'pending')
          setOrders(orders)
       })()
    }, [])
 
-   const handleAcceptOrder = async (orderId: Types.ObjectId) => {
-      await orderUpdateStatus(orderId, 'accepted')
-      setOrders(orders.filter((order) => order._id != orderId))
-   }
+   // const handleAcceptOrder = async (orderId: Types.ObjectId) => {
+   //    await orderUpdateStatus(orderId, 'accepted')
+   //    setOrders(orders.filter((order) => order._id != orderId))
+   // }
 
-   const handleRejectOrder = async (orderId: Types.ObjectId) => {
-      await orderUpdateStatus(orderId, 'rejected')
-      setOrders(orders.filter((order) => order._id != orderId))
-   }
+   // const handleRejectOrder = async (orderId: Types.ObjectId) => {
+   //    await orderUpdateStatus(orderId, 'rejected')
+   //    setOrders(orders.filter((order) => order._id != orderId))
+   // }
 
    const tableHeader = ['ID', 'Product Names', 'Total Amount', 'Customer Note', 'Created At', 'Actions']
-   const bodys = orders.map((order: IOrder) => {
+   const bodys = orders.map((order: ICurrentOrder) => {
       return {
          id: '***' + order._id.toString().slice(order._id.toString().length - 5, order._id.toString().length),
-         name: order.products.map((product) => product?.product.name).join(', '),
-         total: `$${order.products.reduce((crr, product) => crr + product.product.price * +product.quantity, 0)}`,
+         name: order.products.map((product) => product.name).join(', '),
+         total: `$${calculateTotal(order.products)}`,
          note: order.sellerNote,
          date: hoursSince(order?.createdAt?.toLocaleString() || '') + ' hours ago',
          actions: (
             <>
-               <button
+               {/* <button
                   onClick={() => handleAcceptOrder(order._id)}
                   className="mr-2 text-green-500 hover:text-green-700"
                >
@@ -49,7 +53,7 @@ const SellerOrders: React.FC = () => {
                </button>
                <button onClick={() => handleRejectOrder(order._id)} className="mr-2 text-red-500 hover:text-red-700">
                   <Trash size={20} />
-               </button>
+               </button> */}
                <Dialog>
                   <DialogTrigger>
                      <Eye size={20} />
@@ -65,8 +69,8 @@ const SellerOrders: React.FC = () => {
                            body={order.products.map((product, index) => {
                               return {
                                  image: `/qazan.svg`,
-                                 name: product.product.name,
-                                 price: `$${product.product.price}`,
+                                 name: product.name,
+                                 price: `$${getPrice(product)}`,
                                  quantity: product.quantity,
                                  attributes: Object.entries(product.selectedAttributes || {})
                                     .map(([key, value]) => {
@@ -75,12 +79,7 @@ const SellerOrders: React.FC = () => {
                                     .join(', '),
                               }
                            })}
-                           footer={[
-                              '',
-                              '',
-                              'Total Amount:',
-                              `$${order.products.reduce((crr, product) => crr + product.product.price * +product.quantity, 0)}`,
-                           ]}
+                           footer={['', '', 'Total Amount:', `$${calculateTotal(order.products)}`]}
                         />
                      </DialogHeader>
                   </DialogContent>

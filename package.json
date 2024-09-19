@@ -35,6 +35,7 @@
       "babel-plugin-react-compiler": "^0.0.0-experimental-48eb8f4-20240822",
       "bcryptjs": "^2.4.3",
       "class-variance-authority": "^0.7.0",
+      "cloudinary": "^2.5.0",
       "clsx": "^2.1.1",
       "cookie": "^0.6.0",
       "embla-carousel-react": "^8.2.1",

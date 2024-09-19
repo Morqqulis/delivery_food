@@ -1,4 +1,3 @@
-'use client'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -43,7 +42,7 @@ const Table: React.FC<ITable> = ({ headers, body, footer }): JSX.Element => {
                                  <span className="line-through">${value.toString().split('/')[1]}</span>&nbsp;
                                  <span className="font-bold">${value.toString().split('/')[2]}</span>
                               </>
-                           ) : value.toString().startsWith('link') ? (
+                           ) : value?.toString().startsWith('link') ? (
                               <Link className="underline hover:font-bold" href={value.toString().split('*')[1]}>
                                  {value.toString().split('*')[2]}
                               </Link>
