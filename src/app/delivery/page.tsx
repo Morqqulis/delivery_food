@@ -1,4 +1,4 @@
-import HomeDelivery from "#sections/Delivery/Home/HomeDelivery"
+import HomeDelivery from "#sections/Delivery/HomeDelivery"
 
 const PointHomePage: React.FC = (): JSX.Element => {
    return (

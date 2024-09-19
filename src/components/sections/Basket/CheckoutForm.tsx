@@ -35,7 +35,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ basket }) => {
 
       await orderCreate(basket, user, form)
       reset()
-      // clearBasket()
+      clearBasket()
    }
 
    if (session.status !== 'authenticated') {
