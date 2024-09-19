@@ -74,12 +74,12 @@ export const pointGetAllOrders = async (pointId: string) => {
          },
          {
             $lookup: {
-               from: 'products', 
+               from: 'products',
                localField: 'products.product',
                foreignField: '_id',
                as: 'productDetails',
             },
-         },         
+         },
          {
             $addFields: {
                products: {
@@ -113,6 +113,19 @@ export const pointGetAllOrders = async (pointId: string) => {
          },
 
          {
+            $lookup: {
+               from: 'users',
+               localField: 'customer',
+               foreignField: '_id',
+               as: 'customer',
+            },
+         },
+         {
+            $unwind: {
+               path: '$customer',
+            },
+         },
+         {
             $group: {
                _id: '$_id',
                adress: { $first: '$adress' },
@@ -120,7 +133,7 @@ export const pointGetAllOrders = async (pointId: string) => {
                deliveryType: { $first: '$deliveryType' },
                createdAt: { $first: '$createdAt' },
                updatedAt: { $first: '$updatedAt' },
-               customer: { $first: '$customerDetails' },
+               customer: { $first: '$customer' },
                sellerNote: { $first: '$sellerNote' },
                status: { $first: '$status' },
                sellers: { $first: '$sellers' },

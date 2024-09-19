@@ -65,24 +65,6 @@ export const orderCreate = async (basket: IBasket[], session: { email: string; n
          sellers,
       })
 
-      // // cəmləşmə nöqtələrinə sifarişlər haqqında məlumat verilməsi
-      // const pointsSet = new Set() // Pointlərin siyahısını tutmaq üçün Set
-      // order.products.forEach((prod: { product: string; quantity: number; point: Types.ObjectId }) => {
-      //    pointsSet.add(prod.point.toString())
-      // })
-
-      // // Hər bir point üçün tapırıq və orders arrayına order id əlavə edirik
-      // await Promise.all(
-      //    Array.from(pointsSet).map(async (pointId) => {
-      //       await pointModel.updateOne(
-      //          { _id: pointId },
-      //          {
-      //             $addToSet: { orders: order._id },
-      //          },
-      //       )
-      //    }),
-      // )
-
       return JSON.parse(JSON.stringify(order))
    } catch (err: Error | any) {
       throw new Error(err)

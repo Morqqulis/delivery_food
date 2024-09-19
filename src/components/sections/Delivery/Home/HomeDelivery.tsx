@@ -7,12 +7,20 @@ import { Check } from 'lucide-react'
 import { useDeliveryStore } from '#stores/deliveryStore'
 import Btn from '#ui/Btn/Btn'
 import { pointGetAllOrders } from '#backend/actions/pointActions'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Types } from 'mongoose'
 
 const HomeDelivery: React.FC = (): JSX.Element => {
    const { point, updateProductAcceptStatus, updateOrderStatus } = useDeliveryStore()
-   
+   // const [filteredOrders, setFilteredOrder] = useState<
+   //    (IOrder & { products: { product: IProduct; accepted: boolean }[] })[]
+   // >([])
+
+   // useEffect(() => {
+   //    setFilteredOrder(point?.orders || [])
+   // }, [point])
+
+
    const body = point?.orders?.map((item: IOrder & { products: { accepted: boolean }[] }) => {
       const { adress, createdAt, products, customer, deliveryNote, deliveryType, status, _id } = item
       const dialogBody = products.map((prod: any) => {

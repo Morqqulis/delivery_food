@@ -24,13 +24,6 @@ const pointSchema = new Schema<IPoint>(
          type: String,
          required: true,
       },
-      orders: [
-         {
-            type: Schema.Types.ObjectId,
-            ref: 'order',
-         },
-      ],
-
       createdAt: {
          type: Date,
          required: true,
