@@ -106,7 +106,7 @@ export interface IAddProduct {
 
 export interface ISeller {
    _id?: Types.ObjectId
-   point: Types.ObjectId
+   point: IPoint
    name: string
    secondName: string
    address: string
@@ -196,12 +196,16 @@ export interface IOrder {
 }
 
 export interface IPoint {
-   _id?: Types.ObjectId
+   _id: Types.ObjectId
    name: string
    address: string
    phone: string
    orders: (IOrder & { products: { product: IProduct; accepted: boolean }[] })[]
    createdAt?: Date
+   location: {
+      lat: number
+      lon: number
+   }
 }
 
 export interface IOrderHistory {

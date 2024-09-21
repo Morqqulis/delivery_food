@@ -24,6 +24,16 @@ const pointSchema = new Schema<IPoint>(
          type: String,
          required: true,
       },
+      location:{
+         lat: {
+            type: Number,
+            required: true,
+         },
+         log: {
+            type: Number,
+            required: true,
+         },
+      },
       createdAt: {
          type: Date,
          required: true,

@@ -1,6 +1,7 @@
 'use server'
 
 import { connectDB } from '#backend/DB'
+import pointModel from '#backend/models/pointModel'
 import productModel from '#backend/models/productModel'
 import promoModel from '#backend/models/promotionModel'
 import sellerModel from '#backend/models/sellerModel'
@@ -84,7 +85,8 @@ export const productsGetByIds = async (items: BasketItem[]) => {
       const products = await productModel
          .find({ _id: { $in: productIds } })
          .populate({ path: 'promotions', model: promoModel })
-         .populate({ path: 'seller', model: sellerModel })
+         .populate({ path: 'seller', model: sellerModel, populate: { path: 'point', model: pointModel } })
+
       if (products.length === 0) return console.error('Products not found')
       const result = products.map((product) => {
          const item = items.find((item) => item.product === product._id.toString())

@@ -4,7 +4,7 @@ import { sellerGetByIdPopulateProducts } from '#backend/actions/sellerActions'
 import { ISeller } from '#types/index'
 import { useEffect, useState } from 'react'
 import StoreTitle from './StoreTitle'
-import ProductCard from '#ui/ProductCard'
+import ProductCard from '#ui/Products/ProductCard'
 
 const StoreSection: React.FC<{ id: string }> = ({ id }): JSX.Element => {
    const [store, setStore] = useState({} as ISeller)

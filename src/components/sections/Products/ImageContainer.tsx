@@ -2,7 +2,8 @@
 import LikeHeart from '#ui/LikeHeart'
 import Image from 'next/image'
 import { useState } from 'react'
-import '#styles/scrollbar.scss'
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '#ui/carousel'
+import { calculateDistance } from '../../../functions/helpers'
 interface IImageContainer {}
 
 const ImageContainer: React.FC<{ images: string[] }> = ({ images }): JSX.Element => {
@@ -26,29 +27,38 @@ const ImageContainer: React.FC<{ images: string[] }> = ({ images }): JSX.Element
 
    return (
       <div className="h-full w-full">
-         <div className={` ${images.length > 1 ? 'h-[75%]' : 'h-full'} w-full`}>
-            <div
-               className="relative h-full w-full overflow-hidden"
+         <div className={` ${images.length > 1 ? 'h-[75%]' : 'h-full'} relative w-full overflow-hidden`}>
+            <Image
                onMouseMove={handleMouseMove}
                onMouseLeave={handleMouseLeave}
-            >
-               <Image
-                  src={selectedImage}
-                  width={500}
-                  height={500}
-                  alt="product image"
-                  className="h-full w-full transition-transform duration-300 ease-in-out"
-                  style={zoomStyle}
-               />
-            </div>
+               src={selectedImage}
+               width={500}
+               height={500}
+               alt="product image"
+               className="h-full w-full transition-transform duration-300 ease-in-out"
+               style={zoomStyle}
+            />
          </div>
          {images.length > 1 && (
-            <div className="scrollbar-custom mt-[1%] flex h-[24%] w-full items-center gap-3 overflow-auto">
-               {images.map((image) => (
-                  <div key={image} className="h-[50px] w-[50px] cursor-pointer" onClick={() => setSelectedImage(image)}>
-                     <Image src={image} width={50} height={50} alt={'product image'} className="h-full w-full" />
-                  </div>
-               ))}
+            <div className="mt-[1%] flex h-[24%] w-full items-center justify-center">
+               <Carousel className={`flex w-[80%] max-w-[1200px] gap-3`}>
+                  <CarouselContent className={``}>
+                     {images.map((image) => (
+                        <CarouselItem className={`basis-[90px] cursor-pointer`} key={image}>
+                           <Image
+                              onClick={() => setSelectedImage(image)}
+                              src={image}
+                              width={50}
+                              height={50}
+                              alt={'product image'}
+                              className="h-full w-full"
+                           />
+                        </CarouselItem>
+                     ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+               </Carousel>
             </div>
          )}
       </div>

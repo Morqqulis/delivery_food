@@ -1,7 +1,6 @@
 'use client'
 import axios from 'axios'
 import React, { useState } from 'react'
-import { uploadImages } from '../../functions/uploadFunctions'
 
 const ImageUploader = () => {
    const [images, setImages] = useState<File[]>([])
