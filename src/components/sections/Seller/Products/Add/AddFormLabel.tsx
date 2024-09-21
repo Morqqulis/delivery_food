@@ -3,7 +3,7 @@ import { UseFormReturn } from 'react-hook-form'
 import SelectColor from './Selects/SelectColor'
 import SelectSize from './Selects/SelectSize'
 import SelectCategory from './Selects/SelectCategory'
-
+import { toBase64 } from '../../../../../functions/helpers'
 
 const AddFormLabel: React.FC<{
    form: UseFormReturn<IAddProduct>
@@ -29,13 +29,16 @@ const AddFormLabel: React.FC<{
             />
          ) : type === 'file' ? (
             <input
+               multiple
                type="file"
                accept="image/*"
-               onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) {
-                     setValue('image', './qazan.svg')
-                  }
+               onChange={async (e) => {
+                  e.preventDefault()
+                  if (!e.target.files) return
+                  const selectedImages = Array.from(e.target.files)
+                  if (selectedImages.length === 0) return
+                  const base64Images = await Promise.all(selectedImages.map((image) => toBase64(image)))
+                  setValue('images', base64Images)
                }}
                className={`mt-1 w-full rounded-md border-gray-700 bg-gray-900 p-2 text-white shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50`}
             />

@@ -60,7 +60,7 @@ export const ProductSchema = z.object({
    category: z.string(),
    colors: z.array(z.string()),
    size: z.array(z.string()),
-   image: z.any().optional(),
+   images: z.array(z.string()),
 })
 
 export const checkoutSchema = z.object({

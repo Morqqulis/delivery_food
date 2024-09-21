@@ -30,7 +30,7 @@ export const orderCreate = async (basket: IBasket[], session: { email: string; n
             const price = getPrice(product)
             return {
                product: product._id,
-               price: price?.toString().startsWith('discount') ? +price?.toString().split('/')[2] : price,
+               soldPrice: price?.toString().startsWith('discount') ? +price?.toString().split('/')[2] : price,
                promotions: product?.promotions?._id || null,
                quantity: product.quantity,
                point: product.seller.point,
@@ -46,7 +46,7 @@ export const orderCreate = async (basket: IBasket[], session: { email: string; n
                seller: item.seller._id,
                point: item.seller.point,
                payment: false,
-               amount: calculateTotal(basket.filter((i) => i.seller === item.seller)) || 0,
+               amount: calculateTotal(basket.filter((i) => i.seller._id === item.seller._id)) || 0,
             })
          }
 

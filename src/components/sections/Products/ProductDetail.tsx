@@ -19,6 +19,7 @@ import Btn from '#ui/Btn/Btn'
 import { useBasketStore } from '#stores/basketStore'
 import SliderContainer from './SliderContainer'
 import PromotionSection from './PromotionSection'
+import ImageContainer from './ImageContainer'
 
 const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
    const [count, setCount] = useState(1)
@@ -62,14 +63,10 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                   <ProductBread category={data.attributes.category} />
                   <div className="flex w-full items-center gap-3 p-5">
                      <div className="relative h-[500px] w-[50%] p-2">
-                        <Image
-                           src={data?.image}
-                           width={500}
-                           height={500}
-                           alt={'product image'}
-                           className="h-full w-full"
-                        />
-                        <LikeHeart id={id} />
+                         <ImageContainer images={data?.image} /> 
+                        <p className="absolute right-0 top-0">
+                           <LikeHeart id={id} />
+                        </p>
                      </div>
                      <div className="flex w-[50%] flex-col p-2">
                         <div className="border-b-[0.3px] border-gray-400 pb-4">
@@ -104,19 +101,23 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }): JSX.Element => {
                            ([key, value]) => key !== 'category' && Array.isArray(value) && value?.length > 0,
                         ).length > 0 && (
                            <div className="flex gap-2 border-b-[0.3px] border-gray-400 py-4">
-                              {data?.attributes?.colors?.length && (
+                              {data?.attributes?.colors?.length ? (
                                  <Options
                                     title="color"
                                     options={data.attributes.colors}
                                     setSelectedAttributes={setSelectedAttributes}
                                  />
+                              ) : (
+                                 ''
                               )}
-                              {data?.attributes?.size?.length && (
+                              {data?.attributes?.size?.length ? (
                                  <Options
                                     title="size"
                                     options={data.attributes.size}
                                     setSelectedAttributes={setSelectedAttributes}
                                  />
+                              ) : (
+                                 ''
                               )}
                            </div>
                         )}

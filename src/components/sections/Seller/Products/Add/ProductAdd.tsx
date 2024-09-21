@@ -9,6 +9,7 @@ import Btn from '#ui/Btn/Btn'
 import { Types } from 'mongoose'
 import { productCreate } from '#backend/actions/productActions'
 import AddFormLabel from './AddFormLabel'
+import axios from 'axios'
 
 const AddProduct: React.FC = () => {
    const form = useForm<IAddProduct>({
@@ -16,10 +17,26 @@ const AddProduct: React.FC = () => {
       defaultValues: AddProductDefault,
    })
 
+   const uploader = async (images: string[]) => {
+      try {
+         const res = await axios.post('/api/upload', { images: images })
+
+         const { urls } = res.data
+         if (urls.length === 0) return
+         return urls
+      } catch (error) {
+         console.error('Error uploading images:', error)
+      }
+   }
+
    const onSubmit = (data: IAddProduct) => {
-      const { name, description, price, category, colors, size } = data
+      const { name, description, price, category, colors, size, images } = data
       const [main, sub, child] = category.split('+')
+
       ;(async () => {
+         const image = await uploader(images)
+         if (image.length === 0, !name, !price, !category, !description) return 
+
          const product = {
             name,
             description,
@@ -33,7 +50,7 @@ const AddProduct: React.FC = () => {
                colors,
                size,
             },
-            image: '/qazan.svg',
+            image,
             seller: new Types.ObjectId('66dacdf06c5dc6205ccfd518'),
          }
          await productCreate(product)
@@ -51,7 +68,7 @@ const AddProduct: React.FC = () => {
                <AddFormLabel form={form} type="category" name="category" />
                <AddFormLabel form={form} type="color" name="colors" />
                <AddFormLabel form={form} type="size" name="size" />
-               <AddFormLabel form={form} type="file" name="image" />
+               <AddFormLabel form={form} type="file" name="images" />
                <AddFormLabel form={form} type="textarea" name="description" rows={4} />
 
                <div className="col-span-1 flex w-[45%] items-center justify-center">

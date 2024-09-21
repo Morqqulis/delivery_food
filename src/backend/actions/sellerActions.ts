@@ -95,15 +95,16 @@ export const sellerUpdate = async (id: string, data: any) => {
    }
 }
 
-// { $ne: status }
-
-export const sellerGetAllOrders = async (sellerId: string, status: string) => {
+export const sellerGetAllOrders = async (sellerId: string, status: string, includeStatus: boolean = true) => {
    if (!sellerId) return
    try {
       await connectDB()
 
       const orders = await orderModel.aggregate([
-         { $match: { status: status } },
+         {
+            $match: includeStatus ? { status: status } : { status: { $ne: status } },
+         },
+
          { $unwind: '$sellers' },
          {
             $lookup: {
@@ -163,11 +164,18 @@ export const sellerGetAllOrders = async (sellerId: string, status: string) => {
                            },
                            {
                               promotions: {
-                                 $cond: {
-                                    if: { $gt: [{ $size: '$promotionDetails' }, 0] },
-                                    then: { $arrayElemAt: ['$promotionDetails', 0] },
-                                    else: null,
-                                 },
+                                 $arrayElemAt: [
+                                    {
+                                       $filter: {
+                                          input: '$promotionDetails',
+                                          as: 'promo',
+                                          cond: {
+                                             $eq: ['$$promo._id', '$$product.promotions'],
+                                          },
+                                       },
+                                    },
+                                    0,
+                                 ],
                               },
                            },
                         ],

@@ -1,6 +1,7 @@
 'use client'
 import axios from 'axios'
 import React, { useState } from 'react'
+import { uploadImages } from '../../functions/uploadFunctions'
 
 const ImageUploader = () => {
    const [images, setImages] = useState<File[]>([])
@@ -29,7 +30,6 @@ const ImageUploader = () => {
 
       // Преобразуем все изображения в base64
       const base64Images = await Promise.all(images.map((image) => toBase64(image)))
-
       try {
          const res = await axios.post('/api/upload', { images: base64Images })
 
@@ -45,6 +45,7 @@ const ImageUploader = () => {
       }
    }
    console.log(imageUrls)
+
    return (
       <form
          className="mx-auto flex max-w-lg flex-col items-center justify-center gap-5 border py-20"

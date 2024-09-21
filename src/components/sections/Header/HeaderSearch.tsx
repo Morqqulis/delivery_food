@@ -39,7 +39,7 @@ const HeaderSearch: React.FC = (): JSX.Element => {
                {data.length
                   ? data.map((product: any) => (
                        <Link
-                          href={`/${product._id}`}
+                          href={`products/${product._id}`}
                           key={product._id}
                           className="flex items-center gap-5 bg-dark-700 p-2"
                        >

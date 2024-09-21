@@ -22,7 +22,7 @@ export const AddProductDefault = {
    description: '',
    price: '0',
    category: '',
-   image: undefined,
+   images: [],
    colors: [],
    size: [],
 }

@@ -69,10 +69,12 @@ const productSchema: Schema = new Schema<IProduct>(
          ],
       },
 
-      image: {
-         type: String,
-         required: true,
-      },
+      image: [
+         {
+            type: String,
+            required: true,
+         },
+      ],
 
       seller: {
          type: Schema.Types.ObjectId,

@@ -10,7 +10,7 @@ const Options: React.FC<{
       <Select
          onValueChange={(value) => setSelectedAttributes((prev: ISelectedAttributes) => ({ ...prev, [title]: value }))}
       >
-         <SelectTrigger className={`mt-1 w-full rounded-md border-gray-700 bg-gray-900 p-2 text-white shadow-sm`}>
+         <SelectTrigger className={`mt-1 w-[150px] rounded-md border-gray-700 bg-gray-900 p-2 text-white shadow-sm`}>
             <SelectValue
                placeholder={title[0].toLocaleUpperCase() + title.slice(1)}
                className="text-sm font-medium text-gray-300"

@@ -44,7 +44,7 @@ const ProductCard = ({ product, className }: { product: IProduct; className?: st
                   <LikeHeart id={product._id.toString()} />
                </div>
 
-               <Image src={`${product?.image}`} width={150} height={150} alt={'product image'} priority />
+               <Image src={product?.image[0]} width={150} height={150} alt={'product image'} priority />
 
                <div className={`flex w-full grow flex-col gap-2 text-center glow:text-mini-100`}>
                   <h3 className="text-lg font-bold text-mini-100 msm:text-base">{product.name}</h3>

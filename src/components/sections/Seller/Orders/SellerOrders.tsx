@@ -21,39 +21,24 @@ const SellerOrders: React.FC = () => {
    useEffect(() => {
       ;(async () => {
          const orders = await sellerGetAllOrders('66d02490d14d9bc8e4366bd1', 'pending')
+         console.log(orders)
          setOrders(orders)
       })()
    }, [])
 
-   // const handleAcceptOrder = async (orderId: Types.ObjectId) => {
-   //    await orderUpdateStatus(orderId, 'accepted')
-   //    setOrders(orders.filter((order) => order._id != orderId))
-   // }
+  
 
-   // const handleRejectOrder = async (orderId: Types.ObjectId) => {
-   //    await orderUpdateStatus(orderId, 'rejected')
-   //    setOrders(orders.filter((order) => order._id != orderId))
-   // }
-
-   const tableHeader = ['ID', 'Product Names', 'Total Amount', 'Customer Note', 'Created At', 'Actions']
+   const tableHeader = ['ID', 'Address', 'Product Names', 'Total Amount', 'Created At', 'Actions']
    const bodys = orders.map((order: ICurrentOrder) => {
       return {
          id: '***' + order._id.toString().slice(order._id.toString().length - 5, order._id.toString().length),
+         address: order?.adress,
          name: order.products.map((product) => product.name).join(', '),
          total: `$${calculateTotal(order.products)}`,
          note: order.sellerNote,
          date: hoursSince(order?.createdAt?.toLocaleString() || '') + ' hours ago',
          actions: (
             <>
-               {/* <button
-                  onClick={() => handleAcceptOrder(order._id)}
-                  className="mr-2 text-green-500 hover:text-green-700"
-               >
-                  <Check size={20} />
-               </button>
-               <button onClick={() => handleRejectOrder(order._id)} className="mr-2 text-red-500 hover:text-red-700">
-                  <Trash size={20} />
-               </button> */}
                <Dialog>
                   <DialogTrigger>
                      <Eye size={20} />
@@ -64,13 +49,17 @@ const SellerOrders: React.FC = () => {
                         <DialogDescription>
                            The orders need to be handed over to the courier as soon as possible
                         </DialogDescription>
+                        <div className="mt-4">
+                           <p className="font-bold">Customer Note:</p> {order.sellerNote}
+                        </div>
                         <Table
-                           headers={['Product Image', 'Product Name', 'Price', 'Quantity', 'Attributes']}
+                           headers={['Product Image', 'Product Name', 'Price', 'Sold Price', 'Quantity', 'Attributes']}
                            body={order.products.map((product, index) => {
                               return {
                                  image: `/qazan.svg`,
                                  name: product.name,
-                                 price: `$${getPrice(product)}`,
+                                 price: product.price,
+                                 soldPrice: product.soldPrice,
                                  quantity: product.quantity,
                                  attributes: Object.entries(product.selectedAttributes || {})
                                     .map(([key, value]) => {
@@ -79,7 +68,7 @@ const SellerOrders: React.FC = () => {
                                     .join(', '),
                               }
                            })}
-                           footer={['', '', 'Total Amount:', `$${calculateTotal(order.products)}`]}
+                           footer={['', '', 'Total Amount:', `$${calculateTotal(order.products)}`, '', '']}
                         />
                      </DialogHeader>
                   </DialogContent>

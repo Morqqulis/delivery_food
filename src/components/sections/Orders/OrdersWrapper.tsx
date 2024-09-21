@@ -1,14 +1,16 @@
 'use client'
 import { orderGetWithUserId } from '#backend/actions/orderAction'
 import { userGetByEmail } from '#backend/actions/userActions'
-import { IOrder } from '#types/index'
+import { IOrder, IOrderItemProducts, IProduct } from '#types/index'
 import Table from '#ui/Table/Table'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import { dateFormatter } from '../../../functions/helpers'
 
-interface IOrdersWrapper {}
+interface IOrdersWrapper extends IOrder {
+   products: IOrderItemProducts[]
+}
 
 const OrdersWrapper = () => {
    const session = useSession()
@@ -31,7 +33,7 @@ const OrdersWrapper = () => {
    })
    console.log(data)
    const header = ['ID', 'Date', 'Delivery Note', 'Seller Note', 'Delivery Type', 'Products', 'Status']
-   const body = data?.map((order: IOrder) => {
+   const body = data?.map((order: IOrdersWrapper) => {
       return {
          id: '***' + order._id.toString().slice(order._id.toString().length - 5, order._id.toString().length),
          date: dateFormatter(order.createdAt),
@@ -41,7 +43,7 @@ const OrdersWrapper = () => {
          products: order.products
             .map(
                (product) =>
-                  product?.product.name +
+                  product?.name +
                   ' * ' +
                   product?.quantity +
                   'pcs' +

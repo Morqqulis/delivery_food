@@ -83,3 +83,13 @@ export const calculateTotal = (basket: IBasket[] | IProduct[] | IOrderItemProduc
       return total + getTotal(product)
    }, 0)
 }
+
+
+
+export const toBase64 = (image: File): Promise<string> =>
+   new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(image)
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = (error) => reject(error)
+   })

@@ -84,7 +84,7 @@ const orderSchema = new Schema<IOrder & { products: IOrderItem }>(
                   type: String,
                },
             },
-            price: {
+            soldPrice: {
                type: Number,
                required: true,
             },

@@ -59,7 +59,7 @@ export interface IProduct {
    comments: IComment[]
    promotions: IPromotion
    seller: ISeller
-   image: string
+   image: string[]
    isActive?: boolean
    attributes: {
       category: {
@@ -70,6 +70,7 @@ export interface IProduct {
       size: string[]
       colors: string[]
    }
+   createdAt: Date
 }
 export interface ISelectedAttributes {
    size?: string
@@ -81,7 +82,7 @@ export interface IProductCreate {
    description: string
    price: number
    seller: Types.ObjectId
-   image: string
+   image: string[]
    attributes: {
       category: {
          main: string
@@ -99,7 +100,7 @@ export interface IAddProduct {
    price: string
    category: string
    colors?: string[]
-   image?: any
+   images: string[]
    size?: string[]
 }
 
@@ -164,7 +165,7 @@ export interface I0rderSeller {
 
 export interface IOrderItemProducts extends IProduct {
    quantity: number
-   price: number
+   soldPrice: number
    promotion: Types.ObjectId
    accepted: boolean
    point: Types.ObjectId
@@ -174,7 +175,7 @@ export interface IOrderItemProducts extends IProduct {
 export interface IOrderItem {
    product: Types.ObjectId
    quantity: number
-   price: number
+   soldPrice: number
    promotions: Types.ObjectId
    accepted: boolean
    point: Types.ObjectId
@@ -191,7 +192,7 @@ export interface IOrder {
    deliveryType: string
    adress: string
    deliveryNote?: string
-   sellers: I0rderSeller[]
+   sellers: I0rderSeller[] | I0rderSeller
 }
 
 export interface IPoint {
@@ -202,7 +203,6 @@ export interface IPoint {
    orders: (IOrder & { products: { product: IProduct; accepted: boolean }[] })[]
    createdAt?: Date
 }
-
 
 export interface IOrderHistory {
    _id: string
