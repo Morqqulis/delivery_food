@@ -29,7 +29,7 @@ const AuthLoginForm: React.FC = (): JSX.Element => {
    const { toast } = useToast()
    const router = useRouter()
    const searchParams = useSearchParams()
-   const callbackUrl = searchParams.get('callbackUrl') || '/profile'
+   const callbackUrl = searchParams.get('callbackUrl') ?? '/profile'
 
    const handleLogin = async (values: z.infer<typeof loginShema>) => {
       try {
@@ -37,7 +37,7 @@ const AuthLoginForm: React.FC = (): JSX.Element => {
             email: values.email,
             password: values.password,
             callbackUrl,
-            // redirect: false,
+            redirect: false,
          })
 
          if (res?.error) {

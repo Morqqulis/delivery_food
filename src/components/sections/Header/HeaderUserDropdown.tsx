@@ -35,7 +35,7 @@ const HeaderUserDropdown = ({ userData }: { userData: DefaultSession['user'] }):
             {userNav.map((item: IUserNav) => (
                <DropdownMenuItem key={item.id}>
                   <Btn
-                     className={`w-full px-2 py-1 text-center ${path === `/${item.link}` && 'items-center !justify-between'}`}
+                     className={`w-full px-2 py-1 text-center ${path === `/${item.link}` ? 'items-center !justify-center' : ''}`}
                      href={`/${item.link}`}
                      ariaLabel={`${item.name} Button`}
                      text={item.name}
