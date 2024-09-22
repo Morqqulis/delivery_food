@@ -9,6 +9,7 @@ import { IBasket, IComment, IPoint, IProduct } from '#types/index'
 import Image from 'next/image'
 import BasketDiscountSection from './BasketDiscountSection'
 import StarRating from '#sections/Comments/StarRating'
+import Link from 'next/link'
 
 const BasketSection: React.FC = (): JSX.Element => {
    const { removeFromBasket, basket, updateBasketStore } = useBasketStore()
@@ -99,7 +100,7 @@ const BasketSection: React.FC = (): JSX.Element => {
                                     <div key={product._id} className="flex justify-between border p-3">
                                        <Image src={product.image[0]} alt={product.name} width={100} height={100} />
                                        <div className="flex h-full w-full flex-col p-5">
-                                          <p>{product.name} </p>
+                                          <Link href={`/products/${product._id}`} className='underline'>{product.name}</Link>
                                           <p>{product.description}</p>
                                           {product?.promotions?.isActive && (
                                              <BasketDiscountSection promotions={product.promotions} />
