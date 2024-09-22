@@ -15,11 +15,11 @@ const BasketSection: React.FC = (): JSX.Element => {
 
    const basketGrouppedPoint = basket.reduce(
       (acc, item) => {
-         const key = item.seller.point._id.toString()
-         const point = item.seller.point
+         const key = item?.seller?.point._id.toString()
+         const point = item?.seller?.point
          const deliveryPrice = +getDeliveryPrice(
-            item.seller.point.location.lat,
-            item.seller.point.location.lon,
+            item?.seller?.point?.location.lat,
+            item?.seller?.point?.location.lon,
             40.4441512,
             50.1651573,
          ).toFixed(2)

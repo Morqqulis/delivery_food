@@ -29,7 +29,7 @@ const ProductCard = ({ product, className }: { product: IProduct; className?: st
       <GlowCapture>
          <Glow>
             <Link
-               className={`relative flex h-full min-h-[460px] grow flex-col items-center justify-items-center gap-2 overflow-hidden rounded-lg border-orange-500/20 bg-[#00070A] px-2 py-4 glow:border glow:border-purple-500 glow:bg-cyan-500/20 glow:shadow glow:shadow-white ${className}`}
+               className={`relative flex h-full min-h-[460px] min-w-[260px] grow flex-col items-center justify-items-center gap-2 overflow-hidden rounded-lg border-orange-500/20 bg-[#00070A] px-2 py-4 glow:border glow:border-purple-500 glow:bg-cyan-500/20 glow:shadow glow:shadow-white ${className}`}
                href={`/products/${product._id}`}
             >
                <div className={`flex w-full items-center justify-between gap-2`}>
