@@ -27,7 +27,7 @@ const ProductBread: React.FC<{
             </BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
             <BreadcrumbItem className="text-white">
-               <BreadcrumbLink className="hover:text-blue-700" href="/filtered">
+               <BreadcrumbLink className="hover:text-blue-700" href="/filtered/categories">
                   Categories
                </BreadcrumbLink>
             </BreadcrumbItem>

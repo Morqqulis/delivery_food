@@ -10,7 +10,8 @@ const FilteredPageSection: React.FC<{ title: string }> = ({ title }): JSX.Elemen
 
    useEffect(() => {
       if (!title) return
-      const selected = title && title.split('-')
+
+      const selected = title && title !== 'categories' ? title.split('-') : []
       if (!selected) return
       setFilters({
          ...filters,
