@@ -156,7 +156,7 @@ export interface ICheckoutForm {
    deliveryNote?: string
 }
 
-export interface I0rderSeller {
+export interface IOrderSeller {
    seller: Types.ObjectId
    payment: boolean
    point: Types.ObjectId
@@ -192,7 +192,7 @@ export interface IOrder {
    deliveryType: string
    adress: string
    deliveryNote?: string
-   sellers: I0rderSeller[] | I0rderSeller
+   sellers: IOrderSeller[] | IOrderSeller
 }
 
 export interface IPoint {

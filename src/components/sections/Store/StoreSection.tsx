@@ -1,5 +1,4 @@
 'use client'
-import { productGetAll } from '#backend/actions/productActions'
 import { sellerGetByIdPopulateProducts } from '#backend/actions/sellerActions'
 import { ISeller } from '#types/index'
 import { useEffect, useState } from 'react'
@@ -10,7 +9,6 @@ const StoreSection: React.FC<{ id: string }> = ({ id }): JSX.Element => {
    const [store, setStore] = useState({} as ISeller)
    useEffect(() => {
       ;(async () => {
-         await productGetAll()
          const seller = await sellerGetByIdPopulateProducts(id)
          setStore(seller)
       })()
