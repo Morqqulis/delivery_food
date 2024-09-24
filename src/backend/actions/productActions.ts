@@ -47,6 +47,17 @@ export const productGetById = async (id: string, select?: string) => {
       throw new Error(err)
    }
 }
+
+export const productGetByDate = async (start: string, end: string) => {
+   if (!start || !end) return
+   try {
+      await connectDB()
+      const products = await productModel.find({ createdAt: { $gte: start, $lte: end } })
+      return JSON.parse(JSON.stringify(products))
+   } catch (err: Error | any) {
+      throw new Error(err)
+   }
+}
 export const productGetByIdWithPopulate = async (id: string, selectProduct: string, selectSeller: string) => {
    if (!id) return
    try {

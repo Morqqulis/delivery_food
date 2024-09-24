@@ -37,6 +37,31 @@ export function hoursSince(dateString: string): number {
    return diffInHours
 }
 
+// function getStartAndEndOfDay(dateString: string) {
+//    const [day, month, year] = dateString.split('/').map(Number)
+//    const date = new Date(year, month - 1, day)
+//    const startOfDay = (new Date(date))
+//    startOfDay.setHours(0, 0, 0, 0)
+//    const endOfDay = new Date(date)
+//    endOfDay.setHours(23, 59, 59, 999)
+//    return {
+//       start: startOfDay.toISOString(),
+//       end: endOfDay.toISOString(),
+//    }
+// }
+
+export function getStartAndEndOfDay(dateString: string) {
+   const [day, month, year] = dateString.split('/').map(Number);
+   const date = new Date(year, month - 1, day);
+
+   return {
+      start: new Date(date.setHours(0, 0, 0, 0)).toISOString(),
+      end: new Date(date.setHours(23, 59, 59, 999)).toISOString(),
+   };
+}
+
+
+
 export function averageRating(comments: IComment[] | undefined): number {
    return comments?.length ? comments.reduce((acc, comment) => acc + comment.rating, 0) / comments.length : 0
 }

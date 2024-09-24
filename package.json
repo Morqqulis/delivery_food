@@ -43,6 +43,7 @@
       "google": "^2.1.0",
       "gridfs-stream": "^1.1.1",
       "lucide-react": "^0.435.0",
+      "moment-timezone": "^0.5.45",
       "mongodb": "^6.8.0",
       "mongoose": "^8.6.1",
       "next": "^15.0.0-rc.0",
